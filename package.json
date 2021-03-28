@@ -134,28 +134,6 @@
 		"webpack": "5.27.1"
 	},
 	"scripts": {
-		"prepublishOnly": "echo \"Error: must publish from dist/\" && exit 1",
-		"prepare-release": "yarn && yarn build && yarn test:dist",
-		"test": "jest",
-		"test:dev-package": "cross-env INSTALL_PACKAGE=1 jest",
-		"test:dist": "cross-env NODE_ENV=production jest",
-		"test:dist-standalone": "cross-env NODE_ENV=production TEST_STANDALONE=1 jest",
-		"test:integration": "jest tests_integration",
-		"perf:repeat": "yarn && yarn build && cross-env NODE_ENV=production node ./dist/bin-prettier.js --debug-repeat ${PERF_REPEAT:-1000} --loglevel debug ${PERF_FILE:-./index.js} > /dev/null",
-		"perf:repeat-inspect": "yarn && yarn build && cross-env NODE_ENV=production node --inspect-brk ./dist/bin-prettier.js --debug-repeat ${PERF_REPEAT:-1000} --loglevel debug ${PERF_FILE:-./index.js} > /dev/null",
-		"perf:benchmark": "yarn && yarn build && cross-env NODE_ENV=production node ./dist/bin-prettier.js --debug-benchmark --loglevel debug ${PERF_FILE:-./index.js} > /dev/null",
-		"lint": "run-p lint:*",
-		"lint:typecheck": "tsc",
-		"lint:eslint": "cross-env EFF_NO_LINK_RULES=true eslint . --format friendly",
-		"lint:changelog": "node ./scripts/lint-changelog.js",
-		"lint:prettier": "prettier . \"!test*\" --check",
-		"lint:dist": "eslint --no-eslintrc --no-ignore --no-inline-config --env=es6,browser --parser-options=ecmaVersion:2018 \"dist/!(bin-prettier|index|third-party).js\"",
-		"lint:spellcheck": "cspell \"**/*\" \".github/**/*\"",
-		"lint:deps": "node ./scripts/check-deps.js",
-		"fix": "run-s fix:eslint fix:prettier",
-		"fix:eslint": "yarn lint:eslint --fix",
-		"fix:prettier": "yarn lint:prettier --write",
-		"build": "node --max-old-space-size=3072 ./scripts/build/build.js",
-		"build-docs": "node ./scripts/build-docs.js"
+		"build": "node --max-old-space-size=4096 ./scripts/build/build.js"
 	}
 }
