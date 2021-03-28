@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * TBD properly tagged union for Doc object type is needed here.
@@ -17,23 +17,23 @@
  * @param {Doc} val
  */
 function assertDoc(val) {
-  if (typeof val === "string") {
-    return;
-  }
+	if(typeof val === 'string'){
+		return;
+	}
 
-  if (Array.isArray(val)) {
-    for (const doc of val) {
-      assertDoc(doc);
-    }
-    return;
-  }
+	if(Array.isArray(val)){
+		for(const doc of val){
+			assertDoc(doc);
+		}
+		return;
+	}
 
-  if (val && typeof val.type === "string") {
-    return;
-  }
+	if(val && typeof val.type === 'string'){
+		return;
+	}
 
-  /* istanbul ignore next */
-  throw new Error("Value " + JSON.stringify(val) + " is not a valid document");
+	/* istanbul ignore next */
+	throw new Error('Value ' + JSON.stringify(val) + ' is not a valid document');
 }
 
 /**
@@ -41,19 +41,19 @@ function assertDoc(val) {
  * @returns Doc
  */
 function concat(parts) {
-  if (process.env.NODE_ENV !== "production") {
-    for (const part of parts) {
-      assertDoc(part);
-    }
-  }
+	if(process.env.NODE_ENV !== 'production'){
+		for(const part of parts){
+			assertDoc(part);
+		}
+	}
 
-  // We cannot do this until we change `printJSXElement` to not
-  // access the internals of a document directly.
-  // if(parts.length === 1) {
-  //   // If it's a single document, no need to concat it.
-  //   return parts[0];
-  // }
-  return { type: "concat", parts };
+	// We cannot do this until we change `printJSXElement` to not
+	// access the internals of a document directly.
+	// if(parts.length === 1) {
+	//   // If it's a single document, no need to concat it.
+	//   return parts[0];
+	// }
+	return {type: 'concat', parts};
 }
 
 /**
@@ -61,11 +61,11 @@ function concat(parts) {
  * @returns Doc
  */
 function indent(contents) {
-  if (process.env.NODE_ENV !== "production") {
-    assertDoc(contents);
-  }
+	if(process.env.NODE_ENV !== 'production'){
+		assertDoc(contents);
+	}
 
-  return { type: "indent", contents };
+	return {type: 'indent', contents};
 }
 
 /**
@@ -74,11 +74,11 @@ function indent(contents) {
  * @returns Doc
  */
 function align(widthOrString, contents) {
-  if (process.env.NODE_ENV !== "production") {
-    assertDoc(contents);
-  }
+	if(process.env.NODE_ENV !== 'production'){
+		assertDoc(contents);
+	}
 
-  return { type: "align", contents, n: widthOrString };
+	return {type: 'align', contents, n: widthOrString};
 }
 
 /**
@@ -87,17 +87,17 @@ function align(widthOrString, contents) {
  * @returns Doc
  */
 function group(contents, opts = {}) {
-  if (process.env.NODE_ENV !== "production") {
-    assertDoc(contents);
-  }
+	if(process.env.NODE_ENV !== 'production'){
+		assertDoc(contents);
+	}
 
-  return {
-    type: "group",
-    id: opts.id,
-    contents,
-    break: Boolean(opts.shouldBreak),
-    expandedStates: opts.expandedStates,
-  };
+	return {
+		type: 'group',
+		id: opts.id,
+		contents,
+		break: Boolean(opts.shouldBreak),
+		expandedStates: opts.expandedStates,
+	};
 }
 
 /**
@@ -105,7 +105,7 @@ function group(contents, opts = {}) {
  * @returns Doc
  */
 function dedentToRoot(contents) {
-  return align(Number.NEGATIVE_INFINITY, contents);
+	return align(Number.NEGATIVE_INFINITY, contents);
 }
 
 /**
@@ -113,8 +113,8 @@ function dedentToRoot(contents) {
  * @returns Doc
  */
 function markAsRoot(contents) {
-  // @ts-ignore - TBD ???:
-  return align({ type: "root" }, contents);
+	// @ts-ignore - TBD ???:
+	return align({type: 'root'}, contents);
 }
 
 /**
@@ -122,7 +122,7 @@ function markAsRoot(contents) {
  * @returns Doc
  */
 function dedent(contents) {
-  return align(-1, contents);
+	return align(-1, contents);
 }
 
 /**
@@ -131,7 +131,7 @@ function dedent(contents) {
  * @returns Doc
  */
 function conditionalGroup(states, opts) {
-  return group(states[0], { ...opts, expandedStates: states });
+	return group(states[0], {...opts, expandedStates: states});
 }
 
 /**
@@ -139,13 +139,13 @@ function conditionalGroup(states, opts) {
  * @returns Doc
  */
 function fill(parts) {
-  if (process.env.NODE_ENV !== "production") {
-    for (const part of parts) {
-      assertDoc(part);
-    }
-  }
+	if(process.env.NODE_ENV !== 'production'){
+		for(const part of parts){
+			assertDoc(part);
+		}
+	}
 
-  return { type: "fill", parts };
+	return {type: 'fill', parts};
 }
 
 /**
@@ -155,21 +155,21 @@ function fill(parts) {
  * @returns Doc
  */
 function ifBreak(breakContents, flatContents, opts = {}) {
-  if (process.env.NODE_ENV !== "production") {
-    if (breakContents) {
-      assertDoc(breakContents);
-    }
-    if (flatContents) {
-      assertDoc(flatContents);
-    }
-  }
+	if(process.env.NODE_ENV !== 'production'){
+		if(breakContents){
+			assertDoc(breakContents);
+		}
+		if(flatContents){
+			assertDoc(flatContents);
+		}
+	}
 
-  return {
-    type: "if-break",
-    breakContents,
-    flatContents,
-    groupId: opts.groupId,
-  };
+	return {
+		type: 'if-break',
+		breakContents,
+		flatContents,
+		groupId: opts.groupId,
+	};
 }
 
 /**
@@ -179,12 +179,12 @@ function ifBreak(breakContents, flatContents, opts = {}) {
  * @returns Doc
  */
 function indentIfBreak(contents, opts) {
-  return {
-    type: "indent-if-break",
-    contents,
-    groupId: opts.groupId,
-    negate: opts.negate,
-  };
+	return {
+		type: 'indent-if-break',
+		contents,
+		groupId: opts.groupId,
+		negate: opts.negate,
+	};
 }
 
 /**
@@ -192,31 +192,31 @@ function indentIfBreak(contents, opts) {
  * @returns Doc
  */
 function lineSuffix(contents) {
-  if (process.env.NODE_ENV !== "production") {
-    assertDoc(contents);
-  }
-  return { type: "line-suffix", contents };
+	if(process.env.NODE_ENV !== 'production'){
+		assertDoc(contents);
+	}
+	return {type: 'line-suffix', contents};
 }
 
-const lineSuffixBoundary = { type: "line-suffix-boundary" };
-const breakParent = { type: "break-parent" };
-const trim = { type: "trim" };
+const lineSuffixBoundary = {type: 'line-suffix-boundary'};
+const breakParent = {type: 'break-parent'};
+const trim = {type: 'trim'};
 
-const hardlineWithoutBreakParent = { type: "line", hard: true };
+const hardlineWithoutBreakParent = {type: 'line', hard: true};
 const literallineWithoutBreakParent = {
-  type: "line",
-  hard: true,
-  literal: true,
+	type: 'line',
+	hard: true,
+	literal: true,
 };
 
-const line = { type: "line" };
-const softline = { type: "line", soft: true };
+const line = {type: 'line'};
+const softline = {type: 'line', soft: true};
 // eslint-disable-next-line prettier-internal-rules/no-doc-builder-concat
 const hardline = concat([hardlineWithoutBreakParent, breakParent]);
 // eslint-disable-next-line prettier-internal-rules/no-doc-builder-concat
 const literalline = concat([literallineWithoutBreakParent, breakParent]);
 
-const cursor = { type: "cursor", placeholder: Symbol("cursor") };
+const cursor = {type: 'cursor', placeholder: Symbol('cursor')};
 
 /**
  * @param {Doc} sep
@@ -224,18 +224,18 @@ const cursor = { type: "cursor", placeholder: Symbol("cursor") };
  * @returns Doc
  */
 function join(sep, arr) {
-  const res = [];
+	const res = [];
 
-  for (let i = 0; i < arr.length; i++) {
-    if (i !== 0) {
-      res.push(sep);
-    }
+	for(let i = 0; i < arr.length; i++){
+		if(i !== 0){
+			res.push(sep);
+		}
 
-    res.push(arr[i]);
-  }
+		res.push(arr[i]);
+	}
 
-  // eslint-disable-next-line prettier-internal-rules/no-doc-builder-concat
-  return concat(res);
+	// eslint-disable-next-line prettier-internal-rules/no-doc-builder-concat
+	return concat(res);
 }
 
 /**
@@ -244,49 +244,49 @@ function join(sep, arr) {
  * @param {number} tabWidth
  */
 function addAlignmentToDoc(doc, size, tabWidth) {
-  let aligned = doc;
-  if (size > 0) {
-    // Use indent to add tabs for all the levels of tabs we need
-    for (let i = 0; i < Math.floor(size / tabWidth); ++i) {
-      aligned = indent(aligned);
-    }
-    // Use align for all the spaces that are needed
-    aligned = align(size % tabWidth, aligned);
-    // size is absolute from 0 and not relative to the current
-    // indentation, so we use -Infinity to reset the indentation to 0
-    aligned = align(Number.NEGATIVE_INFINITY, aligned);
-  }
-  return aligned;
+	let aligned = doc;
+	if(size > 0){
+		// Use indent to add tabs for all the levels of tabs we need
+		for(let i = 0; i < Math.floor(size / tabWidth); ++i){
+			aligned = indent(aligned);
+		}
+		// Use align for all the spaces that are needed
+		aligned = align(size % tabWidth, aligned);
+		// size is absolute from 0 and not relative to the current
+		// indentation, so we use -Infinity to reset the indentation to 0
+		aligned = align(Number.NEGATIVE_INFINITY, aligned);
+	}
+	return aligned;
 }
 
 function label(label, contents) {
-  return { type: "label", label, contents };
+	return {type: 'label', label, contents};
 }
 
 module.exports = {
-  concat,
-  join,
-  line,
-  softline,
-  hardline,
-  literalline,
-  group,
-  conditionalGroup,
-  fill,
-  lineSuffix,
-  lineSuffixBoundary,
-  cursor,
-  breakParent,
-  ifBreak,
-  trim,
-  indent,
-  indentIfBreak,
-  align,
-  addAlignmentToDoc,
-  markAsRoot,
-  dedentToRoot,
-  dedent,
-  hardlineWithoutBreakParent,
-  literallineWithoutBreakParent,
-  label,
+	concat,
+	join,
+	line,
+	softline,
+	hardline,
+	literalline,
+	group,
+	conditionalGroup,
+	fill,
+	lineSuffix,
+	lineSuffixBoundary,
+	cursor,
+	breakParent,
+	ifBreak,
+	trim,
+	indent,
+	indentIfBreak,
+	align,
+	addAlignmentToDoc,
+	markAsRoot,
+	dedentToRoot,
+	dedent,
+	hardlineWithoutBreakParent,
+	literallineWithoutBreakParent,
+	label,
 };

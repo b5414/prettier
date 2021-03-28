@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  * modified from https://github.com/mdx-js/mdx/blob/master/packages/mdx
@@ -26,41 +26,40 @@
 
 const IMPORT_REGEX = /^import\s/;
 const EXPORT_REGEX = /^export\s/;
-const BLOCKS_REGEX = "[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*|";
+const BLOCKS_REGEX = '[a-z][a-z0-9]*(\\.[a-z][a-z0-9]*)*|';
 const COMMENT_REGEX = /<!---->|<!---?[^>-](?:-?[^-])*-->/;
-const EMPTY_NEWLINE = "\n\n";
+const EMPTY_NEWLINE = '\n\n';
 
-const isImport = (text) => IMPORT_REGEX.test(text);
-const isExport = (text) => EXPORT_REGEX.test(text);
+const isImport = (text)=>IMPORT_REGEX.test(text);
+const isExport = (text)=>EXPORT_REGEX.test(text);
 
-const tokenizeEsSyntax = (eat, value) => {
-  const index = value.indexOf(EMPTY_NEWLINE);
-  const subvalue = value.slice(0, index);
+const tokenizeEsSyntax = (eat, value)=>{
+	const index = value.indexOf(EMPTY_NEWLINE);
+	const subvalue = value.slice(0, index);
 
-  if (isExport(subvalue) || isImport(subvalue)) {
-    return eat(subvalue)({
-      type: isExport(subvalue) ? "export" : "import",
-      value: subvalue,
-    });
-  }
+	if(isExport(subvalue) || isImport(subvalue)){
+		return eat(subvalue)({
+			type: isExport(subvalue) ? 'export' : 'import',
+			value: subvalue,
+		});
+	}
 };
 
 /* istanbul ignore next */
-tokenizeEsSyntax.locator = (value /*, fromIndex*/) =>
-  isExport(value) || isImport(value) ? -1 : 1;
+tokenizeEsSyntax.locator = (value /*, fromIndex*/)=>(isExport(value) || isImport(value) ? -1 : 1);
 
 function esSyntax() {
-  const { Parser } = this;
-  const tokenizers = Parser.prototype.blockTokenizers;
-  const methods = Parser.prototype.blockMethods;
+	const {Parser} = this;
+	const tokenizers = Parser.prototype.blockTokenizers;
+	const methods = Parser.prototype.blockMethods;
 
-  tokenizers.esSyntax = tokenizeEsSyntax;
+	tokenizers.esSyntax = tokenizeEsSyntax;
 
-  methods.splice(methods.indexOf("paragraph"), 0, "esSyntax");
+	methods.splice(methods.indexOf('paragraph'), 0, 'esSyntax');
 }
 
 module.exports = {
-  esSyntax,
-  BLOCKS_REGEX,
-  COMMENT_REGEX,
+	esSyntax,
+	BLOCKS_REGEX,
+	COMMENT_REGEX,
 };

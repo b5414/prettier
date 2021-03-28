@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 
-const AstPath = require("../common/ast-path");
+const AstPath = require('../common/ast-path');
 const {
-  builders: { hardline, addAlignmentToDoc },
-  utils: { propagateBreaks },
-} = require("../document");
-const { printComments } = require("./comments");
-const multiparser = require("./multiparser");
+	builders: {hardline, addAlignmentToDoc},
+	utils: {propagateBreaks},
+} = require('../document');
+const {printComments} = require('./comments');
+const multiparser = require('./multiparser');
 
 /**
  * Takes an abstract syntax tree (AST) and recursively converts it to a
@@ -30,119 +30,110 @@ const multiparser = require("./multiparser");
  * the path to the current node through the Abstract Syntax Tree.
  */
 function printAstToDoc(ast, options, alignmentSize = 0) {
-  const { printer } = options;
+	const {printer} = options;
 
-  if (printer.preprocess) {
-    ast = printer.preprocess(ast, options);
-  }
+	if(printer.preprocess){
+		ast = printer.preprocess(ast, options);
+	}
 
-  const cache = new Map();
-  const path = new AstPath(ast);
+	const cache = new Map();
+	const path = new AstPath(ast);
 
-  let doc = mainPrint();
+	let doc = mainPrint();
 
-  if (alignmentSize > 0) {
-    // Add a hardline to make the indents take effect
-    // It should be removed in index.js format()
-    doc = addAlignmentToDoc([hardline, doc], alignmentSize, options.tabWidth);
-  }
+	if(alignmentSize > 0){
+		// Add a hardline to make the indents take effect
+		// It should be removed in index.js format()
+		doc = addAlignmentToDoc([hardline, doc], alignmentSize, options.tabWidth);
+	}
 
-  propagateBreaks(doc);
+	propagateBreaks(doc);
 
-  return doc;
+	return doc;
 
-  function mainPrint(selector, args) {
-    if (selector === undefined || selector === path) {
-      return mainPrintInternal(args);
-    }
+	function mainPrint(selector, args) {
+		if(selector === undefined || selector === path){
+			return mainPrintInternal(args);
+		}
 
-    if (Array.isArray(selector)) {
-      return path.call(() => mainPrintInternal(args), ...selector);
-    }
+		if(Array.isArray(selector)){
+			return path.call(()=>mainPrintInternal(args), ...selector);
+		}
 
-    return path.call(() => mainPrintInternal(args), selector);
-  }
+		return path.call(()=>mainPrintInternal(args), selector);
+	}
 
-  function mainPrintInternal(args) {
-    const value = path.getValue();
+	function mainPrintInternal(args) {
+		const value = path.getValue();
 
-    const shouldCache =
-      value && typeof value === "object" && args === undefined;
+		const shouldCache = value && typeof value === 'object' && args === undefined;
 
-    if (shouldCache && cache.has(value)) {
-      return cache.get(value);
-    }
+		if(shouldCache && cache.has(value)){
+			return cache.get(value);
+		}
 
-    const doc = callPluginPrintFunction(path, options, mainPrint, args);
+		const doc = callPluginPrintFunction(path, options, mainPrint, args);
 
-    if (shouldCache) {
-      cache.set(value, doc);
-    }
+		if(shouldCache){
+			cache.set(value, doc);
+		}
 
-    return doc;
-  }
+		return doc;
+	}
 }
 
 function printPrettierIgnoredNode(node, options) {
-  const {
-    originalText,
-    [Symbol.for("comments")]: comments,
-    locStart,
-    locEnd,
-  } = options;
+	const {originalText, [Symbol.for('comments')]: comments, locStart, locEnd} = options;
 
-  const start = locStart(node);
-  const end = locEnd(node);
+	const start = locStart(node);
+	const end = locEnd(node);
 
-  for (const comment of comments) {
-    if (locStart(comment) >= start && locEnd(comment) <= end) {
-      comment.printed = true;
-    }
-  }
+	for(const comment of comments){
+		if(locStart(comment) >= start && locEnd(comment) <= end){
+			comment.printed = true;
+		}
+	}
 
-  return originalText.slice(start, end);
+	return originalText.slice(start, end);
 }
 
 function callPluginPrintFunction(path, options, printPath, args) {
-  const node = path.getValue();
-  const { printer } = options;
+	const node = path.getValue();
+	const {printer} = options;
 
-  let doc;
+	let doc;
 
-  // Escape hatch
-  if (printer.hasPrettierIgnore && printer.hasPrettierIgnore(path)) {
-    doc = printPrettierIgnoredNode(node, options);
-  } else {
-    if (node) {
-      try {
-        // Potentially switch to a different parser
-        doc = multiparser.printSubtree(path, printPath, options, printAstToDoc);
-      } catch (error) {
-        /* istanbul ignore if */
-        if (process.env.PRETTIER_DEBUG) {
-          throw error;
-        }
-        // Continue with current parser
-      }
-    }
+	// Escape hatch
+	if(printer.hasPrettierIgnore && printer.hasPrettierIgnore(path)){
+		doc = printPrettierIgnoredNode(node, options);
+	}else{
+		if(node){
+			try{
+				// Potentially switch to a different parser
+				doc = multiparser.printSubtree(path, printPath, options, printAstToDoc);
+			}catch(error){
+				/* istanbul ignore if */
+				if(process.env.PRETTIER_DEBUG){
+					throw error;
+				}
+				// Continue with current parser
+			}
+		}
 
-    if (!doc) {
-      doc = printer.print(path, options, printPath, args);
-    }
-  }
+		if(!doc){
+			doc = printer.print(path, options, printPath, args);
+		}
+	}
 
-  // We let JSXElement print its comments itself because it adds () around
-  // UnionTypeAnnotation has to align the child without the comments
-  if (
-    !printer.willPrintOwnComments ||
-    !printer.willPrintOwnComments(path, options)
-  ) {
-    // printComments will call the plugin print function and check for
-    // comments to print
-    doc = printComments(path, doc, options);
-  }
+	// We let JSXElement print its comments itself because it adds () around
+	// UnionTypeAnnotation has to align the child without the comments
+	if(!printer.willPrintOwnComments || !printer.willPrintOwnComments(path, options)){
+		// printComments will call the plugin print function and check for
+		// comments to print
+		doc = printComments(path, doc, options);
+	}
 
-  return doc;
+	return doc;
 }
 
 module.exports = printAstToDoc;
