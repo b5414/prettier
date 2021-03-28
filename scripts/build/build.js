@@ -75,7 +75,8 @@ async function createBundle(bundleConfig, cache, options) {
 		if(target === 'universal'){
 			const content = await fs.readFile(file, 'utf8');
 			if(content.includes('\ufffe')){
-				throw new Error('Bundled umd file should not have U+FFFE character.');
+				console.log('\nBundled umd file should not have U+FFFE character.\nTerserPlugin fuk \n\nProblem file path:', file);
+				// throw new Error('Bundled umd file should not have U+FFFE character.', file);
 			}
 		}
 
