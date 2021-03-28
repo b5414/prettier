@@ -104,7 +104,7 @@ class Cache {
 		const useCache = await this.checkBundle(outputOption.file, inputOptions, outputOption);
 		if(useCache){
 			try{
-				await execa('cp', [path.join(this.cacheDir, outputOption.file.replace('dist', 'files')), outputOption.file]);
+				await execa('copy', [path.join(this.cacheDir, outputOption.file.replace('dist', 'files')), path.normalize(outputOption.file)]);
 				return true;
 			}catch(err){
 				console.log(err);

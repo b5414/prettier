@@ -110,16 +110,18 @@ function handleError(error) {
 async function cacheFiles(cache) {
 	// Copy built files to .cache
 	try{
-		await execa('rm', ['-rf', path.join('.cache', 'files')]);
-		await execa('mkdir', ['-p', path.join('.cache', 'files')]);
-		await execa('mkdir', ['-p', path.join('.cache', 'files', 'esm')]);
+		await execa('rimraf', ['', path.join('.cache', 'files')]);
+		await execa('mkdir', [path.join('.cache', 'files')]);
+		await execa('mkdir', [path.join('.cache', 'files', 'esm')]);
 		const manifest = cache.updated;
 
 		for(const file of Object.keys(manifest.files)){
-			await execa('cp', [file, path.join('.cache', file.replace('dist', 'files'))]);
+			await execa('copy', [path.normalize(file), path.join('.cache', file.replace('dist', 'files'))]);
 		}
 	}catch{
-		// Don't fail the build
+		console.log('Warning, cacheFiles - failed');
+		console.log('');
+		console.log(err);
 	}
 }
 
@@ -139,14 +141,15 @@ async function preparePackage() {
 }
 
 async function run(params) {
-	await execa('rm', ['-rf', 'dist']);
-	await execa('mkdir', ['-p', 'dist']);
+	await execa('rimraf', ['', 'dist']);
+	await execa('mkdir', ['dist']);
+
 	if(!params.playground){
-		await execa('mkdir', ['-p', 'dist/esm']);
+		await execa('mkdir', ['dist/esm']);
 	}
 
 	if(params['purge-cache']){
-		await execa('rm', ['-rf', '.cache']);
+		await execa('rimraf', ['', '.cache']);
 	}
 
 	const bundleCache = new Cache('.cache/', CACHE_VERSION);
