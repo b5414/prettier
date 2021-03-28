@@ -1,25 +1,25 @@
-"use strict";
+'use strict';
 
-const chalk = require("chalk");
-const { string: outdentString } = require("outdent");
-const execa = require("execa");
-const { logPromise, waitForEnter } = require("../utils");
+const chalk = require('chalk');
+const {string: outdentString} = require('outdent');
+const execa = require('execa');
+const {logPromise, waitForEnter} = require('../utils');
 
-module.exports = async function ({ dry, version }) {
-  if (dry) {
-    return;
-  }
+module.exports = async function ({dry, version}) {
+	if(dry){
+		return;
+	}
 
-  await logPromise(
-    "Publishing to npm",
-    execa("npm", ["publish"], {
-      cwd: "./dist",
-      stdio: "inherit", // we need to input OTP if 2FA enabled
-    })
-  );
+	await logPromise(
+		'Publishing to npm',
+		execa('npm', ['publish'], {
+			cwd: './dist',
+			stdio: 'inherit', // we need to input OTP if 2FA enabled
+		}),
+	);
 
-  console.log(
-    outdentString(chalk`
+	console.log(
+		outdentString(chalk`
       {green.bold Prettier ${version} published!}
 
       {yellow.bold Some manual steps are necessary.}
@@ -35,7 +35,7 @@ module.exports = async function ({ dry, version }) {
 
       After that, we can proceed to bump this repo's Prettier dependency.
       Press ENTER to continue.
-    `)
-  );
-  await waitForEnter();
+    `),
+	);
+	await waitForEnter();
 };
