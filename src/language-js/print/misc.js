@@ -2,7 +2,7 @@
 
 const {isNonEmptyArray} = require('../../common/util');
 const {
-	builders: {indent, join, line},
+	builders: {indent, join, line, nospline},
 } = require('../../document');
 const {isFlowAnnotationComment} = require('../utils');
 
@@ -69,10 +69,10 @@ function adjustClause(node, clause, forceSpace) {
 	}
 
 	if(node.type === 'BlockStatement' || forceSpace){
-		return [' ', clause];
+		return ['', clause];
 	}
 
-	return indent([line, clause]);
+	return indent([nospline, clause]);
 }
 
 module.exports = {

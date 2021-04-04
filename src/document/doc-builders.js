@@ -215,6 +215,7 @@ const softline = {type: 'line', soft: true};
 const hardline = concat([hardlineWithoutBreakParent, breakParent]);
 // eslint-disable-next-line prettier-internal-rules/no-doc-builder-concat
 const literalline = concat([literallineWithoutBreakParent, breakParent]);
+const nospline = {type: 'line', nospace: true};
 
 const cursor = {type: 'cursor', placeholder: Symbol('cursor')};
 
@@ -269,6 +270,7 @@ module.exports = {
 	line,
 	softline,
 	hardline,
+	nospline,
 	literalline,
 	group,
 	conditionalGroup,

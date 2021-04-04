@@ -226,7 +226,8 @@ function fits(next, restCommands, width, options, hasLineSuffix, mustBeFlat) {
 						// fallthrough
 						case MODE_FLAT:
 							if(!doc.hard){
-								if(!doc.soft){
+								if(doc.nospace)out.push('');
+								else if(!doc.soft){
 									out.push(' ');
 
 									width -= 1;
@@ -472,7 +473,8 @@ function printDocToString(doc, options) {
 					switch(mode){
 						case MODE_FLAT:
 							if(!doc.hard){
-								if(!doc.soft){
+								if(doc.nospace)out.push('');
+								else if(!doc.soft){
 									out.push(' ');
 
 									pos += 1;

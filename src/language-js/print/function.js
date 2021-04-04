@@ -8,7 +8,7 @@ const {printDanglingComments, printCommentsSeparately} = require('../../main/com
 const getLast = require('../../utils/get-last');
 const {getNextNonSpaceNonCommentCharacterIndex} = require('../../common/util');
 const {
-	builders: {line, softline, group, indent, ifBreak, hardline, join, indentIfBreak},
+	builders: {line, softline, nospline, group, indent, ifBreak, hardline, join, indentIfBreak},
 } = require('../../document');
 const {
 	getFunctionParameters,
@@ -59,7 +59,7 @@ function printFunctionDeclaration(path, print, options, expandArg) {
 	const returnTypeDoc = printReturnType(path, print, options);
 	const shouldGroupParameters = shouldGroupFunctionParameters(node, returnTypeDoc);
 
-	parts.push(printFunctionTypeParameters(path, options, print), group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]), node.body ? ' ' : '', print('body'));
+	parts.push(printFunctionTypeParameters(path, options, print), group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]), '', print('body'));
 
 	if(options.semi && (node.declare || !node.body)){
 		parts.push(';');
@@ -110,7 +110,7 @@ function printMethodInternal(path, options, print) {
 	const parts = [printFunctionTypeParameters(path, options, print), group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc])];
 
 	if(node.body){
-		parts.push(' ', print('body'));
+		parts.push('', print('body'));
 	}else{
 		parts.push(options.semi ? ';' : '');
 	}
@@ -123,7 +123,7 @@ function printArrowFunctionSignature(path, options, print, args) {
 	const parts = [];
 
 	if(node.async){
-		parts.push('async ');
+		parts.push('async');
 	}
 
 	if(shouldPrintParamsWithoutParens(path, options)){
@@ -158,8 +158,8 @@ function printArrowChain(path, args, signatures, shouldBreak, bodyDoc, tailNode)
 	const groupId = Symbol('arrow-chain');
 
 	return group([
-		group(indent([isCallee || isAssignmentRhs ? softline : '', group(join([' =>', line], signatures), {shouldBreak})]), {id: groupId, shouldBreak: shouldBreakBeforeChain}),
-		' =>',
+		group(indent([isCallee || isAssignmentRhs ? softline : '', group(join(['=>', line], signatures), {shouldBreak})]), {id: groupId, shouldBreak: shouldBreakBeforeChain}),
+		'=>',
 		indentIfBreak(shouldPutBodyOnSeparateLine ? indent([line, bodyDoc]) : [' ', bodyDoc], {groupId}),
 		isCallee ? ifBreak(softline, '', {groupId}) : '',
 	]);
@@ -202,7 +202,7 @@ function printArrowFunctionExpression(path, options, print, args) {
 	}
 
 	const parts = signatures;
-	parts.push(' =>');
+	parts.push('=>');
 
 	// We want to always keep these types of nodes on the same line
 	// as the arrow.
@@ -216,13 +216,13 @@ function printArrowFunctionExpression(path, options, print, args) {
 			node.body.type === 'ArrowFunctionExpression' ||
 			node.body.type === 'DoExpression')
 	){
-		return group([...parts, ' ', body]);
+		return group([...parts, '', body]);
 	}
 
 	// We handle sequence expressions as the body of arrows specially,
 	// so that the required parentheses end up on their own lines.
 	if(node.body.type === 'SequenceExpression'){
-		return group([...parts, group([' (', indent([softline, body]), softline, ')'])]);
+		return group([...parts, group(['(', indent([softline, body]), softline, ')'])]);
 	}
 
 	// if the arrow function is expanded as last argument, we are adding a
@@ -240,7 +240,10 @@ function printArrowFunctionExpression(path, options, print, args) {
 
 	return group([
 		...parts,
-		group([indent([line, shouldAddParens ? ifBreak('', '(') : '', body, shouldAddParens ? ifBreak('', ')') : '']), shouldAddSoftLine ? [ifBreak(printTrailingComma ? ',' : ''), softline] : '']),
+		group([
+			indent([nospline, shouldAddParens ? ifBreak('', '(') : '', body, shouldAddParens ? ifBreak('', ')') : '']),
+			shouldAddSoftLine ? [ifBreak(printTrailingComma ? ',' : ''), softline] : '',
+		]),
 	]);
 }
 
@@ -308,8 +311,9 @@ function printReturnAndThrowArgument(path, options, print) {
 		if(returnArgumentHasLeadingComment(options, node.argument)){
 			parts.push([' (', indent([hardline, print('argument')]), hardline, ')']);
 		}else if(isBinaryish(node.argument) || node.argument.type === 'SequenceExpression'){
-			parts.push(group([ifBreak(' (', ' '), indent([softline, print('argument')]), softline, ifBreak(')')]));
+			parts.push(group([ifBreak('(', ' '), indent([softline, print('argument')]), softline, ifBreak(')')]));
 		}else{
+			// below - space: return_(); or: return_func(); or: return_'string';
 			parts.push(' ', print('argument'));
 		}
 	}
