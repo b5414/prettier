@@ -33,7 +33,7 @@
 #### /function.js
 
 -   062 Space01: `function func()_{}`
--   113 Space02: IDK
+-   113 Space02: `{a:1,func()_{},b:2}`
 -   126 Space03: `const func = async_()=>{};`
 -   161 Space04: `const func = async()_=>{};` _probably_
 -   205 Space05: `const func = ()_=>{};`
