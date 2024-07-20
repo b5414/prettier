@@ -14,7 +14,7 @@ The tests use [Jest snapshots](https://facebook.github.io/jest/docs/en/snapshot-
 Each test directory in `tests/format` has a `format.test.js` file that controls how exactly the rest of the files in the directory are used for tests. This file must contain one or more calls to the `runFormatTest` global function. For example, in directories with JavaScript formatting tests, `format.test.js` generally looks like this:
 
 ```js
-runFormatTest(import.meta, ["babel", "flow", "typescript"]);
+runFormatTest(import.meta, ['babel', 'flow', 'typescript']);
 ```
 
 This verifies that for each file in the directory, the output matches the snapshot and is the same for each listed parser.
@@ -22,34 +22,31 @@ This verifies that for each file in the directory, the output matches the snapsh
 You can also pass options as the third argument:
 
 ```js
-runFormatTest(import.meta, ["babel"], { trailingComma: "es5" });
+runFormatTest(import.meta, ['babel'], {trailingComma: 'es5'});
 ```
 
 Signature:
 
 ```ts
 function runFormatTest(
-  fixtures:
-    | ImportMeta
-    | {
-        importMeta: ImportMeta;
-        snippets?: Array<
-          | string
-          | { code: string; name?: string; filename?: string; output?: string }
-        >;
-      },
-  parsers: string[],
-  options?: PrettierOptions & {
-    errors: true | { [parserName: string]: true | string[] };
-  },
+	fixtures:
+		| ImportMeta
+		| {
+				importMeta: ImportMeta;
+				snippets?: Array<string | {code: string; name?: string; filename?: string; output?: string}>;
+		  },
+	parsers: string[],
+	options?: PrettierOptions & {
+		errors: true | {[parserName: string]: true | string[]};
+	},
 ): void;
 ```
 
 Parameters:
 
-- **`fixtures`**: Must be set to `import.meta` or to an object of the shape `{ importMeta: import.meta, ... }`. The object may have the `snippets` property to specify an array of extra input entries in addition to the files in the current directory. For each input entry (a file or a snippet), `runFormatTest` configures and runs a number of tests. The main check is that for a given input the output should match the snapshot (for snippets, the expected output can also be specified directly). [Additional checks](#deeper-testing) are controlled by options and environment variables.
-- **`parsers`**: A list of parser names. The tests verify that the parsers in this list produce the same output. If the list includes `typescript`, then `babel-ts` is included implicitly. If the list includes `flow`, then `babel-flow` is included implicitly. If the list includes `babel`, and the current directory is inside `tests/format/js` or `tests/format/jsx`, then `acorn`, `espree`, and `meriyah` are included implicitly.
-- **`options`**: In addition to Prettier's formatting options, can contain the `errors` property to specify that it's expected that the formatting shouldn't be successful and an error should be thrown for all (`errors: true`) or some combinations of input entries and parsers.
+-   **`fixtures`**: Must be set to `import.meta` or to an object of the shape `{ importMeta: import.meta, ... }`. The object may have the `snippets` property to specify an array of extra input entries in addition to the files in the current directory. For each input entry (a file or a snippet), `runFormatTest` configures and runs a number of tests. The main check is that for a given input the output should match the snapshot (for snippets, the expected output can also be specified directly). [Additional checks](#deeper-testing) are controlled by options and environment variables.
+-   **`parsers`**: A list of parser names. The tests verify that the parsers in this list produce the same output. If the list includes `typescript`, then `babel-ts` is included implicitly. If the list includes `flow`, then `babel-flow` is included implicitly. If the list includes `babel`, and the current directory is inside `tests/format/js` or `tests/format/jsx`, then `acorn`, `espree`, and `meriyah` are included implicitly.
+-   **`options`**: In addition to Prettier's formatting options, can contain the `errors` property to specify that it's expected that the formatting shouldn't be successful and an error should be thrown for all (`errors: true`) or some combinations of input entries and parsers.
 
 The implementation of `runFormatTest` can be found in [`tests/config/run-format-test.js`](tests/config/run-format-test.js).
 
@@ -59,8 +56,8 @@ The implementation of `runFormatTest` can be found in [`tests/config/run-format-
 
 To debug Prettier locally, you can either debug it in Node (recommended) or the browser.
 
-- The easiest way to debug it in Node is to create a local test file with some example code you want formatted and either run it in an editor like VS Code or run it directly via `./bin/prettier.js <your_test_file>`.
-- The easiest way to debug it in the browser is to build Prettier's website locally (see [`website/README.md`](website/README.md)).
+-   The easiest way to debug it in Node is to create a local test file with some example code you want formatted and either run it in an editor like VS Code or run it directly via `./bin/prettier.js <your_test_file>`.
+-   The easiest way to debug it in the browser is to build Prettier's website locally (see [`website/README.md`](website/README.md)).
 
 ## No New Options
 
@@ -84,20 +81,20 @@ If you want to know more about Prettier's GitHub labels, see the [Issue Labels](
 
 If you're contributing a performance improvement, the following Prettier CLI options can help:
 
-- `--debug-repeat N` uses a naïve loop to repeat the formatting `N` times and measures the average run duration. It can be useful to highlight hot functions in the profiler. This can also set by environment variable `PRETTIER_PERF_REPEAT`.
-- `--debug-benchmark` uses [`benchmark`](https://npm.im/benchmark) module to produce statistically significant duration measurements.
+-   `--debug-repeat N` uses a naïve loop to repeat the formatting `N` times and measures the average run duration. It can be useful to highlight hot functions in the profiler. This can also set by environment variable `PRETTIER_PERF_REPEAT`.
+-   `--debug-benchmark` uses [`benchmark`](https://npm.im/benchmark) module to produce statistically significant duration measurements.
 
 For convenience, the following commands for profiling are available via [`package.json`](package.json) `scripts`.
 
-- `PRETTIER_PERF_REPEAT=1000 yarn perf <filename>` starts the naïve loop. See the CLI output for when the measurements finish, and stop profiling at that moment.
-- `PRETTIER_PERF_REPEAT=1000 yarn perf:inspect <filename>` starts the naïve loop with `node --inspect-brk` flag that pauses execution and waits for Chromium/Chrome/Node Inspector to attach. Open [`chrome://inspect`](chrome://inspect), select the process to inspect, and activate the CPU Profiler, this will unpause execution. See the CLI output for when the measurements finish, and stop the CPU Profiler at that moment to avoid collecting more data than needed.
-- `yarn perf:benchmark <filename>` starts the `benchmark`-powered measurements. See the CLI output for when the measurements finish.
+-   `PRETTIER_PERF_REPEAT=1000 yarn perf <filename>` starts the naïve loop. See the CLI output for when the measurements finish, and stop profiling at that moment.
+-   `PRETTIER_PERF_REPEAT=1000 yarn perf:inspect <filename>` starts the naïve loop with `node --inspect-brk` flag that pauses execution and waits for Chromium/Chrome/Node Inspector to attach. Open [`chrome://inspect`](chrome://inspect), select the process to inspect, and activate the CPU Profiler, this will unpause execution. See the CLI output for when the measurements finish, and stop the CPU Profiler at that moment to avoid collecting more data than needed.
+-   `yarn perf:benchmark <filename>` starts the `benchmark`-powered measurements. See the CLI output for when the measurements finish.
 
 In the above commands:
 
-- `yarn && yarn build` ensures the compiler-optimized version of Prettier is built prior to launching it. Prettier's own environment checks are defaulted to production and removed during the build. The build output is cached, so a rebuild will happen only if the source code changes.
-- `NODE_ENV=production` ensures Prettier and its dependencies run in production mode.
-- `node --inspect-brk` pauses the script execution until Inspector is connected to the Node process.
+-   `yarn && yarn build` ensures the compiler-optimized version of Prettier is built prior to launching it. Prettier's own environment checks are defaulted to production and removed during the build. The build output is cached, so a rebuild will happen only if the source code changes.
+-   `NODE_ENV=production` ensures Prettier and its dependencies run in production mode.
+-   `node --inspect-brk` pauses the script execution until Inspector is connected to the Node process.
 
 In addition to the options above, you can use [`node --prof` and `node --prof-process`](https://nodejs.org/en/docs/guides/simple-profiling/), as well as `node --trace-opt --trace-deopt`, to get more advanced performance insights.
 
@@ -121,9 +118,10 @@ We have a cool tool for regression testing that runs on GitHub Actions. Have a l
 
 You can run `FULL_TEST=1 jest` for a more robust test run, which includes the following additional checks:
 
-- **compare AST** - re-parses the output and makes sure the new AST is equivalent to the original one.
-- **second format** - formats the output again and checks that the second output is the same as the first.
-- **EOL '\r\n'** and **EOL '\r'** - check that replacing line endings with `\r\n` or `\r` in the input doesn't affect the output.
-- **BOM** - checks that adding BOM (`U+FEFF`) to the input affects the output in only one way: the BOM is preserved.
+-   **compare AST** - re-parses the output and makes sure the new AST is equivalent to the original one.
+-   **second format** - formats the output again and checks that the second output is the same as the first.
+-   **EOL '\r\n'** and **EOL '\r'** - check that replacing line endings with `\r\n` or `\r` in the input doesn't affect the output.
+-   **BOM** - checks that adding BOM (`U+FEFF`) to the input affects the output in only one way: the BOM is preserved.
 
 Usually there is no need to run these extra checks locally, since they're run on the CI anyway.
+

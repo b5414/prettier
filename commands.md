@@ -8,16 +8,16 @@ A doc can be a string, an array of docs, or a command.
 type Doc = string | Doc[] | DocCommand;
 ```
 
-- _strings_ are printed directly as is (however for the algorithm to work properly they shouldn't contain line break characters)
-- _arrays_ are used to concatenate a list of docs to be printed sequentially into a single doc
-- `DocCommand` is any of the following:
+-   _strings_ are printed directly as is (however for the algorithm to work properly they shouldn't contain line break characters)
+-   _arrays_ are used to concatenate a list of docs to be printed sequentially into a single doc
+-   `DocCommand` is any of the following:
 
 ### `group`
 
 ```ts
 type GroupOptions = {
-  shouldBreak?: boolean;
-  id?: symbol;
+	shouldBreak?: boolean;
+	id?: symbol;
 };
 declare function group(doc: Doc, options?: GroupOptions): Doc;
 ```
@@ -29,18 +29,18 @@ A group is forced to break if it's created with the `shouldBreak` option set to 
 For example, an array will try to fit on one line:
 
 ```js
-[1, "foo", { bar: 2 }];
+[1, 'foo', {bar: 2}];
 ```
 
 However, if any of the items inside the array have a hard break, the array will _always_ break as well:
 
 ```js
 [
-  1,
-  function () {
-    return 2;
-  },
-  3,
+	1,
+	function (){
+		return 2;
+	},
+	3,
 ];
 ```
 
@@ -53,10 +53,7 @@ The `id` option can be used in [`ifBreak`](#ifBreak) checks.
 This should be used as **last resort** as it triggers an exponential complexity when nested.
 
 ```ts
-declare function conditionalGroup(
-  alternatives: Doc[],
-  options?: GroupOptions,
-): Doc;
+declare function conditionalGroup(alternatives: Doc[], options?: GroupOptions): Doc;
 ```
 
 This will try to print the first alternative, if it fit use it, otherwise go to the next one and so on. The alternatives is an array of documents going from the least expanded (most flattened) representation first to the most expanded.
@@ -74,7 +71,7 @@ declare function fill(docs: Doc[]): Doc;
 This is an alternative type of group which behaves like text layout: it's going to add a break whenever the next element doesn't fit in the line anymore. The difference with [`group`](#group) is that it's not going to break all the separators, just the ones that are at the end of lines.
 
 ```js
-fill(["I", line, "love", line, "Prettier"]);
+fill(['I', line, 'love', line, 'Prettier']);
 ```
 
 Expects the `docs` argument to be an array of alternating content and line breaks. In other words, elements with odd indices must be line breaks (e.g., [`softline`](#softline)).
@@ -82,17 +79,13 @@ Expects the `docs` argument to be an array of alternating content and line break
 ### `ifBreak`
 
 ```ts
-declare function ifBreak(
-  breakContents: Doc,
-  flatContents?: Doc,
-  options?: { groupId?: symbol },
-): Doc;
+declare function ifBreak(breakContents: Doc, flatContents?: Doc, options?: {groupId?: symbol}): Doc;
 ```
 
 Print something if the current `group` or the current element of `fill` breaks and something else if it doesn't.
 
 ```js
-ifBreak(";", " ");
+ifBreak(';', ' ');
 ```
 
 `groupId` can be used to check another _already printed_ group instead of the current group.
@@ -110,7 +103,7 @@ declare const breakParent: Doc;
 Include this anywhere to force all parent groups to break. See [`group`](#group) for more info. Example:
 
 ```js
-group([" ", expr, " ", breakParent]);
+group([' ', expr, ' ', breakParent]);
 ```
 
 ### `join`
@@ -162,7 +155,7 @@ declare function lineSuffix(suffix: Doc): Doc;
 This is used to implement trailing comments. It's not practical to constantly check where the line ends to avoid accidentally printing some code at the end of a comment. `lineSuffix` buffers docs passed to it and flushes them before any new line.
 
 ```js
-["a", lineSuffix(" // comment"), ";", hardline];
+['a', lineSuffix(' // comment'), ';', hardline];
 ```
 
 will output
@@ -180,7 +173,7 @@ declare const lineSuffixBoundary: Doc;
 In cases where you embed code inside of templates, comments shouldn't be able to leave the code part. `lineSuffixBoundary` is an explicit marker you can use to flush the [`lineSuffix`](#lineSuffix) buffer in addition to line breaks.
 
 ```js
-["{", lineSuffix(" // comment"), lineSuffixBoundary, "}", hardline];
+['{', lineSuffix(' // comment'), lineSuffixBoundary, '}', hardline];
 ```
 
 will output
@@ -226,13 +219,13 @@ When `useTabs` is enabled, trailing alignments in indentation are still spaces, 
 
 For example:
 
-- `useTabs`
-  - `tabWidth: 2`
-    - `<indent><align 2><indent><align 2>` -> `<tab><tab><tab><2 space>`
-    - `<indent><align 4><indent><align 2>` -> `<tab><tab><tab><2 space>`
-  - `tabWidth: 4`
-    - `<indent><align 2><indent><align 2>` -> `<tab><tab><tab><2 space>`
-    - `<indent><align 4><indent><align 2>` -> `<tab><tab><tab><2 space>`
+-   `useTabs`
+    -   `tabWidth: 2`
+        -   `<indent><align 2><indent><align 2>` -> `<tab><tab><tab><2 space>`
+        -   `<indent><align 4><indent><align 2>` -> `<tab><tab><tab><2 space>`
+    -   `tabWidth: 4`
+        -   `<indent><align 2><indent><align 2>` -> `<tab><tab><tab><2 space>`
+        -   `<indent><align 4><indent><align 2>` -> `<tab><tab><tab><2 space>`
 
 ### `markAsRoot`
 
@@ -263,10 +256,7 @@ Trim all the indentation on the current line. This can be used for preprocessor 
 _Added in v2.3.0_
 
 ```ts
-declare function indentIfBreak(
-  doc: Doc,
-  opts: { groupId: symbol; negate?: boolean },
-): Doc;
+declare function indentIfBreak(doc: Doc, opts: {groupId: symbol; negate?: boolean}): Doc;
 ```
 
 An optimized version of `ifBreak(indent(doc), doc, { groupId })`.
@@ -302,8 +292,8 @@ These are used very rarely, for advanced formatting tricks. Unlike their "normal
 
 Examples:
 
-- `hardlineWithoutBreakParent` is used for printing tables in Prettier's Markdown printer. With `proseWrap` set to `never`, the columns are aligned only if none of the rows exceeds `printWidth`.
-- `literallineWithoutBreakParent` is used in the [Ruby plugin](https://github.com/prettier/plugin-ruby) for [printing heredoc syntax](https://github.com/prettier/plugin-ruby/blob/b6e7bd6bc3f70de8f146aa58ad0c8310518bf467/src/ruby/nodes/heredocs.js).
+-   `hardlineWithoutBreakParent` is used for printing tables in Prettier's Markdown printer. With `proseWrap` set to `never`, the columns are aligned only if none of the rows exceeds `printWidth`.
+-   `literallineWithoutBreakParent` is used in the [Ruby plugin](https://github.com/prettier/plugin-ruby) for [printing heredoc syntax](https://github.com/prettier/plugin-ruby/blob/b6e7bd6bc3f70de8f146aa58ad0c8310518bf467/src/ruby/nodes/heredocs.js).
 
 ### `cursor`
 
@@ -338,3 +328,4 @@ group(
 ```
 
 This is a group with opening and closing brackets, and possibly indented contents. Because it's a `group` it will always be broken up if any of the sub-expressions are broken.
+
