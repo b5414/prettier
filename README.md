@@ -32,7 +32,9 @@
 
 #### /function.js
 
--   062 Space01: `function func()_{}`
+-   062 Space01: `const a = {async_func(){}};`
+-   079 Space01: `function func()_{}`
+-   084 Space88: `const obj = {get_isInstalled(){}};`
 -   113 Space02: `func2({a:1,func(){},b:2});`
 -   126 Space03: `const func = async_()=>{};`
 -   161 Space04: `const func = async()_=>{};` _probably_
@@ -40,7 +42,7 @@
 -   219 Space06: `const func = ()=>_{};`
 -   225 Space07: IDK
 -   243 Space08: `const func = ()=>_();`
--   314 Space09: IDK
+-   314 Space09: IDK // `if()return_(func() < 1);` _probably_
 
 <!--  -->
 <!--  -->
