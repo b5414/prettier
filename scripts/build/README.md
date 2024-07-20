@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Node.js version `>= 16.16`.
+-   Node.js version `>= 16.16`.
 
 ## Usage
 
@@ -70,9 +70,9 @@ Visualize and analyze your esbuild bundle to see which modules are taking up spa
 
 Available reporter formats:
 
-- `html` Generate a HTML report file, saved next to the bundled file with `.report.html` suffix.
-- `text` Generate a plain text report file, saved next to the bundled file with `.report.txt` suffix.
-- `stdout` Log report information in console.
+-   `html` Generate a HTML report file, saved next to the bundled file with `.report.html` suffix.
+-   `text` Generate a plain text report file, saved next to the bundled file with `.report.txt` suffix.
+-   `stdout` Log report information in console.
 
 ```sh
 yarn build --report=all

@@ -1,13 +1,13 @@
 {
-  "name": "@prettier/bundle-test",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "devDependencies": {
-    "webpack": "5.91.0"
-  },
-  "scripts": {
-    "test": "node ./index.js"
-  },
-  "packageManager": "yarn@4.3.1"
+	"name": "@prettier/bundle-test",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"devDependencies": {
+		"webpack": "5.91.0"
+	},
+	"scripts": {
+		"test": "node ./index.js"
+	},
+	"packageManager": "yarn@4.3.1"
 }

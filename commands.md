@@ -37,7 +37,7 @@ However, if any of the items inside the array have a hard break, the array will 
 ```js
 [
 	1,
-	function (){
+	function () {
 		return 2;
 	},
 	3,
@@ -328,4 +328,3 @@ group(
 ```
 
 This is a group with opening and closing brackets, and possibly indented contents. Because it's a `group` it will always be broken up if any of the sub-expressions are broken.
-

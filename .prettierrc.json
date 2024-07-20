@@ -18,6 +18,5 @@
 	"trailingComma": "all",
 	"useTabs": true,
 	"embeddedLanguageFormatting": "auto",
-	"vueIndentScriptAndStyle": true,
-	"parser": "babel-ts"
+	"vueIndentScriptAndStyle": true
 }
