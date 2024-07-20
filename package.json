@@ -14,7 +14,7 @@
 		"node": ">=10.13.0"
 	},
 	"scripts": {
-		"build": "node --max-old-space-size=10240 ./scripts/build/build.js"
+		"build": "node --openssl-legacy-provider --max-old-space-size=10240 ./scripts/build/build.js"
 	},
 	"files": [
 		"index.js",
