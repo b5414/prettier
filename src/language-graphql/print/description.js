@@ -1,19 +1,19 @@
-import { hardline, line } from "../../document/builders.js";
+import {hardline, line} from '../../document/builders.js';
 
 function printDescription(path, options, print) {
-  const { node } = path;
-  if (!node.description) {
-    return "";
-  }
+	const {node} = path;
+	if (!node.description) {
+		return '';
+	}
 
-  const parts = [print("description")];
-  if (node.kind === "InputValueDefinition" && !node.description.block) {
-    parts.push(line);
-  } else {
-    parts.push(hardline);
-  }
+	const parts = [print('description')];
+	if (node.kind === 'InputValueDefinition' && !node.description.block) {
+		parts.push(line);
+	} else {
+		parts.push(hardline);
+	}
 
-  return parts;
+	return parts;
 }
 
 export default printDescription;

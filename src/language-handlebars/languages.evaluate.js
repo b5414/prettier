@@ -1,12 +1,12 @@
-import linguistLanguages from "linguist-languages";
+import linguistLanguages from 'linguist-languages';
 
-import createLanguage from "../utils/create-language.js";
+import createLanguage from '../utils/create-language.js';
 
 const languages = [
-  createLanguage(linguistLanguages.Handlebars, () => ({
-    parsers: ["glimmer"],
-    vscodeLanguageIds: ["handlebars"],
-  })),
+	createLanguage(linguistLanguages.Handlebars, () => ({
+		parsers: ['glimmer'],
+		vscodeLanguageIds: ['handlebars'],
+	})),
 ];
 
 export default languages;

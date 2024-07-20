@@ -1,7 +1,7 @@
-import * as builtinPluginsProxy from "../../plugins/builtin-plugins-proxy.js";
+import * as builtinPluginsProxy from '../../plugins/builtin-plugins-proxy.js';
 
 function loadBuiltinPlugins() {
-  return [builtinPluginsProxy];
+	return [builtinPluginsProxy];
 }
 
 export default loadBuiltinPlugins;

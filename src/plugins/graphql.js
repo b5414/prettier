@@ -1,1 +1,1 @@
-export * from "../language-graphql/index.js";
+export * from '../language-graphql/index.js';

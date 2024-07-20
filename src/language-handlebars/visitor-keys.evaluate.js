@@ -1,1 +1,1 @@
-export { visitorKeys as default } from "@glimmer/syntax";
+export {visitorKeys as default} from '@glimmer/syntax';

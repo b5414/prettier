@@ -1,6 +1,6 @@
-import fs from "node:fs/promises";
+import fs from 'node:fs/promises';
 
-import { toPath } from "url-or-path";
+import {toPath} from 'url-or-path';
 
 /**
  * @param {string | URL} directory
@@ -8,16 +8,16 @@ import { toPath } from "url-or-path";
  * @returns {Promise<boolean>}
  */
 async function isDirectory(directory, options) {
-  const allowSymlinks = options?.allowSymlinks ?? true;
+	const allowSymlinks = options?.allowSymlinks ?? true;
 
-  let stats;
-  try {
-    stats = await (allowSymlinks ? fs.stat : fs.lstat)(toPath(directory));
-  } catch {
-    return false;
-  }
+	let stats;
+	try {
+		stats = await (allowSymlinks ? fs.stat : fs.lstat)(toPath(directory));
+	} catch {
+		return false;
+	}
 
-  return stats.isDirectory();
+	return stats.isDirectory();
 }
 
 export default isDirectory;

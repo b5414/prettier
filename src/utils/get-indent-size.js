@@ -1,4 +1,4 @@
-import getAlignmentSize from "./get-alignment-size.js";
+import getAlignmentSize from './get-alignment-size.js';
 
 /**
  * @param {string} value
@@ -6,17 +6,17 @@ import getAlignmentSize from "./get-alignment-size.js";
  * @returns {number}
  */
 function getIndentSize(value, tabWidth) {
-  const lastNewlineIndex = value.lastIndexOf("\n");
-  /* c8 ignore next 3 */
-  if (lastNewlineIndex === -1) {
-    return 0;
-  }
+	const lastNewlineIndex = value.lastIndexOf('\n');
+	/* c8 ignore next 3 */
+	if (lastNewlineIndex === -1) {
+		return 0;
+	}
 
-  return getAlignmentSize(
-    // All the leading whitespaces
-    value.slice(lastNewlineIndex + 1).match(/^[\t ]*/u)[0],
-    tabWidth,
-  );
+	return getAlignmentSize(
+		// All the leading whitespaces
+		value.slice(lastNewlineIndex + 1).match(/^[\t ]*/u)[0],
+		tabWidth,
+	);
 }
 
 export default getIndentSize;

@@ -27,53 +27,51 @@ const EXPORT_REGEX = /^export\s/u;
 const BLOCKS_REGEX = String.raw`[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)*|`;
 const COMMENT_REGEX = /<!---->|<!---?[^>-](?:-?[^-])*-->/u;
 const ES_COMMENT_REGEX = /^\{\s*\/\*(.*)\*\/\s*\}/u;
-const EMPTY_NEWLINE = "\n\n";
+const EMPTY_NEWLINE = '\n\n';
 
 const isImport = (text) => IMPORT_REGEX.test(text);
 const isExport = (text) => EXPORT_REGEX.test(text);
 
 const tokenizeEsSyntax = (eat, value) => {
-  const index = value.indexOf(EMPTY_NEWLINE);
-  const subvalue = value.slice(0, index);
+	const index = value.indexOf(EMPTY_NEWLINE);
+	const subvalue = value.slice(0, index);
 
-  if (isExport(subvalue) || isImport(subvalue)) {
-    return eat(subvalue)({
-      type: isExport(subvalue) ? "export" : "import",
-      value: subvalue,
-    });
-  }
+	if (isExport(subvalue) || isImport(subvalue)) {
+		return eat(subvalue)({
+			type: isExport(subvalue) ? 'export' : 'import',
+			value: subvalue,
+		});
+	}
 };
 
 const tokenizeEsComment = (eat, value) => {
-  const match = ES_COMMENT_REGEX.exec(value);
+	const match = ES_COMMENT_REGEX.exec(value);
 
-  if (match) {
-    return eat(match[0])({
-      type: "esComment",
-      value: match[1].trim(),
-    });
-  }
+	if (match) {
+		return eat(match[0])({
+			type: 'esComment',
+			value: match[1].trim(),
+		});
+	}
 };
 
 /* c8 ignore next 2 */
-tokenizeEsSyntax.locator = (value /*, fromIndex*/) =>
-  isExport(value) || isImport(value) ? -1 : 1;
+tokenizeEsSyntax.locator = (value /*, fromIndex*/) => (isExport(value) || isImport(value) ? -1 : 1);
 
-tokenizeEsComment.locator = (value, fromIndex) => value.indexOf("{", fromIndex);
+tokenizeEsComment.locator = (value, fromIndex) => value.indexOf('{', fromIndex);
 
 /**
  * @type {import('unified').Plugin<[], import('unified').Settings>}
  */
 const esSyntax = function () {
-  const { Parser } = this;
-  const { blockTokenizers, blockMethods, inlineTokenizers, inlineMethods } =
-    Parser.prototype;
+	const {Parser} = this;
+	const {blockTokenizers, blockMethods, inlineTokenizers, inlineMethods} = Parser.prototype;
 
-  blockTokenizers.esSyntax = tokenizeEsSyntax;
-  inlineTokenizers.esComment = tokenizeEsComment;
+	blockTokenizers.esSyntax = tokenizeEsSyntax;
+	inlineTokenizers.esComment = tokenizeEsComment;
 
-  blockMethods.splice(blockMethods.indexOf("paragraph"), 0, "esSyntax");
-  inlineMethods.splice(inlineMethods.indexOf("text"), 0, "esComment");
+	blockMethods.splice(blockMethods.indexOf('paragraph'), 0, 'esSyntax');
+	inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'esComment');
 };
 
-export { BLOCKS_REGEX, COMMENT_REGEX, esSyntax };
+export {BLOCKS_REGEX, COMMENT_REGEX, esSyntax};

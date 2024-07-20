@@ -1,4 +1,4 @@
-import createTypeCheckFunction from "./create-type-check-function.js";
+import createTypeCheckFunction from './create-type-check-function.js';
 /**
  * @typedef {import("../types/estree.js").Comment} Comment
  */
@@ -8,10 +8,10 @@ import createTypeCheckFunction from "./create-type-check-function.js";
  * @returns {boolean}
  */
 const isBlockComment = createTypeCheckFunction([
-  "Block",
-  "CommentBlock",
-  // `meriyah`
-  "MultiLine",
+	'Block',
+	'CommentBlock',
+	// `meriyah`
+	'MultiLine',
 ]);
 
 export default isBlockComment;

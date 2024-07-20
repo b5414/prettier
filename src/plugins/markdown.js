@@ -1,1 +1,1 @@
-export * from "../language-markdown/index.js";
+export * from '../language-markdown/index.js';

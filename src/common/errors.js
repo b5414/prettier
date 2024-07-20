@@ -1,13 +1,13 @@
 class ConfigError extends Error {
-  name = "ConfigError";
+	name = 'ConfigError';
 }
 
 class UndefinedParserError extends Error {
-  name = "UndefinedParserError";
+	name = 'UndefinedParserError';
 }
 
 class ArgExpansionBailout extends Error {
-  name = "ArgExpansionBailout";
+	name = 'ArgExpansionBailout';
 }
 
-export { ArgExpansionBailout, ConfigError, UndefinedParserError };
+export {ArgExpansionBailout, ConfigError, UndefinedParserError};

@@ -1,6 +1,6 @@
-import { outdent } from "outdent";
+import {outdent} from 'outdent';
 
-import { optionCategories } from "./prettier-internal.js";
+import {optionCategories} from './prettier-internal.js';
 
 /**
  * {
@@ -62,185 +62,180 @@ import { optionCategories } from "./prettier-internal.js";
  */
 /* eslint sort-keys: "error" */
 const options = {
-  cache: {
-    default: false,
-    description: "Only format changed files. Cannot use with --stdin-filepath.",
-    type: "boolean",
-  },
-  cacheLocation: {
-    description: "Path to the cache file.",
-    type: "path",
-  },
-  cacheStrategy: {
-    choices: [
-      {
-        description: "Use the file metadata such as timestamps as cache keys",
-        value: "metadata",
-      },
-      {
-        description: "Use the file content as cache keys",
-        value: "content",
-      },
-    ],
-    description: "Strategy for the cache to use for detecting changed files.",
-    type: "choice",
-  },
-  check: {
-    alias: "c",
-    category: optionCategories.CATEGORY_OUTPUT,
-    description: outdent`
+	cache: {
+		default: false,
+		description: 'Only format changed files. Cannot use with --stdin-filepath.',
+		type: 'boolean',
+	},
+	cacheLocation: {
+		description: 'Path to the cache file.',
+		type: 'path',
+	},
+	cacheStrategy: {
+		choices: [
+			{
+				description: 'Use the file metadata such as timestamps as cache keys',
+				value: 'metadata',
+			},
+			{
+				description: 'Use the file content as cache keys',
+				value: 'content',
+			},
+		],
+		description: 'Strategy for the cache to use for detecting changed files.',
+		type: 'choice',
+	},
+	check: {
+		alias: 'c',
+		category: optionCategories.CATEGORY_OUTPUT,
+		description: outdent`
       Check if the given files are formatted, print a human-friendly summary
       message and paths to unformatted files (see also --list-different).
     `,
-    type: "boolean",
-  },
-  color: {
-    // The supports-color package (a sub sub dependency) looks directly at
-    // `process.argv` for `--no-color` and such-like options. The reason it is
-    // listed here is to avoid "Ignored unknown option: --no-color" warnings.
-    // See https://github.com/chalk/supports-color/#info for more information.
-    default: true,
-    description: "Colorize error messages.",
-    oppositeDescription: "Do not colorize error messages.",
-    type: "boolean",
-  },
-  config: {
-    category: optionCategories.CATEGORY_CONFIG,
-    description:
-      "Path to a Prettier configuration file (.prettierrc, package.json, prettier.config.js).",
-    exception: (value) => value === false,
-    oppositeDescription: "Do not look for a configuration file.",
-    type: "path",
-  },
-  configPrecedence: {
-    category: optionCategories.CATEGORY_CONFIG,
-    choices: [
-      {
-        description: "CLI options take precedence over config file",
-        value: "cli-override",
-      },
-      {
-        description: "Config file take precedence over CLI options",
-        value: "file-override",
-      },
-      {
-        description: outdent`
+		type: 'boolean',
+	},
+	color: {
+		// The supports-color package (a sub sub dependency) looks directly at
+		// `process.argv` for `--no-color` and such-like options. The reason it is
+		// listed here is to avoid "Ignored unknown option: --no-color" warnings.
+		// See https://github.com/chalk/supports-color/#info for more information.
+		default: true,
+		description: 'Colorize error messages.',
+		oppositeDescription: 'Do not colorize error messages.',
+		type: 'boolean',
+	},
+	config: {
+		category: optionCategories.CATEGORY_CONFIG,
+		description: 'Path to a Prettier configuration file (.prettierrc, package.json, prettier.config.js).',
+		exception: (value) => value === false,
+		oppositeDescription: 'Do not look for a configuration file.',
+		type: 'path',
+	},
+	configPrecedence: {
+		category: optionCategories.CATEGORY_CONFIG,
+		choices: [
+			{
+				description: 'CLI options take precedence over config file',
+				value: 'cli-override',
+			},
+			{
+				description: 'Config file take precedence over CLI options',
+				value: 'file-override',
+			},
+			{
+				description: outdent`
           If a config file is found will evaluate it and ignore other CLI options.
           If no config file is found CLI options will evaluate as normal.
         `,
-        value: "prefer-file",
-      },
-    ],
-    default: "cli-override",
-    description:
-      "Define in which order config files and CLI options should be evaluated.",
-    type: "choice",
-  },
-  debugBenchmark: {
-    // Run the formatting benchmarks. Requires 'benchmark' module to be installed.
-    type: "boolean",
-  },
-  debugCheck: {
-    // Run the formatting once again on the formatted output, throw if different.
-    type: "boolean",
-  },
-  debugPrintAst: {
-    type: "boolean",
-  },
-  debugPrintComments: {
-    type: "boolean",
-  },
-  debugPrintDoc: {
-    type: "boolean",
-  },
-  debugRepeat: {
-    // Repeat the formatting a few times and measure the average duration.
-    default: 0,
-    type: "int",
-  },
-  editorconfig: {
-    category: optionCategories.CATEGORY_CONFIG,
-    default: true,
-    description: "Take .editorconfig into account when parsing configuration.",
-    oppositeDescription:
-      "Don't take .editorconfig into account when parsing configuration.",
-    type: "boolean",
-  },
-  errorOnUnmatchedPattern: {
-    oppositeDescription: "Prevent errors when pattern is unmatched.",
-    type: "boolean",
-  },
-  fileInfo: {
-    description: outdent`
+				value: 'prefer-file',
+			},
+		],
+		default: 'cli-override',
+		description: 'Define in which order config files and CLI options should be evaluated.',
+		type: 'choice',
+	},
+	debugBenchmark: {
+		// Run the formatting benchmarks. Requires 'benchmark' module to be installed.
+		type: 'boolean',
+	},
+	debugCheck: {
+		// Run the formatting once again on the formatted output, throw if different.
+		type: 'boolean',
+	},
+	debugPrintAst: {
+		type: 'boolean',
+	},
+	debugPrintComments: {
+		type: 'boolean',
+	},
+	debugPrintDoc: {
+		type: 'boolean',
+	},
+	debugRepeat: {
+		// Repeat the formatting a few times and measure the average duration.
+		default: 0,
+		type: 'int',
+	},
+	editorconfig: {
+		category: optionCategories.CATEGORY_CONFIG,
+		default: true,
+		description: 'Take .editorconfig into account when parsing configuration.',
+		oppositeDescription: "Don't take .editorconfig into account when parsing configuration.",
+		type: 'boolean',
+	},
+	errorOnUnmatchedPattern: {
+		oppositeDescription: 'Prevent errors when pattern is unmatched.',
+		type: 'boolean',
+	},
+	fileInfo: {
+		description: outdent`
       Extract the following info (as JSON) for a given file path. Reported fields:
       * ignored (boolean) - true if file path is filtered by --ignore-path
       * inferredParser (string | null) - name of parser inferred from file path
     `,
-    type: "path",
-  },
-  findConfigPath: {
-    category: optionCategories.CATEGORY_CONFIG,
-    description:
-      "Find and print the path to a configuration file for the given input file.",
-    type: "path",
-  },
-  help: {
-    alias: "h",
-    description: outdent`
+		type: 'path',
+	},
+	findConfigPath: {
+		category: optionCategories.CATEGORY_CONFIG,
+		description: 'Find and print the path to a configuration file for the given input file.',
+		type: 'path',
+	},
+	help: {
+		alias: 'h',
+		description: outdent`
       Show CLI usage, or details about the given flag.
       Example: --help write
     `,
-    exception: (value) => value === "",
-    type: "flag",
-  },
-  ignorePath: {
-    array: true,
-    category: optionCategories.CATEGORY_CONFIG,
-    default: [{ value: [".gitignore", ".prettierignore"] }],
-    description: outdent`
+		exception: (value) => value === '',
+		type: 'flag',
+	},
+	ignorePath: {
+		array: true,
+		category: optionCategories.CATEGORY_CONFIG,
+		default: [{value: ['.gitignore', '.prettierignore']}],
+		description: outdent`
       Path to a file with patterns describing files to ignore.
       Multiple values are accepted.
     `,
-    type: "path",
-  },
-  ignoreUnknown: {
-    alias: "u",
-    description: "Ignore unknown files.",
-    type: "boolean",
-  },
-  listDifferent: {
-    alias: "l",
-    category: optionCategories.CATEGORY_OUTPUT,
-    description:
-      "Print the names of files that are different from Prettier's formatting (see also --check).",
-    type: "boolean",
-  },
-  logLevel: {
-    choices: ["silent", "error", "warn", "log", "debug"],
-    default: "log",
-    description: "What level of logs to report.",
-    type: "choice",
-  },
-  supportInfo: {
-    description: "Print support information as JSON.",
-    type: "boolean",
-  },
-  version: {
-    alias: "v",
-    description: "Print Prettier version.",
-    type: "boolean",
-  },
-  withNodeModules: {
-    category: optionCategories.CATEGORY_CONFIG,
-    description: "Process files inside 'node_modules' directory.",
-    type: "boolean",
-  },
-  write: {
-    alias: "w",
-    category: optionCategories.CATEGORY_OUTPUT,
-    description: "Edit files in-place. (Beware!)",
-    type: "boolean",
-  },
+		type: 'path',
+	},
+	ignoreUnknown: {
+		alias: 'u',
+		description: 'Ignore unknown files.',
+		type: 'boolean',
+	},
+	listDifferent: {
+		alias: 'l',
+		category: optionCategories.CATEGORY_OUTPUT,
+		description: "Print the names of files that are different from Prettier's formatting (see also --check).",
+		type: 'boolean',
+	},
+	logLevel: {
+		choices: ['silent', 'error', 'warn', 'log', 'debug'],
+		default: 'log',
+		description: 'What level of logs to report.',
+		type: 'choice',
+	},
+	supportInfo: {
+		description: 'Print support information as JSON.',
+		type: 'boolean',
+	},
+	version: {
+		alias: 'v',
+		description: 'Print Prettier version.',
+		type: 'boolean',
+	},
+	withNodeModules: {
+		category: optionCategories.CATEGORY_CONFIG,
+		description: "Process files inside 'node_modules' directory.",
+		type: 'boolean',
+	},
+	write: {
+		alias: 'w',
+		category: optionCategories.CATEGORY_OUTPUT,
+		description: 'Edit files in-place. (Beware!)',
+		type: 'boolean',
+	},
 };
 
 export default options;

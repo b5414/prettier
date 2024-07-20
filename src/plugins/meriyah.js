@@ -1,1 +1,1 @@
-export * as parsers from "../language-js/parse/meriyah.js";
+export * as parsers from '../language-js/parse/meriyah.js';

@@ -1,1 +1,1 @@
-export * from "../language-html/index.js";
+export * from '../language-html/index.js';

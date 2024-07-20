@@ -1,23 +1,19 @@
-import {
-  isSingleJsxExpressionStatementInMarkdown,
-  isSingleVueEventBindingExpressionStatement,
-  isVueEventBindingExpression,
-} from "./semicolon.js";
+import {isSingleJsxExpressionStatementInMarkdown, isSingleVueEventBindingExpressionStatement, isVueEventBindingExpression} from './semicolon.js';
 
 function printExpressionStatement(path, options, print) {
-  const parts = [print("expression")];
+	const parts = [print('expression')];
 
-  if (isSingleVueEventBindingExpressionStatement(path, options)) {
-    if (isVueEventBindingExpression(path.node.expression)) {
-      parts.push(";");
-    }
-  } else if (isSingleJsxExpressionStatementInMarkdown(path, options)) {
-    // Do not append semicolon after the only JSX element in a program
-  } else if (options.semi) {
-    parts.push(";");
-  }
+	if (isSingleVueEventBindingExpressionStatement(path, options)) {
+		if (isVueEventBindingExpression(path.node.expression)) {
+			parts.push(';');
+		}
+	} else if (isSingleJsxExpressionStatementInMarkdown(path, options)) {
+		// Do not append semicolon after the only JSX element in a program
+	} else if (options.semi) {
+		parts.push(';');
+	}
 
-  return parts;
+	return parts;
 }
 
-export { printExpressionStatement };
+export {printExpressionStatement};

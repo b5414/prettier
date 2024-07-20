@@ -1,9 +1,9 @@
 function locStart(node) {
-  return node.sourceSpan.start.offset;
+	return node.sourceSpan.start.offset;
 }
 
 function locEnd(node) {
-  return node.sourceSpan.end.offset;
+	return node.sourceSpan.end.offset;
 }
 
-export { locEnd, locStart };
+export {locEnd, locStart};

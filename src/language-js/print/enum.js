@@ -1,8 +1,8 @@
-import { printDeclareToken } from "./misc.js";
-import { printObject } from "./object.js";
+import {printDeclareToken} from './misc.js';
+import {printObject} from './object.js';
 
 function printEnumMembers(path, print, options) {
-  return printObject(path, options, print);
+	return printObject(path, options, print);
 }
 
 /*
@@ -14,31 +14,31 @@ function printEnumMembers(path, print, options) {
 - `TSEnumMember`(TypeScript)
 */
 function printEnumMember(path, print) {
-  const { node } = path;
+	const {node} = path;
 
-  let idDoc = print("id");
+	let idDoc = print('id');
 
-  if (node.computed) {
-    idDoc = ["[", idDoc, "]"];
-  }
+	if (node.computed) {
+		idDoc = ['[', idDoc, ']'];
+	}
 
-  let initializerDoc = "";
+	let initializerDoc = '';
 
-  // `TSEnumMember`
-  if (node.initializer) {
-    initializerDoc = print("initializer");
-  }
+	// `TSEnumMember`
+	if (node.initializer) {
+		initializerDoc = print('initializer');
+	}
 
-  // Flow
-  if (node.init) {
-    initializerDoc = print("init");
-  }
+	// Flow
+	if (node.init) {
+		initializerDoc = print('init');
+	}
 
-  if (!initializerDoc) {
-    return idDoc;
-  }
+	if (!initializerDoc) {
+		return idDoc;
+	}
 
-  return [idDoc, " = ", initializerDoc];
+	return [idDoc, ' = ', initializerDoc];
 }
 
 /*
@@ -49,30 +49,30 @@ function printEnumMember(path, print) {
 - `EnumSymbolBody`(flow)
 */
 function printEnumBody(path, print, options) {
-  const { node } = path;
-  let type;
+	const {node} = path;
+	let type;
 
-  if (node.type === "EnumSymbolBody" || node.explicitType) {
-    switch (node.type) {
-      case "EnumBooleanBody":
-        type = "boolean";
-        break;
-      case "EnumNumberBody":
-        type = "number";
-        break;
-      case "EnumBigIntBody":
-        type = "bigint";
-        break;
-      case "EnumStringBody":
-        type = "string";
-        break;
-      case "EnumSymbolBody":
-        type = "symbol";
-        break;
-    }
-  }
+	if (node.type === 'EnumSymbolBody' || node.explicitType) {
+		switch (node.type) {
+			case 'EnumBooleanBody':
+				type = 'boolean';
+				break;
+			case 'EnumNumberBody':
+				type = 'number';
+				break;
+			case 'EnumBigIntBody':
+				type = 'bigint';
+				break;
+			case 'EnumStringBody':
+				type = 'string';
+				break;
+			case 'EnumSymbolBody':
+				type = 'symbol';
+				break;
+		}
+	}
 
-  return [type ? `of ${type} ` : "", printEnumMembers(path, print, options)];
+	return [type ? `of ${type} ` : '', printEnumMembers(path, print, options)];
 }
 
 /*
@@ -81,17 +81,15 @@ function printEnumBody(path, print, options) {
 - `TSEnumDeclaration`(TypeScript)
 */
 function printEnumDeclaration(path, print, options) {
-  const { node } = path;
-  return [
-    printDeclareToken(path),
-    node.const ? "const " : "",
-    "enum ",
-    print("id"),
-    " ",
-    node.type === "TSEnumDeclaration"
-      ? printEnumMembers(path, print, options)
-      : print("body"),
-  ];
+	const {node} = path;
+	return [
+		printDeclareToken(path),
+		node.const ? 'const ' : '',
+		'enum ',
+		print('id'),
+		' ',
+		node.type === 'TSEnumDeclaration' ? printEnumMembers(path, print, options) : print('body'),
+	];
 }
 
-export { printEnumBody, printEnumDeclaration, printEnumMember };
+export {printEnumBody, printEnumDeclaration, printEnumMember};

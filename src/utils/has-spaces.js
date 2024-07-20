@@ -1,4 +1,4 @@
-import { skipSpaces } from "./skip.js";
+import {skipSpaces} from './skip.js';
 
 /** @typedef {import("./skip.js").SkipOptions} SkipOptions */
 
@@ -11,12 +11,8 @@ import { skipSpaces } from "./skip.js";
  * @returns {boolean}
  */
 function hasSpaces(text, startIndex, options = {}) {
-  const idx = skipSpaces(
-    text,
-    options.backwards ? startIndex - 1 : startIndex,
-    options,
-  );
-  return idx !== startIndex;
+	const idx = skipSpaces(text, options.backwards ? startIndex - 1 : startIndex, options);
+	return idx !== startIndex;
 }
 /* c8 ignore stop */
 

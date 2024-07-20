@@ -1,4 +1,4 @@
-import coreOptions from "./core-options.evaluate.js";
+import coreOptions from './core-options.evaluate.js';
 
 /**
  * @typedef {import("./core-options.evaluate.js").OptionInfo} OptionInfo
@@ -13,80 +13,70 @@ import coreOptions from "./core-options.evaluate.js";
  * @param {boolean=} param0.showDeprecated
  * @return {{ languages: Array<any>, options: Array<NamedOptionInfo> }}
  */
-function getSupportInfo({ plugins = [], showDeprecated = false } = {}) {
-  const languages = plugins.flatMap((plugin) => plugin.languages ?? []);
+function getSupportInfo({plugins = [], showDeprecated = false} = {}) {
+	const languages = plugins.flatMap((plugin) => plugin.languages ?? []);
 
-  const options = [];
-  for (const option of normalizeOptionSettings(
-    Object.assign({}, ...plugins.map(({ options }) => options), coreOptions),
-  )) {
-    if (!showDeprecated && option.deprecated) {
-      continue;
-    }
+	const options = [];
+	for (const option of normalizeOptionSettings(Object.assign({}, ...plugins.map(({options}) => options), coreOptions))) {
+		if (!showDeprecated && option.deprecated) {
+			continue;
+		}
 
-    if (Array.isArray(option.choices)) {
-      if (!showDeprecated) {
-        option.choices = option.choices.filter((choice) => !choice.deprecated);
-      }
+		if (Array.isArray(option.choices)) {
+			if (!showDeprecated) {
+				option.choices = option.choices.filter((choice) => !choice.deprecated);
+			}
 
-      if (option.name === "parser") {
-        option.choices = [
-          ...option.choices,
-          ...collectParsersFromLanguages(option.choices, languages, plugins),
-        ];
-      }
-    }
+			if (option.name === 'parser') {
+				option.choices = [...option.choices, ...collectParsersFromLanguages(option.choices, languages, plugins)];
+			}
+		}
 
-    option.pluginDefaults = Object.fromEntries(
-      plugins
-        .filter((plugin) => plugin.defaultOptions?.[option.name] !== undefined)
-        .map((plugin) => [plugin.name, plugin.defaultOptions[option.name]]),
-    );
+		option.pluginDefaults = Object.fromEntries(
+			plugins.filter((plugin) => plugin.defaultOptions?.[option.name] !== undefined).map((plugin) => [plugin.name, plugin.defaultOptions[option.name]]),
+		);
 
-    options.push(option);
-  }
+		options.push(option);
+	}
 
-  return { languages, options };
+	return {languages, options};
 }
 
 function* collectParsersFromLanguages(parserChoices, languages, plugins) {
-  const existingParsers = new Set(parserChoices.map((choice) => choice.value));
+	const existingParsers = new Set(parserChoices.map((choice) => choice.value));
 
-  for (const language of languages) {
-    if (language.parsers) {
-      for (const parserName of language.parsers) {
-        if (!existingParsers.has(parserName)) {
-          existingParsers.add(parserName);
-          const plugin = plugins.find(
-            (plugin) =>
-              plugin.parsers && Object.hasOwn(plugin.parsers, parserName),
-          );
+	for (const language of languages) {
+		if (language.parsers) {
+			for (const parserName of language.parsers) {
+				if (!existingParsers.has(parserName)) {
+					existingParsers.add(parserName);
+					const plugin = plugins.find((plugin) => plugin.parsers && Object.hasOwn(plugin.parsers, parserName));
 
-          let description = language.name;
-          if (plugin?.name) {
-            description += ` (plugin: ${plugin.name})`;
-          }
-          yield { value: parserName, description };
-        }
-      }
-    }
-  }
+					let description = language.name;
+					if (plugin?.name) {
+						description += ` (plugin: ${plugin.name})`;
+					}
+					yield {value: parserName, description};
+				}
+			}
+		}
+	}
 }
 
 function normalizeOptionSettings(settings) {
-  const options = [];
-  for (const [name, originalOption] of Object.entries(settings)) {
-    const option = { name, ...originalOption };
+	const options = [];
+	for (const [name, originalOption] of Object.entries(settings)) {
+		const option = {name, ...originalOption};
 
-    // This work this way because we used support `[{value: [], since: '0.0.0'}]`
-    if (Array.isArray(option.default)) {
-      option.default = option.default.at(-1).value;
-    }
+		// This work this way because we used support `[{value: [], since: '0.0.0'}]`
+		if (Array.isArray(option.default)) {
+			option.default = option.default.at(-1).value;
+		}
 
-    options.push(option);
-  }
+		options.push(option);
+	}
 
-  return options;
+	return options;
 }
 
-export { getSupportInfo, normalizeOptionSettings };
+export {getSupportInfo, normalizeOptionSettings};

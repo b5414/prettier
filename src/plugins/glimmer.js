@@ -1,1 +1,1 @@
-export * from "../language-handlebars/index.js";
+export * from '../language-handlebars/index.js';

@@ -1,10 +1,10 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
-import sdbm from "sdbm";
+import sdbm from 'sdbm';
 
 // @ts-expect-error
-import { __internal as sharedWithCli } from "../index.js";
+import {__internal as sharedWithCli} from '../index.js';
 
 // eslint-disable-next-line no-console
 const printToScreen = console.log.bind(console);
@@ -17,19 +17,19 @@ const printToScreen = console.log.bind(console);
  * @returns {{[p in Key]: T}}
  */
 function groupBy(array, iteratee) {
-  const result = Object.create(null);
+	const result = Object.create(null);
 
-  for (const value of array) {
-    const key = iteratee(value);
+	for (const value of array) {
+		const key = iteratee(value);
 
-    if (Array.isArray(result[key])) {
-      result[key].push(value);
-    } else {
-      result[key] = [value];
-    }
-  }
+		if (Array.isArray(result[key])) {
+			result[key].push(value);
+		} else {
+			result[key] = [value];
+		}
+	}
 
-  return result;
+	return result;
 }
 
 /**
@@ -40,8 +40,8 @@ function groupBy(array, iteratee) {
  * @returns {{[key in Keys]: Obj[key]}}
  */
 function pick(object, keys) {
-  const entries = keys.map((key) => [key, object[key]]);
-  return Object.fromEntries(entries);
+	const entries = keys.map((key) => [key, object[key]]);
+	return Object.fromEntries(entries);
 }
 
 /**
@@ -49,7 +49,7 @@ function pick(object, keys) {
  * @returns {string}
  */
 function createHash(source) {
-  return String(sdbm(source));
+	return String(sdbm(source));
 }
 
 /**
@@ -58,14 +58,14 @@ function createHash(source) {
  * @returns {Promise<import('fs').Stats | undefined>} The stats.
  */
 async function statSafe(filePath) {
-  try {
-    return await fs.stat(filePath);
-  } catch (/** @type {any} */ error) {
-    /* c8 ignore next 3 */
-    if (error.code !== "ENOENT") {
-      throw error;
-    }
-  }
+	try {
+		return await fs.stat(filePath);
+	} catch (/** @type {any} */ error) {
+		/* c8 ignore next 3 */
+		if (error.code !== 'ENOENT') {
+			throw error;
+		}
+	}
 }
 
 /**
@@ -74,14 +74,14 @@ async function statSafe(filePath) {
  * @returns {Promise<import('fs').Stats | undefined>} The stats.
  */
 async function lstatSafe(filePath) {
-  try {
-    return await fs.lstat(filePath);
-  } catch (/** @type {any} */ error) {
-    /* c8 ignore next 3 */
-    if (error.code !== "ENOENT") {
-      throw error;
-    }
-  }
+	try {
+		return await fs.lstat(filePath);
+	} catch (/** @type {any} */ error) {
+		/* c8 ignore next 3 */
+		if (error.code !== 'ENOENT') {
+			throw error;
+		}
+	}
 }
 
 /**
@@ -89,12 +89,12 @@ async function lstatSafe(filePath) {
  * @returns {boolean}
  */
 function isJson(value) {
-  try {
-    JSON.parse(value);
-    return true;
-  } catch {
-    return false;
-  }
+	try {
+		JSON.parse(value);
+		return true;
+	} catch {
+		return false;
+	}
 }
 
 /**
@@ -102,19 +102,7 @@ function isJson(value) {
  * @param {string} filepath
  * @returns {string}
  */
-const normalizeToPosix =
-  path.sep === "\\"
-    ? (filepath) => filepath.replaceAll("\\", "/")
-    : (filepath) => filepath;
+const normalizeToPosix = path.sep === '\\' ? (filepath) => filepath.replaceAll('\\', '/') : (filepath) => filepath;
 
-export const { isNonEmptyArray, partition, omit } = sharedWithCli.utils;
-export {
-  createHash,
-  groupBy,
-  isJson,
-  lstatSafe,
-  normalizeToPosix,
-  pick,
-  printToScreen,
-  statSafe,
-};
+export const {isNonEmptyArray, partition, omit} = sharedWithCli.utils;
+export {createHash, groupBy, isJson, lstatSafe, normalizeToPosix, pick, printToScreen, statSafe};

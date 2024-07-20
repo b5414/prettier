@@ -1,9 +1,9 @@
 const getValueRoot = (node) => {
-  while (node.parent) {
-    node = node.parent;
-  }
+	while (node.parent) {
+		node = node.parent;
+	}
 
-  return node;
+	return node;
 };
 
 export default getValueRoot;

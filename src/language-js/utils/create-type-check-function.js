@@ -6,8 +6,8 @@
  * @returns {(node: Node | Comment) => Boolean}
  */
 function createTypeCheckFunction(typesArray) {
-  const types = new Set(typesArray);
-  return (node) => types.has(node?.type);
+	const types = new Set(typesArray);
+	return (node) => types.has(node?.type);
 }
 
 export default createTypeCheckFunction;

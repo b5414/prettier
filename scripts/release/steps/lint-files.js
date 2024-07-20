@@ -1,5 +1,5 @@
-import { runYarn } from "../utils.js";
+import {runYarn} from '../utils.js';
 
-const lintFiles = () => runYarn("lint");
+const lintFiles = () => runYarn('lint');
 
 export default lintFiles;

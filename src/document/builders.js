@@ -1,19 +1,19 @@
 import {
-  DOC_TYPE_ALIGN,
-  DOC_TYPE_BREAK_PARENT,
-  DOC_TYPE_CURSOR,
-  DOC_TYPE_FILL,
-  DOC_TYPE_GROUP,
-  DOC_TYPE_IF_BREAK,
-  DOC_TYPE_INDENT,
-  DOC_TYPE_INDENT_IF_BREAK,
-  DOC_TYPE_LABEL,
-  DOC_TYPE_LINE,
-  DOC_TYPE_LINE_SUFFIX,
-  DOC_TYPE_LINE_SUFFIX_BOUNDARY,
-  DOC_TYPE_TRIM,
-} from "./constants.js";
-import { assertDoc, assertDocArray } from "./utils/assert-doc.js";
+	DOC_TYPE_ALIGN,
+	DOC_TYPE_BREAK_PARENT,
+	DOC_TYPE_CURSOR,
+	DOC_TYPE_FILL,
+	DOC_TYPE_GROUP,
+	DOC_TYPE_IF_BREAK,
+	DOC_TYPE_INDENT,
+	DOC_TYPE_INDENT_IF_BREAK,
+	DOC_TYPE_LABEL,
+	DOC_TYPE_LINE,
+	DOC_TYPE_LINE_SUFFIX,
+	DOC_TYPE_LINE_SUFFIX_BOUNDARY,
+	DOC_TYPE_TRIM,
+} from './constants.js';
+import {assertDoc, assertDocArray} from './utils/assert-doc.js';
 
 /**
  * TBD properly tagged union for Doc object type is needed here.
@@ -33,9 +33,9 @@ import { assertDoc, assertDocArray } from "./utils/assert-doc.js";
  * @returns Doc
  */
 function indent(contents) {
-  assertDoc(contents);
+	assertDoc(contents);
 
-  return { type: DOC_TYPE_INDENT, contents };
+	return {type: DOC_TYPE_INDENT, contents};
 }
 
 /**
@@ -44,9 +44,9 @@ function indent(contents) {
  * @returns Doc
  */
 function align(widthOrString, contents) {
-  assertDoc(contents);
+	assertDoc(contents);
 
-  return { type: DOC_TYPE_ALIGN, contents, n: widthOrString };
+	return {type: DOC_TYPE_ALIGN, contents, n: widthOrString};
 }
 
 /**
@@ -55,16 +55,16 @@ function align(widthOrString, contents) {
  * @returns Doc
  */
 function group(contents, opts = {}) {
-  assertDoc(contents);
-  assertDocArray(opts.expandedStates, /* optional */ true);
+	assertDoc(contents);
+	assertDocArray(opts.expandedStates, /* optional */ true);
 
-  return {
-    type: DOC_TYPE_GROUP,
-    id: opts.id,
-    contents,
-    break: Boolean(opts.shouldBreak),
-    expandedStates: opts.expandedStates,
-  };
+	return {
+		type: DOC_TYPE_GROUP,
+		id: opts.id,
+		contents,
+		break: Boolean(opts.shouldBreak),
+		expandedStates: opts.expandedStates,
+	};
 }
 
 /**
@@ -72,7 +72,7 @@ function group(contents, opts = {}) {
  * @returns Doc
  */
 function dedentToRoot(contents) {
-  return align(Number.NEGATIVE_INFINITY, contents);
+	return align(Number.NEGATIVE_INFINITY, contents);
 }
 
 /**
@@ -80,8 +80,8 @@ function dedentToRoot(contents) {
  * @returns Doc
  */
 function markAsRoot(contents) {
-  // @ts-expect-error - TBD ???:
-  return align({ type: "root" }, contents);
+	// @ts-expect-error - TBD ???:
+	return align({type: 'root'}, contents);
 }
 
 /**
@@ -89,7 +89,7 @@ function markAsRoot(contents) {
  * @returns Doc
  */
 function dedent(contents) {
-  return align(-1, contents);
+	return align(-1, contents);
 }
 
 /**
@@ -98,7 +98,7 @@ function dedent(contents) {
  * @returns Doc
  */
 function conditionalGroup(states, opts) {
-  return group(states[0], { ...opts, expandedStates: states });
+	return group(states[0], {...opts, expandedStates: states});
 }
 
 /**
@@ -106,9 +106,9 @@ function conditionalGroup(states, opts) {
  * @returns Doc
  */
 function fill(parts) {
-  assertDocArray(parts);
+	assertDocArray(parts);
 
-  return { type: DOC_TYPE_FILL, parts };
+	return {type: DOC_TYPE_FILL, parts};
 }
 
 /**
@@ -117,18 +117,18 @@ function fill(parts) {
  * @param {object} [opts] - TBD ???
  * @returns Doc
  */
-function ifBreak(breakContents, flatContents = "", opts = {}) {
-  assertDoc(breakContents);
-  if (flatContents !== "") {
-    assertDoc(flatContents);
-  }
+function ifBreak(breakContents, flatContents = '', opts = {}) {
+	assertDoc(breakContents);
+	if (flatContents !== '') {
+		assertDoc(flatContents);
+	}
 
-  return {
-    type: DOC_TYPE_IF_BREAK,
-    breakContents,
-    flatContents,
-    groupId: opts.groupId,
-  };
+	return {
+		type: DOC_TYPE_IF_BREAK,
+		breakContents,
+		flatContents,
+		groupId: opts.groupId,
+	};
 }
 
 /**
@@ -138,14 +138,14 @@ function ifBreak(breakContents, flatContents = "", opts = {}) {
  * @returns Doc
  */
 function indentIfBreak(contents, opts) {
-  assertDoc(contents);
+	assertDoc(contents);
 
-  return {
-    type: DOC_TYPE_INDENT_IF_BREAK,
-    contents,
-    groupId: opts.groupId,
-    negate: opts.negate,
-  };
+	return {
+		type: DOC_TYPE_INDENT_IF_BREAK,
+		contents,
+		groupId: opts.groupId,
+		negate: opts.negate,
+	};
 }
 
 /**
@@ -153,28 +153,28 @@ function indentIfBreak(contents, opts) {
  * @returns Doc
  */
 function lineSuffix(contents) {
-  assertDoc(contents);
+	assertDoc(contents);
 
-  return { type: DOC_TYPE_LINE_SUFFIX, contents };
+	return {type: DOC_TYPE_LINE_SUFFIX, contents};
 }
 
-const lineSuffixBoundary = { type: DOC_TYPE_LINE_SUFFIX_BOUNDARY };
-const breakParent = { type: DOC_TYPE_BREAK_PARENT };
-const trim = { type: DOC_TYPE_TRIM };
+const lineSuffixBoundary = {type: DOC_TYPE_LINE_SUFFIX_BOUNDARY};
+const breakParent = {type: DOC_TYPE_BREAK_PARENT};
+const trim = {type: DOC_TYPE_TRIM};
 
-const hardlineWithoutBreakParent = { type: DOC_TYPE_LINE, hard: true };
+const hardlineWithoutBreakParent = {type: DOC_TYPE_LINE, hard: true};
 const literallineWithoutBreakParent = {
-  type: DOC_TYPE_LINE,
-  hard: true,
-  literal: true,
+	type: DOC_TYPE_LINE,
+	hard: true,
+	literal: true,
 };
 
-const line = { type: DOC_TYPE_LINE };
-const softline = { type: DOC_TYPE_LINE, soft: true };
+const line = {type: DOC_TYPE_LINE};
+const softline = {type: DOC_TYPE_LINE, soft: true};
 const hardline = [hardlineWithoutBreakParent, breakParent];
 const literalline = [literallineWithoutBreakParent, breakParent];
 
-const cursor = { type: DOC_TYPE_CURSOR };
+const cursor = {type: DOC_TYPE_CURSOR};
 
 /**
  * @param {Doc} separator
@@ -182,20 +182,20 @@ const cursor = { type: DOC_TYPE_CURSOR };
  * @returns Doc
  */
 function join(separator, docs) {
-  assertDoc(separator);
-  assertDocArray(docs);
+	assertDoc(separator);
+	assertDocArray(docs);
 
-  const parts = [];
+	const parts = [];
 
-  for (let i = 0; i < docs.length; i++) {
-    if (i !== 0) {
-      parts.push(separator);
-    }
+	for (let i = 0; i < docs.length; i++) {
+		if (i !== 0) {
+			parts.push(separator);
+		}
 
-    parts.push(docs[i]);
-  }
+		parts.push(docs[i]);
+	}
 
-  return parts;
+	return parts;
 }
 
 /**
@@ -204,21 +204,21 @@ function join(separator, docs) {
  * @param {number} tabWidth
  */
 function addAlignmentToDoc(doc, size, tabWidth) {
-  assertDoc(doc);
+	assertDoc(doc);
 
-  let aligned = doc;
-  if (size > 0) {
-    // Use indent to add tabs for all the levels of tabs we need
-    for (let i = 0; i < Math.floor(size / tabWidth); ++i) {
-      aligned = indent(aligned);
-    }
-    // Use align for all the spaces that are needed
-    aligned = align(size % tabWidth, aligned);
-    // size is absolute from 0 and not relative to the current
-    // indentation, so we use -Infinity to reset the indentation to 0
-    aligned = align(Number.NEGATIVE_INFINITY, aligned);
-  }
-  return aligned;
+	let aligned = doc;
+	if (size > 0) {
+		// Use indent to add tabs for all the levels of tabs we need
+		for (let i = 0; i < Math.floor(size / tabWidth); ++i) {
+			aligned = indent(aligned);
+		}
+		// Use align for all the spaces that are needed
+		aligned = align(size % tabWidth, aligned);
+		// size is absolute from 0 and not relative to the current
+		// indentation, so we use -Infinity to reset the indentation to 0
+		aligned = align(Number.NEGATIVE_INFINITY, aligned);
+	}
+	return aligned;
 }
 
 /**
@@ -227,34 +227,34 @@ function addAlignmentToDoc(doc, size, tabWidth) {
  * @param {Doc} contents
  */
 function label(label, contents) {
-  assertDoc(contents);
+	assertDoc(contents);
 
-  return label ? { type: DOC_TYPE_LABEL, label, contents } : contents;
+	return label ? {type: DOC_TYPE_LABEL, label, contents} : contents;
 }
 
 export {
-  addAlignmentToDoc,
-  align,
-  breakParent,
-  conditionalGroup,
-  cursor,
-  dedent,
-  dedentToRoot,
-  fill,
-  group,
-  hardline,
-  hardlineWithoutBreakParent,
-  ifBreak,
-  indent,
-  indentIfBreak,
-  join,
-  label,
-  line,
-  lineSuffix,
-  lineSuffixBoundary,
-  literalline,
-  literallineWithoutBreakParent,
-  markAsRoot,
-  softline,
-  trim,
+	addAlignmentToDoc,
+	align,
+	breakParent,
+	conditionalGroup,
+	cursor,
+	dedent,
+	dedentToRoot,
+	fill,
+	group,
+	hardline,
+	hardlineWithoutBreakParent,
+	ifBreak,
+	indent,
+	indentIfBreak,
+	join,
+	label,
+	line,
+	lineSuffix,
+	lineSuffixBoundary,
+	literalline,
+	literallineWithoutBreakParent,
+	markAsRoot,
+	softline,
+	trim,
 };

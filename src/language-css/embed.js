@@ -1,19 +1,18 @@
-import { hardline } from "../document/builders.js";
-import printFrontMatter from "../utils/front-matter/print.js";
+import {hardline} from '../document/builders.js';
+import printFrontMatter from '../utils/front-matter/print.js';
 
 function embed(path) {
-  const { node } = path;
+	const {node} = path;
 
-  if (node.type === "front-matter") {
-    return async (textToDoc) => {
-      const doc = await printFrontMatter(node, textToDoc);
-      return doc ? [doc, hardline] : undefined;
-    };
-  }
+	if (node.type === 'front-matter') {
+		return async (textToDoc) => {
+			const doc = await printFrontMatter(node, textToDoc);
+			return doc ? [doc, hardline] : undefined;
+		};
+	}
 }
 
 // `front-matter` only available on `css-root`
-embed.getVisitorKeys = (node) =>
-  node.type === "css-root" ? ["frontMatter"] : [];
+embed.getVisitorKeys = (node) => (node.type === 'css-root' ? ['frontMatter'] : []);
 
 export default embed;

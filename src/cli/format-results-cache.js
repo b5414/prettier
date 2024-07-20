@@ -1,11 +1,11 @@
 // Inspired by LintResultsCache from ESLint
 // https://github.com/eslint/eslint/blob/c2d0a830754b6099a3325e6d3348c3ba983a677a/lib/cli-engine/lint-result-cache.js
 
-import stringify from "fast-json-stable-stringify";
-import fileEntryCache from "file-entry-cache";
+import stringify from 'fast-json-stable-stringify';
+import fileEntryCache from 'file-entry-cache';
 
-import { version as prettierVersion } from "../index.js";
-import { createHash } from "./utils.js";
+import {version as prettierVersion} from '../index.js';
+import {createHash} from './utils.js';
 
 const optionsHashCache = new WeakMap();
 const nodeVersion = process.version;
@@ -15,14 +15,12 @@ const nodeVersion = process.version;
  * @returns {string}
  */
 function getHashOfOptions(options) {
-  if (optionsHashCache.has(options)) {
-    return optionsHashCache.get(options);
-  }
-  const hash = createHash(
-    `${prettierVersion}_${nodeVersion}_${stringify(options)}`,
-  );
-  optionsHashCache.set(options, hash);
-  return hash;
+	if (optionsHashCache.has(options)) {
+		return optionsHashCache.get(options);
+	}
+	const hash = createHash(`${prettierVersion}_${nodeVersion}_${stringify(options)}`);
+	optionsHashCache.set(options, hash);
+	return hash;
 }
 
 /**
@@ -33,68 +31,63 @@ function getHashOfOptions(options) {
  * @returns {FileDescriptor["meta"] & OurMeta}
  */
 function getMetadataFromFileDescriptor(fileDescriptor) {
-  return fileDescriptor.meta;
+	return fileDescriptor.meta;
 }
 
 class FormatResultsCache {
-  #fileEntryCache;
+	#fileEntryCache;
 
-  /**
-   * @param {string} cacheFileLocation The path of cache file location. (default: `node_modules/.cache/prettier/.prettier-cache`)
-   * @param {string} cacheStrategy
-   */
-  constructor(cacheFileLocation, cacheStrategy) {
-    const useChecksum = cacheStrategy === "content";
+	/**
+	 * @param {string} cacheFileLocation The path of cache file location. (default: `node_modules/.cache/prettier/.prettier-cache`)
+	 * @param {string} cacheStrategy
+	 */
+	constructor(cacheFileLocation, cacheStrategy) {
+		const useChecksum = cacheStrategy === 'content';
 
-    this.#fileEntryCache = fileEntryCache.create(
-      /* cacheId */ cacheFileLocation,
-      /* directory */ undefined,
-      useChecksum,
-    );
-  }
+		this.#fileEntryCache = fileEntryCache.create(/* cacheId */ cacheFileLocation, /* directory */ undefined, useChecksum);
+	}
 
-  /**
-   * @param {string} filePath
-   * @param {any} options
-   */
-  existsAvailableFormatResultsCache(filePath, options) {
-    const fileDescriptor = this.#fileEntryCache.getFileDescriptor(filePath);
+	/**
+	 * @param {string} filePath
+	 * @param {any} options
+	 */
+	existsAvailableFormatResultsCache(filePath, options) {
+		const fileDescriptor = this.#fileEntryCache.getFileDescriptor(filePath);
 
-    /* c8 ignore next 3 */
-    if (fileDescriptor.notFound) {
-      return false;
-    }
+		/* c8 ignore next 3 */
+		if (fileDescriptor.notFound) {
+			return false;
+		}
 
-    const hashOfOptions = getHashOfOptions(options);
-    const meta = getMetadataFromFileDescriptor(fileDescriptor);
-    const changed =
-      fileDescriptor.changed || meta.hashOfOptions !== hashOfOptions;
+		const hashOfOptions = getHashOfOptions(options);
+		const meta = getMetadataFromFileDescriptor(fileDescriptor);
+		const changed = fileDescriptor.changed || meta.hashOfOptions !== hashOfOptions;
 
-    return !changed;
-  }
+		return !changed;
+	}
 
-  /**
-   * @param {string} filePath
-   * @param {any} options
-   */
-  setFormatResultsCache(filePath, options) {
-    const fileDescriptor = this.#fileEntryCache.getFileDescriptor(filePath);
-    const meta = getMetadataFromFileDescriptor(fileDescriptor);
-    if (fileDescriptor && !fileDescriptor.notFound) {
-      meta.hashOfOptions = getHashOfOptions(options);
-    }
-  }
+	/**
+	 * @param {string} filePath
+	 * @param {any} options
+	 */
+	setFormatResultsCache(filePath, options) {
+		const fileDescriptor = this.#fileEntryCache.getFileDescriptor(filePath);
+		const meta = getMetadataFromFileDescriptor(fileDescriptor);
+		if (fileDescriptor && !fileDescriptor.notFound) {
+			meta.hashOfOptions = getHashOfOptions(options);
+		}
+	}
 
-  /**
-   * @param {string} filePath
-   */
-  removeFormatResultsCache(filePath) {
-    this.#fileEntryCache.removeEntry(filePath);
-  }
+	/**
+	 * @param {string} filePath
+	 */
+	removeFormatResultsCache(filePath) {
+		this.#fileEntryCache.removeEntry(filePath);
+	}
 
-  reconcile() {
-    this.#fileEntryCache.reconcile();
-  }
+	reconcile() {
+		this.#fileEntryCache.reconcile();
+	}
 }
 
 export default FormatResultsCache;

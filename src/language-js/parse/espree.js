@@ -1,44 +1,44 @@
-import { parse as espreeParse } from "espree";
+import {parse as espreeParse} from 'espree';
 
-import createError from "../../common/parser-create-error.js";
-import tryCombinations from "../../utils/try-combinations.js";
-import postprocess from "./postprocess/index.js";
-import createParser from "./utils/create-parser.js";
-import getSourceType from "./utils/get-source-type.js";
+import createError from '../../common/parser-create-error.js';
+import tryCombinations from '../../utils/try-combinations.js';
+import postprocess from './postprocess/index.js';
+import createParser from './utils/create-parser.js';
+import getSourceType from './utils/get-source-type.js';
 
 /** @type {import("espree").Options} */
 const parseOptions = {
-  ecmaVersion: "latest",
-  range: true,
-  loc: true,
-  comment: true,
-  tokens: true,
-  sourceType: "module",
-  ecmaFeatures: {
-    jsx: true,
-    globalReturn: true,
-    impliedStrict: false,
-  },
+	ecmaVersion: 'latest',
+	range: true,
+	loc: true,
+	comment: true,
+	tokens: true,
+	sourceType: 'module',
+	ecmaFeatures: {
+		jsx: true,
+		globalReturn: true,
+		impliedStrict: false,
+	},
 };
 
 function createParseError(error) {
-  const { message, lineNumber, column } = error;
+	const {message, lineNumber, column} = error;
 
-  /* c8 ignore next 3 */
-  if (typeof lineNumber !== "number") {
-    return error;
-  }
+	/* c8 ignore next 3 */
+	if (typeof lineNumber !== 'number') {
+		return error;
+	}
 
-  return createError(message, {
-    loc: { start: { line: lineNumber, column } },
-    cause: error,
-  });
+	return createError(message, {
+		loc: {start: {line: lineNumber, column}},
+		cause: error,
+	});
 }
 
 function parse(text, options = {}) {
-  const sourceType = getSourceType(options);
-  // prettier-ignore
-  const combinations = (
+	const sourceType = getSourceType(options);
+	// prettier-ignore
+	const combinations = (
     sourceType
       ? /** @type {const} */([sourceType])
       : /** @type {const} */(["module", "script"])
@@ -46,14 +46,14 @@ function parse(text, options = {}) {
     (sourceType) => () => espreeParse(text, { ...parseOptions, sourceType })
   );
 
-  let ast;
-  try {
-    ast = tryCombinations(combinations);
-  } catch (/** @type {any} */ { errors: [error] }) {
-    throw createParseError(error);
-  }
+	let ast;
+	try {
+		ast = tryCombinations(combinations);
+	} catch (/** @type {any} */ {errors: [error]}) {
+		throw createParseError(error);
+	}
 
-  return postprocess(ast, { text });
+	return postprocess(ast, {text});
 }
 
 export const espree = createParser(parse);

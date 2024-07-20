@@ -17,7 +17,7 @@ import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
 import eslintPluginPrettierInternalRules from './scripts/tools/eslint-plugin-prettier-internal-rules/index.js';
 
-const toPath = (file)=>url.fileURLToPath(new URL(file, import.meta.url));
+const toPath = (file) => url.fileURLToPath(new URL(file, import.meta.url));
 const compat = new FlatCompat({baseDirectory: toPath('./')});
 eslintPluginReactConfigRecommended.plugins.react = fixupPluginRules(eslintPluginReactConfigRecommended.plugins.react);
 
@@ -42,7 +42,9 @@ website/static/lib/
 scripts/benchmark/*/
 **/.yarn/**
 **/.pnp.*
-`.split('\n').filter((pattern)=>pattern && !pattern.startsWith('#'));
+`
+	.split('\n')
+	.filter((pattern) => pattern && !pattern.startsWith('#'));
 
 export default [
 	eslintPluginJs.configs.recommended,
@@ -423,7 +425,7 @@ export default [
 			],
 		},
 	},
-	...compat.env({browser: true, worker: true}).map((config)=>({...config, files: ['website/**/*']})),
+	...compat.env({browser: true, worker: true}).map((config) => ({...config, files: ['website/**/*']})),
 	// Use `Object.assign` since it contains non-enumerable properties
 	Object.assign(eslintPluginReactConfigRecommended, {
 		files: ['website/**/*'],
@@ -466,4 +468,3 @@ export default [
 		},
 	},
 ];
-

@@ -1,4 +1,4 @@
-import { htmlTagNames } from "html-tag-names";
+import {htmlTagNames} from 'html-tag-names';
 
 const HTML_TAGS = new Set(htmlTagNames);
 

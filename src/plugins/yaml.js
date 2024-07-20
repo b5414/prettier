@@ -1,1 +1,1 @@
-export * from "../language-yaml/index.js";
+export * from '../language-yaml/index.js';

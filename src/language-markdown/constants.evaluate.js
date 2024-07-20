@@ -1,85 +1,70 @@
-import { all as getCjkCharset } from "cjk-regex";
-import { Charset } from "regexp-util";
-import unicodeRegex from "unicode-regex";
+import {all as getCjkCharset} from 'cjk-regex';
+import {Charset} from 'regexp-util';
+import unicodeRegex from 'unicode-regex';
 
 const cjkCharset = new Charset(
-  getCjkCharset(),
-  unicodeRegex({
-    Script_Extensions: ["Han", "Katakana", "Hiragana", "Hangul", "Bopomofo"],
-    General_Category: [
-      "Other_Letter",
-      "Letter_Number",
-      "Other_Symbol",
-      "Modifier_Letter",
-      "Modifier_Symbol",
-      "Nonspacing_Mark",
-    ],
-  }),
+	getCjkCharset(),
+	unicodeRegex({
+		Script_Extensions: ['Han', 'Katakana', 'Hiragana', 'Hangul', 'Bopomofo'],
+		General_Category: ['Other_Letter', 'Letter_Number', 'Other_Symbol', 'Modifier_Letter', 'Modifier_Symbol', 'Nonspacing_Mark'],
+	}),
 );
 const variationSelectorsCharset = unicodeRegex({
-  Block: ["Variation_Selectors", "Variation_Selectors_Supplement"],
+	Block: ['Variation_Selectors', 'Variation_Selectors_Supplement'],
 });
 
-const CJK_REGEXP = new RegExp(
-  `(?:${cjkCharset.toString()})(?:${variationSelectorsCharset.toString()})?`,
-  "u",
-);
+const CJK_REGEXP = new RegExp(`(?:${cjkCharset.toString()})(?:${variationSelectorsCharset.toString()})?`, 'u');
 
 const asciiPunctuationCharacters = [
-  "!",
-  '"',
-  "#",
-  "$",
-  "%",
-  "&",
-  "'",
-  "(",
-  ")",
-  "*",
-  "+",
-  ",",
-  "-",
-  ".",
-  "/",
-  ":",
-  ";",
-  "<",
-  "=",
-  ">",
-  "?",
-  "@",
-  "[",
-  "\\",
-  "]",
-  "^",
-  "_",
-  "`",
-  "{",
-  "|",
-  "}",
-  "~",
+	'!',
+	'"',
+	'#',
+	'$',
+	'%',
+	'&',
+	"'",
+	'(',
+	')',
+	'*',
+	'+',
+	',',
+	'-',
+	'.',
+	'/',
+	':',
+	';',
+	'<',
+	'=',
+	'>',
+	'?',
+	'@',
+	'[',
+	'\\',
+	']',
+	'^',
+	'_',
+	'`',
+	'{',
+	'|',
+	'}',
+	'~',
 ];
 
 // https://spec.commonmark.org/0.25/#punctuation-character
 // https://unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
 const unicodePunctuationClasses = [
-  /* Pc */ "Connector_Punctuation",
-  /* Pd */ "Dash_Punctuation",
-  /* Pe */ "Close_Punctuation",
-  /* Pf */ "Final_Punctuation",
-  /* Pi */ "Initial_Punctuation",
-  /* Po */ "Other_Punctuation",
-  /* Ps */ "Open_Punctuation",
+	/* Pc */ 'Connector_Punctuation',
+	/* Pd */ 'Dash_Punctuation',
+	/* Pe */ 'Close_Punctuation',
+	/* Pf */ 'Final_Punctuation',
+	/* Pi */ 'Initial_Punctuation',
+	/* Po */ 'Other_Punctuation',
+	/* Ps */ 'Open_Punctuation',
 ];
 
 const PUNCTUATION_REGEXP = new RegExp(
-  `(?:${[
-    new Charset(...asciiPunctuationCharacters).toRegExp().source,
-    ...unicodePunctuationClasses.map(
-      (charset) => `\\p{General_Category=${charset}}`,
-    ),
-  ].join("|")})`,
-  "u",
+	`(?:${[new Charset(...asciiPunctuationCharacters).toRegExp().source, ...unicodePunctuationClasses.map((charset) => `\\p{General_Category=${charset}}`)].join('|')})`,
+	'u',
 );
 
-export { CJK_REGEXP, PUNCTUATION_REGEXP };
+export {CJK_REGEXP, PUNCTUATION_REGEXP};

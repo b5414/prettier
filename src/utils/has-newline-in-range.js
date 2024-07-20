@@ -5,12 +5,12 @@
  * @returns {boolean}
  */
 function hasNewlineInRange(text, startIndex, endIndex) {
-  for (let i = startIndex; i < endIndex; ++i) {
-    if (text.charAt(i) === "\n") {
-      return true;
-    }
-  }
-  return false;
+	for (let i = startIndex; i < endIndex; ++i) {
+		if (text.charAt(i) === '\n') {
+			return true;
+		}
+	}
+	return false;
 }
 
 export default hasNewlineInRange;

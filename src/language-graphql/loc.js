@@ -1,9 +1,9 @@
 function locStart(nodeOrToken) {
-  return nodeOrToken.loc.start;
+	return nodeOrToken.loc.start;
 }
 
 function locEnd(nodeOrToken) {
-  return nodeOrToken.loc.end;
+	return nodeOrToken.loc.end;
 }
 
-export { locEnd, locStart };
+export {locEnd, locStart};

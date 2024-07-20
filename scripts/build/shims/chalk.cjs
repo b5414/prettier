@@ -1,5 +1,5 @@
-"use strict";
+'use strict';
 
-const chalk = new Proxy(String, { get: () => chalk });
+const chalk = new Proxy(String, {get: () => chalk});
 
 module.exports = chalk;

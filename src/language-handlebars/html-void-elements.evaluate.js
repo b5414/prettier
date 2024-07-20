@@ -1,4 +1,4 @@
-import { getVoidTags } from "@glimmer/syntax";
+import {getVoidTags} from '@glimmer/syntax';
 
 const htmlVoidElements = new Set(getVoidTags());
 

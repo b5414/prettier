@@ -1,1 +1,1 @@
-export * as parsers from "../language-js/parse/typescript.js";
+export * as parsers from '../language-js/parse/typescript.js';

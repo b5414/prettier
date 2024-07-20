@@ -3,19 +3,19 @@
  */
 
 function locStart(node) {
-  const start = node.range?.[0] ?? node.start;
+	const start = node.range?.[0] ?? node.start;
 
-  // Handle nodes with decorators. They should start at the first decorator
-  const firstDecorator = (node.declaration?.decorators ?? node.decorators)?.[0];
-  if (firstDecorator) {
-    return Math.min(locStart(firstDecorator), start);
-  }
+	// Handle nodes with decorators. They should start at the first decorator
+	const firstDecorator = (node.declaration?.decorators ?? node.decorators)?.[0];
+	if (firstDecorator) {
+		return Math.min(locStart(firstDecorator), start);
+	}
 
-  return start;
+	return start;
 }
 
 function locEnd(node) {
-  return node.range?.[1] ?? node.end;
+	return node.range?.[1] ?? node.end;
 }
 
 /**
@@ -24,8 +24,8 @@ function locEnd(node) {
  * @returns {boolean}
  */
 function hasSameLocStart(nodeA, nodeB) {
-  const nodeAStart = locStart(nodeA);
-  return Number.isInteger(nodeAStart) && nodeAStart === locStart(nodeB);
+	const nodeAStart = locStart(nodeA);
+	return Number.isInteger(nodeAStart) && nodeAStart === locStart(nodeB);
 }
 
 /**
@@ -34,8 +34,8 @@ function hasSameLocStart(nodeA, nodeB) {
  * @returns {boolean}
  */
 function hasSameLocEnd(nodeA, nodeB) {
-  const nodeAEnd = locEnd(nodeA);
-  return Number.isInteger(nodeAEnd) && nodeAEnd === locEnd(nodeB);
+	const nodeAEnd = locEnd(nodeA);
+	return Number.isInteger(nodeAEnd) && nodeAEnd === locEnd(nodeB);
 }
 
 /**
@@ -44,7 +44,7 @@ function hasSameLocEnd(nodeA, nodeB) {
  * @returns {boolean}
  */
 function hasSameLoc(nodeA, nodeB) {
-  return hasSameLocStart(nodeA, nodeB) && hasSameLocEnd(nodeA, nodeB);
+	return hasSameLocStart(nodeA, nodeB) && hasSameLocEnd(nodeA, nodeB);
 }
 
-export { hasSameLoc, hasSameLocStart, locEnd, locStart };
+export {hasSameLoc, hasSameLocStart, locEnd, locStart};

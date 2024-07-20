@@ -1,6 +1,6 @@
-import { resolveConfig } from "../config/resolve-config.js";
-import { isIgnored } from "../utils/ignore.js";
-import inferParser from "../utils/infer-parser.js";
+import {resolveConfig} from '../config/resolve-config.js';
+import {isIgnored} from '../utils/ignore.js';
+import inferParser from '../utils/infer-parser.js';
 
 /**
  * @typedef {{ ignorePath?: string | URL | (string | URL)[], withNodeModules?: boolean, plugins: object, resolveConfig?: boolean }} FileInfoOptions
@@ -17,38 +17,36 @@ import inferParser from "../utils/infer-parser.js";
  * internally by the method wrapper. See withPlugins() in index.js.
  */
 async function getFileInfo(file, options) {
-  if (typeof file !== "string" && !(file instanceof URL)) {
-    throw new TypeError(
-      `expect \`file\` to be a string or URL, got \`${typeof file}\``,
-    );
-  }
+	if (typeof file !== 'string' && !(file instanceof URL)) {
+		throw new TypeError(`expect \`file\` to be a string or URL, got \`${typeof file}\``);
+	}
 
-  let { ignorePath, withNodeModules } = options;
-  // In API we allow single `ignorePath`
-  if (!Array.isArray(ignorePath)) {
-    ignorePath = [ignorePath];
-  }
+	let {ignorePath, withNodeModules} = options;
+	// In API we allow single `ignorePath`
+	if (!Array.isArray(ignorePath)) {
+		ignorePath = [ignorePath];
+	}
 
-  const ignored = await isIgnored(file, { ignorePath, withNodeModules });
+	const ignored = await isIgnored(file, {ignorePath, withNodeModules});
 
-  let inferredParser;
-  if (!ignored) {
-    inferredParser = await getParser(file, options);
-  }
+	let inferredParser;
+	if (!ignored) {
+		inferredParser = await getParser(file, options);
+	}
 
-  return {
-    ignored,
-    inferredParser: inferredParser ?? null,
-  };
+	return {
+		ignored,
+		inferredParser: inferredParser ?? null,
+	};
 }
 
 async function getParser(file, options) {
-  let config;
-  if (options.resolveConfig !== false) {
-    config = await resolveConfig(file);
-  }
+	let config;
+	if (options.resolveConfig !== false) {
+		config = await resolveConfig(file);
+	}
 
-  return config?.parser ?? inferParser(options, { physicalFile: file });
+	return config?.parser ?? inferParser(options, {physicalFile: file});
 }
 
 export default getFileInfo;
