@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 
-import {group, hardline, ifBreak, indent, softline} from '../../document/builders.js';
+import {group, hardline, ifBreak, indent, nospline} from '../../document/builders.js';
 import {printDanglingComments} from '../../main/comments/print.js';
 import hasNewlineInRange from '../../utils/has-newline-in-range.js';
 import {locEnd, locStart} from '../loc.js';
@@ -199,7 +199,7 @@ function printReturnOrThrowArgument(path, options, print) {
 				node.argument.type === 'ConditionalExpression' &&
 				(node.argument.consequent.type === 'ConditionalExpression' || node.argument.alternate.type === 'ConditionalExpression'))
 		) {
-			argumentDoc = group([ifBreak('('), indent([softline, argumentDoc]), softline, ifBreak(')')]);
+			argumentDoc = group([ifBreak('('), indent([nospline, argumentDoc]), nospline, ifBreak(')')]);
 		}
 
 		parts.push(' ', argumentDoc);

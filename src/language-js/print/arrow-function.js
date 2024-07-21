@@ -1,5 +1,5 @@
 import {ArgExpansionBailout} from '../../common/errors.js';
-import {group, ifBreak, indent, indentIfBreak, join, line, softline} from '../../document/builders.js';
+import {group, ifBreak, indent, indentIfBreak, join, line, softline, nospline} from '../../document/builders.js';
 import {removeLines, willBreak} from '../../document/utils.js';
 import {printCommentsSeparately, printDanglingComments} from '../../main/comments/print.js';
 import getNextNonSpaceNonCommentCharacterIndex from '../../utils/get-next-non-space-non-comment-character-index.js';
@@ -109,10 +109,10 @@ function printArrowFunction(path, options, print, args = {}) {
 	});
 
 	return group([
-		group(shouldIndentSignatures ? indent([softline, signaturesDoc]) : signaturesDoc, {shouldBreak: shouldBreakSignatures, id: chainGroupId}),
 		' =>',
+		group(shouldIndentSignatures ? indent([nospline, signaturesDoc]) : signaturesDoc, {shouldBreak: shouldBreakSignatures, id: chainGroupId}),
 		shouldPrintAsChain ? indentIfBreak(bodyDoc, {groupId: chainGroupId}) : group(bodyDoc),
-		shouldPrintAsChain && isCallee ? ifBreak(softline, '', {groupId: chainGroupId}) : '',
+		shouldPrintAsChain && isCallee ? ifBreak(nospline, '', {groupId: chainGroupId}) : '',
 	]);
 }
 

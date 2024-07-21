@@ -535,7 +535,9 @@ function printDocToString(doc, options) {
 				switch (mode) {
 					case MODE_FLAT:
 						if (!doc.hard) {
-							if (!doc.soft) {
+							if (doc.nospline) {
+								out.push('');
+							} else if (!doc.soft) {
 								out.push(' ');
 
 								pos += 1;
