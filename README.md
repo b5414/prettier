@@ -1,6 +1,6 @@
-# VPrettier V2
+# VPrettier V3
 
-let's go v2
+let's go
 
 ### init
 
