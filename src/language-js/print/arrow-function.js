@@ -1,5 +1,5 @@
 import {ArgExpansionBailout} from '../../common/errors.js';
-import {group, ifBreak, indent, indentIfBreak, join, line, softline} from '../../document/builders.js';
+import {group, ifBreak, indent, indentIfBreak, join, line, softline, nospline} from '../../document/builders.js';
 import {removeLines, willBreak} from '../../document/utils.js';
 import {printCommentsSeparately, printDanglingComments} from '../../main/comments/print.js';
 import getNextNonSpaceNonCommentCharacterIndex from '../../utils/get-next-non-space-non-comment-character-index.js';
@@ -109,8 +109,8 @@ function printArrowFunction(path, options, print, args = {}) {
 	});
 
 	return group([
-		group(shouldIndentSignatures ? indent([softline, signaturesDoc]) : signaturesDoc, {shouldBreak: shouldBreakSignatures, id: chainGroupId}),
-		' =>',
+		group(shouldIndentSignatures ? indent([nospline, signaturesDoc]) : signaturesDoc, {shouldBreak: shouldBreakSignatures, id: chainGroupId}),
+		'=>',
 		shouldPrintAsChain ? indentIfBreak(bodyDoc, {groupId: chainGroupId}) : group(bodyDoc),
 		shouldPrintAsChain && isCallee ? ifBreak(softline, '', {groupId: chainGroupId}) : '',
 	]);
@@ -121,7 +121,7 @@ function printArrowFunctionSignature(path, options, print, args) {
 	const parts = [];
 
 	if (node.async) {
-		parts.push('async ');
+		parts.push('async');
 	}
 
 	if (shouldPrintParamsWithoutParens(path, options)) {
@@ -184,7 +184,7 @@ function printArrowFunctionSignatures(path, args, {signatureDocs, shouldBreak}) 
 
 	const {parent, key} = path;
 	if ((key !== 'callee' && isCallLikeExpression(parent)) || isBinaryish(parent)) {
-		return group([signatureDocs[0],'/* arrow-function.js_23_11 */=>', indent([line, join([' =>', line], signatureDocs.slice(1))])], {shouldBreak});
+		return group([signatureDocs[0],'/* arrow-function.js_23_11 */=>', indent([line, join(['=>', line], signatureDocs.slice(1))])], {shouldBreak});
 	}
 
 	if (
@@ -192,10 +192,10 @@ function printArrowFunctionSignatures(path, args, {signatureDocs, shouldBreak}) 
 		// isAssignmentRhs
 		args.assignmentLayout
 	) {
-		return group(join([' =>', line], signatureDocs), {shouldBreak});
+		return group(join(['=>', line], signatureDocs), {shouldBreak});
 	}
 
-	return group(indent(join([' =>', line], signatureDocs)), {shouldBreak});
+	return group(indent(join(['=>', line], signatureDocs)), {shouldBreak});
 }
 
 /**

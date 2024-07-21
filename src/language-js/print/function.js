@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 
-import {group, hardline, ifBreak, indent, softline} from '../../document/builders.js';
+import {group, hardline, ifBreak, indent, nospline} from '../../document/builders.js';
 import {printDanglingComments} from '../../main/comments/print.js';
 import hasNewlineInRange from '../../utils/has-newline-in-range.js';
 import {locEnd, locStart} from '../loc.js';
@@ -61,7 +61,7 @@ function printFunction(path, print, options, args) {
 		}
 	}
 
-	const parts = [printDeclareToken(path), node.async ? 'async'/* function.js_23_80 */: '', `function${node.generator ? '*' : ''} `, node.id ? print('id') : ''];
+	const parts = [printDeclareToken(path), node.async ? 'async' : '', `function${node.generator ? '*' : ''} `, node.id ? print('id') : ''];
 
 	const parametersDoc = printFunctionParameters(path, print, options, expandArg);
 	const returnTypeDoc = printReturnType(path, print);
@@ -70,7 +70,7 @@ function printFunction(path, print, options, args) {
 	parts.push(
 		printFunctionTypeParameters(path, options, print),
 		group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]),
-		node.body ? '/* function.js_1_79 */' : '',
+		node.body ? '/* function.js_1_79 */' : '/* function.js_1_79_2 */',
 		print('body'),
 	);
 
@@ -131,7 +131,7 @@ function printMethodValue(path, options, print) {
 	if (node.body) {
 		parts.push('/* function.js_1_77 */', print('body'));
 	} else {
-		parts.push(options.semi ? ';' : '');
+		parts.push(options.semi ? ';' : '/* function.js_1_77_2 */');
 	}
 
 	return parts;
@@ -199,7 +199,7 @@ function printReturnOrThrowArgument(path, options, print) {
 				node.argument.type === 'ConditionalExpression' &&
 				(node.argument.consequent.type === 'ConditionalExpression' || node.argument.alternate.type === 'ConditionalExpression'))
 		) {
-			argumentDoc = group([ifBreak('('), indent([softline, argumentDoc]), softline, ifBreak(')')]);
+			argumentDoc = group([ifBreak('('), indent([nospline, argumentDoc]), nospline, ifBreak(')')]);
 		}
 
 		parts.push('/* function.js_1_76 */', argumentDoc);

@@ -171,6 +171,7 @@ const literallineWithoutBreakParent = {
 
 const line = {type: DOC_TYPE_LINE};
 const softline = {type: DOC_TYPE_LINE, soft: true};
+const nospline = {type: DOC_TYPE_LINE, nospline: true};
 const hardline = [hardlineWithoutBreakParent, breakParent];
 const literalline = [literallineWithoutBreakParent, breakParent];
 
@@ -255,6 +256,7 @@ export {
 	literalline,
 	literallineWithoutBreakParent,
 	markAsRoot,
+	nospline,
 	softline,
 	trim,
 };

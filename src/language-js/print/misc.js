@@ -1,4 +1,4 @@
-import {indent, line} from '../../document/builders.js';
+import {indent, nospline} from '../../document/builders.js';
 import {isCallExpression, isMemberExpression} from '../utils/index.js';
 import {printTypeAnnotationProperty} from './type-annotation.js';
 
@@ -98,7 +98,7 @@ function adjustClause(node, clause, forceSpace) {
 		return ['/* misc.js_1_123 */', clause];
 	}
 
-	return indent([line, clause]);
+	return indent([nospline, clause]);
 }
 
 function printRestSpread(path, print) {

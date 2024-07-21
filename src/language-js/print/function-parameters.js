@@ -200,6 +200,8 @@ function shouldGroupFunctionParameters(functionNode, returnTypeDoc) {
  * @param {AstPath} path
  */
 function isDecoratedFunction(path) {
+	return false;
+
 	return path.match(
 		(node) => node.type === 'ArrowFunctionExpression' && node.body.type === 'BlockStatement',
 		(node, name) => {
@@ -228,6 +230,8 @@ function isDecoratedFunction(path) {
 }
 
 function shouldBreakFunctionParameters(functionNode) {
+	return false;
+
 	const parameters = getFunctionParameters(functionNode);
 	return parameters.length > 1 && parameters.some((parameter) => parameter.type === 'TSParameterProperty');
 }
