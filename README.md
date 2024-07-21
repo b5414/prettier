@@ -12,77 +12,102 @@ let's go v2
 ### rest
 
 ```js
+const xaxa = (configPlace, frame, facade, params)=>{
+	this.configPlace_.Params.on(
+		'startEdit',
+		function (){
+			this.frame_.stop_events();
+		},
+		function (a, b, c, s){
+			this.frame_.stop_events();
+		},
+		()=>{},
+		this,
+		true,
+	);
+
+	this.configPlace_.Params.on(
+		'startEdit 2222222222',
+		function (a, b, s){
+			'еуые';
+		},
+		this,
+		true,
+	);
+};
+
+const arr = [0, 1];
+
+const arr2 = [
+	0,
+	//
+	1,
+];
+
+const x = (y)=>{
+	return y;
+};
+
+const z = async(y)=>y;
+
+const x2 = async(y)=>{
+	return y;
+};
+
+//
+//
+//
+
+// arrow-functions
+await new Promise((done)=>done(true));
+
 // /function.js
-const a = {async_func(){}};
-function func()_{}
-const obj = {get_isInstalled(){}};
-func2({a:1,func(){},b:2});
-const func = async_()=>{};
-const func = async()_=>{}; 
-const func = ()_=>{};
-const func = ()=>_{};
-const func = ()=>_();
-if()return_(func() < 1); 
+const a = {async func1(){}};
+function func(a){}
+const obj = {
+	get isInstalled(){
+		return 0;
+	},
+};
+func({a: 1, func(){}, b: 2});
+const func3 = async()=>{};
+const func4 = async()=>{};
+const func5 = ()=>{};
+const func6 = ()=>{};
+const func7 = ()=>({});
+if(true && a)return func() < 1;
 
 // /member-chain.js
-func()_.func()_.func()_.func();
+func().func().func().func();
 
 // /misc.js
-if()_{}
-if()_func();else_func();
+if(true && a){
+}
+if(true && a)func();
+else func();
 
 // /printer-estree.js
-with_(
-if_(
-if(){}_else if(){}
-else_func(); 
-for_(;;)
-for_(
-while_(
-for_(
-for await_(
-while_func probably, idk
-while_(
-try_{}catch(e){}_finally_{}
-try{}catch_(e)_{}
-try{}catch_(e){}
-switch_()_{}
-```
-
-```js
-// /function.js
-const a = {async    func(){}};
-function func()    {}
-const obj = {get    isInstalled(){}};
-func2({a:1,func(){},b:2});
-const func = async    ()=>{};
-const func = async()    =>{}; 
-const func = ()    =>{};
-const func = ()=>    {};
-const func = ()=>    ();
-if()return    (func() < 1); 
-
-// /member-chain.js
-func()    .func()    .func()    .func();
-
-// /misc.js
-if()    {}
-if()    func();else    func();
-
-// /printer-estree.js
-with    (
-if    (
-if(){}    else if(){}
-else    func(); 
-for    (;;)
-for    (
-while    (
-for    (
-for await    (
-while    func probably, idk
-while    (
-try    {}catch(e){}    finally    {}
-try{}catch    (e)    {}
-try{}catch    (e){}
-switch    ()    {}
+with(a){
+}
+if(true && a){
+}else{
+}
+if(true && a){
+}else if(true && a){
+}else func();
+for(;;)for(let x = 0; x < 1; x++){}
+while(true && a){}
+// for await    (let x=0; x < 1; x++){}
+try{
+}catch(e){
+}finally{
+}
+try{
+}catch(e){}
+try{
+}catch(e){}
+switch(arr[0]){
+	case 0:
+		break;
+}
 ```
