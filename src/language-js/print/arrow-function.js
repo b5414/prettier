@@ -109,8 +109,8 @@ function printArrowFunction(path, options, print, args = {}) {
 	});
 
 	return group([
-		' =>',
 		group(shouldIndentSignatures ? indent([nospline, signaturesDoc]) : signaturesDoc, {shouldBreak: shouldBreakSignatures, id: chainGroupId}),
+		'=>',
 		shouldPrintAsChain ? indentIfBreak(bodyDoc, {groupId: chainGroupId}) : group(bodyDoc),
 		shouldPrintAsChain && isCallee ? ifBreak(nospline, '', {groupId: chainGroupId}) : '',
 	]);
@@ -121,7 +121,7 @@ function printArrowFunctionSignature(path, options, print, args) {
 	const parts = [];
 
 	if (node.async) {
-		parts.push('async ');
+		parts.push('async');
 	}
 
 	if (shouldPrintParamsWithoutParens(path, options)) {
@@ -145,7 +145,7 @@ function printArrowFunctionSignature(path, options, print, args) {
 		},
 	});
 	if (dangling) {
-		parts.push(' ', dangling);
+		parts.push('', dangling);
 	}
 	return parts;
 }
@@ -184,7 +184,7 @@ function printArrowFunctionSignatures(path, args, {signatureDocs, shouldBreak}) 
 
 	const {parent, key} = path;
 	if ((key !== 'callee' && isCallLikeExpression(parent)) || isBinaryish(parent)) {
-		return group([signatureDocs[0], ' =>', indent([line, join([' =>', line], signatureDocs.slice(1))])], {shouldBreak});
+		return group([signatureDocs[0], '=>', indent([line, join(['=>', line], signatureDocs.slice(1))])], {shouldBreak});
 	}
 
 	if (
@@ -192,10 +192,10 @@ function printArrowFunctionSignatures(path, args, {signatureDocs, shouldBreak}) 
 		// isAssignmentRhs
 		args.assignmentLayout
 	) {
-		return group(join([' =>', line], signatureDocs), {shouldBreak});
+		return group(join(['=>', line], signatureDocs), {shouldBreak});
 	}
 
-	return group(indent(join([' =>', line], signatureDocs)), {shouldBreak});
+	return group(indent(join(['=>', line], signatureDocs)), {shouldBreak});
 }
 
 /**
@@ -220,14 +220,14 @@ function printArrowFunctionBody(path, options, args, {bodyDoc, bodyComments, fun
 	const trailingSpace = (args.expandLastArg || parent.type === 'JSXExpressionContainer') && !hasComment(node) ? softline : '';
 
 	if (shouldPutBodyOnSameLine && shouldAddParensIfNotBreak(functionBody)) {
-		return [' ', group([ifBreak('', '('), indent([softline, bodyDoc]), ifBreak('', ')'), trailingComma, trailingSpace]), bodyComments];
+		return ['', group([ifBreak('', '('), indent([softline, bodyDoc]), ifBreak('', ')'), trailingComma, trailingSpace]), bodyComments];
 	}
 
 	if (shouldAlwaysAddParens(functionBody)) {
 		bodyDoc = group(['(', indent([softline, bodyDoc]), softline, ')']);
 	}
 
-	return shouldPutBodyOnSameLine ? [' ', bodyDoc, bodyComments] : [indent([line, bodyDoc, bodyComments]), trailingComma, trailingSpace];
+	return shouldPutBodyOnSameLine ? ['', bodyDoc, bodyComments] : [indent([line, bodyDoc, bodyComments]), trailingComma, trailingSpace];
 }
 
 export {printArrowFunction};

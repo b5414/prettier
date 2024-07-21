@@ -95,7 +95,7 @@ function adjustClause(node, clause, forceSpace) {
 	}
 
 	if (node.type === 'BlockStatement' || forceSpace) {
-		return [' ', clause];
+		return [clause];
 	}
 
 	return indent([nospline, clause]);

@@ -281,17 +281,17 @@ function printEstree(path, options, print, args) {
 			return group(parts);
 		}
 		case 'WithStatement':
-			return group(['with (', print('object'), ')', adjustClause(node.body, print('body'))]);
+			return group(['with(', print('object'), ')', adjustClause(node.body, print('body'))]);
 		case 'IfStatement': {
 			const consequent = adjustClause(node.consequent, print('consequent'));
-			const opening = group(['if (', group([indent([softline, print('test')]), softline]), ')', consequent]);
+			const opening = group(['if(', group([indent([softline, print('test')]), softline]), ')', consequent]);
 
 			parts.push(opening);
 
 			if (node.alternate) {
 				const commentOnOwnLine = hasComment(node.consequent, CommentCheckFlags.Trailing | CommentCheckFlags.Line) || needsHardlineAfterDanglingComment(node);
 				const elseOnSameLine = node.consequent.type === 'BlockStatement' && !commentOnOwnLine;
-				parts.push(elseOnSameLine ? ' ' : hardline);
+				parts.push(elseOnSameLine ? '' : hardline);
 
 				if (hasComment(node, CommentCheckFlags.Dangling)) {
 					parts.push(printDanglingComments(path, options), commentOnOwnLine ? hardline : ' ');
@@ -312,18 +312,18 @@ function printEstree(path, options, print, args) {
 			const printedComments = dangling ? [dangling, softline] : '';
 
 			if (!node.init && !node.test && !node.update) {
-				return [printedComments, group(['for (;;)', body])];
+				return [printedComments, group(['for(;;)', body])];
 			}
 
-			return [printedComments, group(['for (', group([indent([softline, print('init'), ';', line, print('test'), ';', line, print('update')]), softline]), ')', body])];
+			return [printedComments, group(['for(', group([indent([softline, print('init'), ';', line, print('test'), ';', line, print('update')]), softline]), ')', body])];
 		}
 		case 'WhileStatement':
-			return group(['while (', group([indent([softline, print('test')]), softline]), ')', adjustClause(node.body, print('body'))]);
+			return group(['while(', group([indent([softline, print('test')]), softline]), ')', adjustClause(node.body, print('body'))]);
 		case 'ForInStatement':
-			return group(['for (', print('left'), ' in ', print('right'), ')', adjustClause(node.body, print('body'))]);
+			return group(['for(', print('left'), ' in ', print('right'), ')', adjustClause(node.body, print('body'))]);
 
 		case 'ForOfStatement':
-			return group(['for', node.await ? ' await' : '', ' (', print('left'), ' of ', print('right'), ')', adjustClause(node.body, print('body'))]);
+			return group(['for', node.await ? ' await' : '', '(', print('left'), ' of ', print('right'), ')', adjustClause(node.body, print('body'))]);
 
 		case 'DoWhileStatement': {
 			const clause = adjustClause(node.body, print('body'));
@@ -335,7 +335,7 @@ function printEstree(path, options, print, args) {
 			} else {
 				parts.push(hardline);
 			}
-			parts.push('while (', group([indent([softline, print('test')]), softline]), ')', semi);
+			parts.push('while(', group([indent([softline, print('test')]), softline]), ')', semi);
 
 			return parts;
 		}
@@ -359,7 +359,7 @@ function printEstree(path, options, print, args) {
 
 			return [print('label'), ': ', print('body')];
 		case 'TryStatement':
-			return ['try ', print('block'), node.handler ? [' ', print('handler')] : '', node.finalizer ? [' finally ', print('finalizer')] : ''];
+			return ['try', print('block'), node.handler ? ['', print('handler')] : '', node.finalizer ? ['finally', print('finalizer')] : ''];
 		case 'CatchClause':
 			if (node.param) {
 				const parameterHasComments = hasComment(
@@ -374,15 +374,15 @@ function printEstree(path, options, print, args) {
 				);
 				const param = print('param');
 
-				return ['catch ', parameterHasComments ? ['(', indent([softline, param]), softline, ') '] : ['(', param, ') '], print('body')];
+				return ['catch', parameterHasComments ? ['(', indent([softline, param]), softline, ')'] : ['(', param, ')'], print('body')];
 			}
 
-			return ['catch ', print('body')];
+			return ['catch', print('body')];
 		// Note: ignoring n.lexical because it has no printing consequences.
 		case 'SwitchStatement':
 			return [
-				group(['switch (', indent([softline, print('discriminant')]), softline, ')']),
-				' {',
+				group(['switch(', indent([softline, print('discriminant')]), softline, ')']),
+				'{',
 				node.cases.length > 0
 					? indent([
 							hardline,

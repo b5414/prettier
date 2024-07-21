@@ -70,7 +70,6 @@ function printFunction(path, print, options, args) {
 	parts.push(
 		printFunctionTypeParameters(path, options, print),
 		group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]),
-		node.body ? ' ' : '',
 		print('body'),
 	);
 
@@ -129,7 +128,7 @@ function printMethodValue(path, options, print) {
 	];
 
 	if (node.body) {
-		parts.push(' ', print('body'));
+		parts.push(print('body'));
 	} else {
 		parts.push(options.semi ? ';' : '');
 	}
