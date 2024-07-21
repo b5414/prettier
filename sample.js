@@ -52,6 +52,9 @@ return y;
 // 
 
 
+// arrow-functions
+await new Promise((done)=>    done(true));
+
 // /function.js
 const a = {async    func1(){}};
 function func(a)    {}
@@ -73,7 +76,7 @@ if(true && a)    func();else    func();
 
 // /printer-estree.js
 with    (a){}
-if    (true && a){}
+if    (true && a){}else    {}
 if(true && a){}    else if(true && a){}
 else    func(); 
 for    (;;)

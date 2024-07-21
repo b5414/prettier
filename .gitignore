@@ -44,3 +44,5 @@ package-lock.json
 # b5414
 .cache
 yarn.lock
+distDev
+temp
