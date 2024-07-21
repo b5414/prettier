@@ -111,6 +111,8 @@ function findInDoc(doc, fn, defaultValue) {
 }
 
 function willBreakFn(doc) {
+	return false;
+
 	if (doc.type === DOC_TYPE_GROUP && doc.break) {
 		return true;
 	}

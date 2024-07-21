@@ -48,7 +48,8 @@ function printArrowFunction(path, options, print, args = {}) {
 	/** @type {Doc[]} */
 	const bodyComments = [];
 	let shouldBreakChain = false;
-	const shouldPrintAsChain = !args.expandLastArg && path.node.body.type === 'ArrowFunctionExpression';
+	// const shouldPrintAsChain = !args.expandLastArg && path.node.body.type === 'ArrowFunctionExpression';
+	const shouldPrintAsChain = true;
 	let functionBody;
 
 	(function rec() {
@@ -78,7 +79,8 @@ function printArrowFunction(path, options, print, args = {}) {
 
 	// We want to always keep these types of nodes on the same line
 	// as the arrow.
-	const shouldPutBodyOnSameLine =
+	const shouldPutBodyOnSameLine = true;
+	const shouldPutBodyOnSameLine2 =
 		!hasLeadingOwnLineComment(options.originalText, functionBody) &&
 		(shouldAlwaysAddParens(functionBody) || mayBreakAfterShortPrefix(functionBody, bodyDoc, options) || (!shouldBreakChain && shouldAddParensIfNotBreak(functionBody)));
 

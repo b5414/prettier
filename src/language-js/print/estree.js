@@ -297,7 +297,8 @@ function printEstree(path, options, print, args) {
 					parts.push(printDanglingComments(path, options), commentOnOwnLine ? hardline : ' ');
 				}
 
-				parts.push('else', group(adjustClause(node.alternate, print('alternate'), node.alternate.type === 'IfStatement')));
+				const specialSpace = node.alternate.type !== 'BlockStatement' ? ' ' : '';
+				parts.push('else' + specialSpace, group(adjustClause(node.alternate, print('alternate'), node.alternate.type === 'IfStatement')));
 			}
 
 			return parts;

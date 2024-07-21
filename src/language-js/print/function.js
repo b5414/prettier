@@ -152,6 +152,8 @@ function canPrintParamsWithoutParens(node) {
 }
 
 function shouldPrintParamsWithoutParens(path, options) {
+	return false;
+
 	if (options.arrowParens === 'always') {
 		return false;
 	}

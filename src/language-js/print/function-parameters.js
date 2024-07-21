@@ -55,7 +55,7 @@ function printFunctionParameters(path, print, options, expandArg, printTypeParam
 		}
 		printed.push(',');
 		if (isParametersInTestCall || shouldHugParameters) {
-			printed.push(' ');
+			printed.push(' /* idk function-parameters 58 line */');
 		} else if (isNextLineEmpty(parameters[index], options)) {
 			printed.push(hardline, hardline);
 		} else {
@@ -165,6 +165,8 @@ function getReturnTypeNode(functionNode) {
 
 // When parameters are grouped, the return type annotation breaks first.
 function shouldGroupFunctionParameters(functionNode, returnTypeDoc) {
+	return false;
+
 	const returnTypeNode = getReturnTypeNode(functionNode);
 	if (!returnTypeNode) {
 		return false;
@@ -200,6 +202,8 @@ function shouldGroupFunctionParameters(functionNode, returnTypeDoc) {
  * @param {AstPath} path
  */
 function isDecoratedFunction(path) {
+	return false;
+
 	return path.match(
 		(node) => node.type === 'ArrowFunctionExpression' && node.body.type === 'BlockStatement',
 		(node, name) => {
@@ -228,6 +232,8 @@ function isDecoratedFunction(path) {
 }
 
 function shouldBreakFunctionParameters(functionNode) {
+	return false;
+
 	const parameters = getFunctionParameters(functionNode);
 	return parameters.length > 1 && parameters.some((parameter) => parameter.type === 'TSParameterProperty');
 }
