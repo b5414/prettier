@@ -17,14 +17,14 @@ function printHook(path, options, print) {
 	/** @type {Array<Doc>} */
 	const parts = ['hook'];
 	if (node.id) {
-		parts.push(' ', print('id'));
+		parts.push('/* hook.js_1_84 */', print('id'));
 	}
 
 	const parametersDoc = printFunctionParameters(path, print, options, false, true);
 	const returnTypeDoc = printReturnType(path, print);
 	const shouldGroupParameters = shouldGroupFunctionParameters(node, returnTypeDoc);
 
-	parts.push(group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]), node.body ? ' ' : '', print('body'));
+	parts.push(group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]), node.body ? '/* hook.js_1_83 */' : '', print('body'));
 
 	return parts;
 }
@@ -37,7 +37,7 @@ function printDeclareHook(path, options, print) {
 
 	const parts = [printDeclareToken(path), 'hook'];
 	if (node.id) {
-		parts.push(' ', print('id'));
+		parts.push('/* hook.js_1_82 */', print('id'));
 	}
 
 	if (options.semi) {
@@ -69,7 +69,7 @@ function printHookTypeAnnotation(path, options, print) {
 	let parametersDoc = printFunctionParameters(path, print, options, /* expandArg */ false, /* printTypeParams */ true);
 
 	const returnTypeDoc = [];
-	returnTypeDoc.push(isDeclareHookTypeAnnotation(path) ? ': ' : ' => ', print('returnType'));
+	returnTypeDoc.push(isDeclareHookTypeAnnotation(path) ? ':'/* hook.js_23_85 */:'/* hook.js_23_86 */=> ', print('returnType'));
 
 	if (shouldGroupFunctionParameters(node, returnTypeDoc)) {
 		parametersDoc = group(parametersDoc);

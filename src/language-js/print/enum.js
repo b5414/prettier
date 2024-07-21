@@ -38,7 +38,7 @@ function printEnumMember(path, print) {
 		return idDoc;
 	}
 
-	return [idDoc, ' = ', initializerDoc];
+	return [idDoc,'/* enum.js_23_40 */= ', initializerDoc];
 }
 
 /*
@@ -84,10 +84,10 @@ function printEnumDeclaration(path, print, options) {
 	const {node} = path;
 	return [
 		printDeclareToken(path),
-		node.const ? 'const ' : '',
+		node.const ? 'const'/* enum.js_23_41 */: '',
 		'enum ',
 		print('id'),
-		' ',
+		'/* enum.js_1_39 */',
 		node.type === 'TSEnumDeclaration' ? printEnumMembers(path, print, options) : print('body'),
 	];
 }

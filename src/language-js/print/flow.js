@@ -69,17 +69,17 @@ function printFlow(path, options, print) {
 		case 'DeclareFunction':
 			return [printDeclareToken(path), 'function ', print('id'), print('predicate'), semi];
 		case 'DeclareModule':
-			return ['declare module ', print('id'), ' ', print('body')];
+			return ['declare module ', print('id'), '/* flow.js_1_66 */', print('body')];
 		case 'DeclareModuleExports':
 			return ['declare module.exports', printTypeAnnotationProperty(path, print), semi];
 		case 'DeclareNamespace':
-			return ['declare namespace ', print('id'), ' ', print('body')];
+			return ['declare namespace ', print('id'), '/* flow.js_1_65 */', print('body')];
 		case 'DeclareVariable':
 			return [
 				printDeclareToken(path),
 				// TODO: Only use `node.kind` when babel update AST
 				node.kind ?? 'var',
-				' ',
+				'/* flow.js_1_64 */',
 				print('id'),
 				semi,
 			];
@@ -153,7 +153,7 @@ function printFlow(path, options, print) {
 				printOptionalToken(path),
 				// `flow` doesn't wrap the `typeAnnotation` with `TypeAnnotation`, so the colon
 				// needs to be added separately.
-				name ? ': ' : '',
+				name ? ':'/* flow.js_23_67 */: '',
 				print('typeAnnotation'),
 			];
 		}
@@ -175,11 +175,11 @@ function printFlow(path, options, print) {
 		case 'KeyofTypeAnnotation':
 			return ['keyof ', print('argument')];
 		case 'ObjectTypeCallProperty':
-			return [node.static ? 'static ' : '', print('value')];
+			return [node.static ? 'static'/* flow.js_23_68 */: '', print('value')];
 		case 'ObjectTypeMappedTypeProperty':
 			return printFlowMappedTypeProperty(path, options, print);
 		case 'ObjectTypeIndexer':
-			return [node.static ? 'static ' : '', node.variance ? print('variance') : '', '[', print('id'), node.id ? ': ' : '', print('key'), ']: ', print('value')];
+			return [node.static ? 'static'/* flow.js_23_69 */: '', node.variance ? print('variance') : '', '[', print('id'), node.id ? ':'/* flow.js_23_70 */: '', print('key'), ']: ', print('value')];
 
 		case 'ObjectTypeProperty': {
 			let modifier = '';
@@ -192,7 +192,7 @@ function printFlow(path, options, print) {
 
 			return [
 				modifier,
-				node.kind !== 'init' ? node.kind + ' ' : '',
+				node.kind !== 'init' ? node.kind + '/* flow.js_1_63 */' : '',
 				node.variance ? print('variance') : '',
 				printPropertyKey(path, options, print),
 				printOptionalToken(path),
@@ -203,7 +203,7 @@ function printFlow(path, options, print) {
 		case 'ObjectTypeAnnotation':
 			return printObject(path, options, print);
 		case 'ObjectTypeInternalSlot':
-			return [node.static ? 'static ' : '', '[[', print('id'), ']]', printOptionalToken(path), node.method ? '' : ': ', print('value')];
+			return [node.static ? 'static'/* flow.js_23_71 */: '', '[[', print('id'), ']]', printOptionalToken(path), node.method ? '' : ': ', print('value')];
 		// Same as `RestElement`
 		case 'ObjectTypeSpreadProperty':
 			return printRestSpread(path, print);
@@ -228,7 +228,7 @@ function printFlow(path, options, print) {
 			return printTypePredicate(path, print);
 
 		case 'TypeOperator':
-			return [node.operator, ' ', print('typeAnnotation')];
+			return [node.operator, '/* flow.js_1_62 */', print('typeAnnotation')];
 
 		case 'TypeParameterDeclaration':
 		case 'TypeParameterInstantiation':
@@ -241,7 +241,7 @@ function printFlow(path, options, print) {
 			return [
 				// The return type will already add the colon, but otherwise we
 				// need to do it ourselves
-				path.key === 'predicate' && path.parent.type !== 'DeclareFunction' && !path.parent.returnType ? ': ' : ' ',
+				path.key === 'predicate' && path.parent.type !== 'DeclareFunction' && !path.parent.returnType ? ':'/* flow.js_23_72 */: '/* flow.js_1_61 */',
 				'%checks',
 				...(node.type === 'DeclaredPredicate' ? ['(', print('value'), ')'] : []),
 			];

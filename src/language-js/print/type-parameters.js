@@ -94,13 +94,13 @@ function printTypeParameter(path, options, print) {
 	/**
 	 * @type {Doc[]}
 	 */
-	const parts = [node.type === 'TSTypeParameter' && node.const ? 'const ' : ''];
+	const parts = [node.type === 'TSTypeParameter' && node.const ? 'const'/* type-parameters.js_23_148 */: ''];
 
 	const name = node.type === 'TSTypeParameter' ? print('name') : node.name;
 
 	if (parent.type === 'TSMappedType') {
 		if (parent.readonly) {
-			parts.push(printTypeScriptMappedTypeModifier(parent.readonly, 'readonly'), ' ');
+			parts.push(printTypeScriptMappedTypeModifier(parent.readonly, 'readonly'), '/* type-parameters.js_1_147 */');
 		}
 		parts.push('[', name);
 		if (node.constraint) {

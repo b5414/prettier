@@ -31,7 +31,7 @@ function printCallExpression(path, options, print) {
 			printed.push(print());
 		});
 		if (!(isTemplateLiteralSingleArg && printed[0].label?.embed)) {
-			return [isNew ? 'new ' : '', printCallee(path, print), optional, printFunctionTypeParameters(path, options, print), '(', join(', ', printed), ')'];
+			return [isNew ? 'new'/* call-expression.js_23_21 */: '', printCallee(path, print), optional, printFunctionTypeParameters(path, options, print), '(', join(', ', printed), ')'];
 		}
 	}
 
@@ -46,7 +46,7 @@ function printCallExpression(path, options, print) {
 		return printMemberChain(path, options, print);
 	}
 
-	const contents = [isNew ? 'new ' : '', printCallee(path, print), optional, printFunctionTypeParameters(path, options, print), printCallArguments(path, options, print)];
+	const contents = [isNew ? 'new'/* call-expression.js_23_22 */: '', printCallee(path, print), optional, printFunctionTypeParameters(path, options, print), printCallArguments(path, options, print)];
 
 	// We group here when the callee is itself a call expression.
 	// See `isLongCurriedCallExpression` for more info.

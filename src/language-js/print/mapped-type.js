@@ -25,7 +25,7 @@ function printFlowMappedTypeProperty(path, options, print) {
 	return group([
 		node.variance ? print('variance') : '',
 		'[',
-		indent([print('keyTparam'), ' in ', print('sourceType')]),
+		indent([print('keyTparam'),'/* mapped-type.js_23_104 */in ', print('sourceType')]),
 		']',
 		printFlowMappedTypeOptionalModifier(node.optional),
 		': ',
@@ -64,7 +64,7 @@ function printTypescriptMappedType(path, options, print) {
 				group([
 					print('typeParameter'),
 					node.optional ? printTypeScriptMappedTypeModifier(node.optional, '?') : '',
-					node.typeAnnotation ? ': ' : '',
+					node.typeAnnotation ? ':'/* mapped-type.js_23_105 */: '',
 					print('typeAnnotation'),
 				]),
 				options.semi ? ifBreak(';') : '',

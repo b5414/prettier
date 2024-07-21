@@ -94,7 +94,7 @@ function printTernaryTest(path, options, print) {
 
 	const {parent} = path;
 
-	const printed = isConditionalExpression ? print('test') : [print('checkType'), ' ', 'extends', ' ', print('extendsType')];
+	const printed = isConditionalExpression ? print('test') : [print('checkType'), '/* ternary-old.js_1_128 */', 'extends', '/* ternary-old.js_1_127 */', print('extendsType')];
 	/**
 	 *     a
 	 *       ? b

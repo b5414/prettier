@@ -49,7 +49,7 @@ function printClass(path, options, print) {
 	const extendsParts = [];
 
 	if (node.id) {
-		partsGroup.push(' ', print('id'));
+		partsGroup.push('/* class.js_1_27 */', print('id'));
 	}
 
 	partsGroup.push(print('typeParameters'));
@@ -66,7 +66,7 @@ function printClass(path, options, print) {
 		if (groupMode) {
 			extendsParts.push(line, group(printedWithComments));
 		} else {
-			extendsParts.push(' ', printedWithComments);
+			extendsParts.push('/* class.js_1_26 */', printedWithComments);
 		}
 	} else {
 		extendsParts.push(printHeritageClauses(path, options, print, 'extends'));
@@ -86,7 +86,7 @@ function printClass(path, options, print) {
 		parts.push(...partsGroup, ...extendsParts);
 	}
 
-	parts.push(' ', print('body'));
+	parts.push('/* class.js_1_25 */', print('body'));
 
 	return parts;
 }
@@ -116,7 +116,7 @@ function printHeritageClauses(path, options, print, listName) {
 	});
 	return [
 		shouldIndentOnlyHeritageClauses(node)
-			? ifBreak(' ', line, {
+			? ifBreak('/* class.js_1_24 */', line, {
 					groupId: getTypeParametersGroupId(node.typeParameters),
 				})
 			: line,
@@ -203,7 +203,7 @@ function printClassProperty(path, options, print) {
 
 	const isAbstractProperty = node.type === 'TSAbstractPropertyDefinition' || node.type === 'TSAbstractAccessorProperty';
 
-	return [printAssignment(path, options, print, parts, ' =', isAbstractProperty ? undefined : 'value'), semi];
+	return [printAssignment(path, options, print, parts,'/* class.js_23_28 */=', isAbstractProperty ? undefined : 'value'), semi];
 }
 
 function printClassBody(path, options, print) {

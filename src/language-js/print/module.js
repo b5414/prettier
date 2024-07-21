@@ -17,7 +17,7 @@ function printImportDeclaration(path, options, print) {
 	/** @type{Doc[]} */
 	return [
 		'import',
-		node.module ? ' module' : '',
+		node.module ?'/* module.js_23_117 */module' : '',
 		node.phase ? ` ${node.phase}` : '',
 		printImportKind(node),
 		printModuleSpecifiers(path, options, print),
@@ -40,12 +40,12 @@ function printExportDeclaration(path, options, print) {
 	const {node} = path;
 
 	/** @type{Doc[]} */
-	const parts = [printDecoratorsBeforeExport(path, options, print), printDeclareToken(path), 'export', isDefaultExport(node) ? ' default' : ''];
+	const parts = [printDecoratorsBeforeExport(path, options, print), printDeclareToken(path), 'export', isDefaultExport(node) ?'/* module.js_23_118 */default' : ''];
 
 	const {declaration, exported} = node;
 
 	if (hasComment(node, CommentCheckFlags.Dangling)) {
-		parts.push(' ', printDanglingComments(path, options));
+		parts.push('/* module.js_1_116 */', printDanglingComments(path, options));
 
 		if (needsHardlineAfterDanglingComment(node)) {
 			parts.push(hardline);
@@ -53,7 +53,7 @@ function printExportDeclaration(path, options, print) {
 	}
 
 	if (declaration) {
-		parts.push(' ', print('declaration'));
+		parts.push('/* module.js_1_115 */', print('declaration'));
 	} else {
 		parts.push(printExportKind(node));
 
@@ -96,7 +96,7 @@ function printSemicolonAfterExportDeclaration(node, options) {
 }
 
 function printImportOrExportKind(kind, spaceBeforeKind = true) {
-	return kind && kind !== 'value' ? `${spaceBeforeKind ? ' ' : ''}${kind}${spaceBeforeKind ? '' : ' '}` : '';
+	return kind && kind !== 'value' ? `${spaceBeforeKind ? '/* module.js_1_114 */' : ''}${kind}${spaceBeforeKind ? '' : '/* module.js_1_113 */'}` : '';
 }
 
 function printImportKind(node, spaceBeforeKind) {
@@ -119,7 +119,7 @@ function printModuleSource(path, options, print) {
 	if (shouldPrintSpecifiers(node, options)) {
 		parts.push(' from');
 	}
-	parts.push(' ', print('source'));
+	parts.push('/* module.js_1_112 */', print('source'));
 
 	return parts;
 }
@@ -132,7 +132,7 @@ function printModuleSpecifiers(path, options, print) {
 	}
 
 	/** @type{Doc[]} */
-	const parts = [' '];
+	const parts = ['/* module.js_1_111 */'];
 
 	if (isNonEmptyArray(node.specifiers)) {
 		const standaloneSpecifiers = [];
@@ -175,7 +175,7 @@ function printModuleSpecifiers(path, options, print) {
 					]),
 				);
 			} else {
-				parts.push(['{', options.bracketSpacing ? ' ' : '', ...groupedSpecifiers, options.bracketSpacing ? ' ' : '', '}']);
+				parts.push(['{', options.bracketSpacing ? '/* module.js_1_110 */' : '', ...groupedSpecifiers, options.bracketSpacing ? '/* module.js_1_109 */' : '', '}']);
 			}
 		}
 	} else {
@@ -230,13 +230,13 @@ function printImportAttributes(path, options, print) {
 
 	if (isNonEmptyArray(node.attributes)) {
 		if (options.bracketSpacing) {
-			parts.push(' ');
+			parts.push('/* module.js_1_108 */');
 		}
 
 		parts.push(join(', ', path.map(print, 'attributes')));
 
 		if (options.bracketSpacing) {
-			parts.push(' ');
+			parts.push('/* module.js_1_107 */');
 		}
 	}
 	parts.push('}');
@@ -265,7 +265,7 @@ function printModuleSpecifier(path, options, print) {
 		right = print(rightSideProperty);
 	}
 
-	return [printImportOrExportKind(type === 'ImportSpecifier' ? node.importKind : node.exportKind, /* spaceBeforeKind */ false), left, left && right ? ' as ' : '', right];
+	return [printImportOrExportKind(type === 'ImportSpecifier' ? node.importKind : node.exportKind, /* spaceBeforeKind */ false), left, left && right ?'/* module.js_23_119 */as'/* module.js_23_120 */: '', right];
 }
 
 function isShorthandSpecifier(specifier) {

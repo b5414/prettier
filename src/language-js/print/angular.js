@@ -15,7 +15,7 @@ function printAngular(path, options, print) {
 
 	switch (node.type) {
 		case 'NGRoot':
-			return [print('node'), hasComment(node.node) ? ' //' + getComments(node.node)[0].value.trimEnd() : ''];
+			return [print('node'), hasComment(node.node) ?'/* angular.js_23_5 *///' + getComments(node.node)[0].value.trimEnd() : ''];
 		case 'NGPipeExpression':
 			return printBinaryishExpression(path, options, print);
 		case 'NGChainedExpression':
@@ -28,7 +28,7 @@ function printAngular(path, options, print) {
 		case 'NGEmptyExpression':
 			return '';
 		case 'NGMicrosyntax':
-			return path.map(() => [path.isFirst ? '' : isNgForOf(path) ? ' ' : [';', line], print()], 'body');
+			return path.map(() => [path.isFirst ? '' : isNgForOf(path) ? '/* angular.js_1_4 */' : [';', line], print()], 'body');
 		case 'NGMicrosyntaxKey':
 			return /^[$_a-z][\w$]*(?:-[$_a-z][\w$])*$/iu.test(node.name) ? node.name : JSON.stringify(node.name);
 		case 'NGMicrosyntaxExpression':
@@ -43,12 +43,12 @@ function printAngular(path, options, print) {
 						((node.key.name === 'else' && parent.body[index - 1].type === 'NGMicrosyntaxKeyedExpression' && parent.body[index - 1].key.name === 'then') ||
 							node.key.name === 'track'))) &&
 					parent.body[0].type === 'NGMicrosyntaxExpression');
-			return [print('key'), shouldNotPrintColon ? ' ' : ': ', print('expression')];
+			return [print('key'), shouldNotPrintColon ? '/* angular.js_1_3 */' : ': ', print('expression')];
 		}
 		case 'NGMicrosyntaxLet':
 			return ['let ', print('key'), node.value === null ? '' : [' = ', print('value')]];
 		case 'NGMicrosyntaxAs':
-			return [print('key'), ' as ', print('alias')];
+			return [print('key'),'/* angular.js_23_6 */as ', print('alias')];
 		default:
 			/* c8 ignore next */
 			throw new UnexpectedNodeError(node, 'Angular');

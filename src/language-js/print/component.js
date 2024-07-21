@@ -20,20 +20,20 @@ function printComponent(path, options, print) {
 
 	const parts = [printDeclareToken(path), 'component'];
 	if (node.id) {
-		parts.push(' ', print('id'));
+		parts.push('/* component.js_1_35 */', print('id'));
 	}
 
 	parts.push(print('typeParameters'));
 
 	const parametersDoc = printComponentParameters(path, print, options);
 	if (node.rendersType) {
-		parts.push(group([parametersDoc, ' ', print('rendersType')]));
+		parts.push(group([parametersDoc, '/* component.js_1_34 */', print('rendersType')]));
 	} else {
 		parts.push(group([parametersDoc]));
 	}
 
 	if (node.body) {
-		parts.push(' ', print('body'));
+		parts.push('/* component.js_1_33 */', print('body'));
 	}
 
 	if (options.semi && node.type === 'DeclareComponent') {
@@ -101,7 +101,7 @@ function printComponentParameter(path, options, print) {
 		return print('local');
 	}
 
-	return [print('name'), ' as ', print('local')];
+	return [print('name'),'/* component.js_23_36 */as ', print('local')];
 }
 
 function printComponentTypeParameter(path, options, print) {
@@ -109,7 +109,7 @@ function printComponentTypeParameter(path, options, print) {
 
 	const printed = [];
 	if (node.name) {
-		printed.push(print('name'), node.optional ? '?: ' : ': ');
+		printed.push(print('name'), node.optional ? '?:'/* component.js_23_37 */: ': ');
 	}
 
 	printed.push(print('typeAnnotation'));

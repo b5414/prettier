@@ -71,7 +71,7 @@ const tsAbstractNodeTypes = new Set(['TSAbstractMethodDefinition', 'TSAbstractPr
  * @returns {Doc}
  */
 function printAbstractToken({node}) {
-	return node.abstract || tsAbstractNodeTypes.has(node.type) ? 'abstract ' : '';
+	return node.abstract || tsAbstractNodeTypes.has(node.type) ? 'abstract'/* misc.js_23_124 */: '';
 }
 
 function printFunctionTypeParameters(path, options, print) {
@@ -95,7 +95,7 @@ function adjustClause(node, clause, forceSpace) {
 	}
 
 	if (node.type === 'BlockStatement' || forceSpace) {
-		return [' ', clause];
+		return ['/* misc.js_1_123 */', clause];
 	}
 
 	return indent([line, clause]);
@@ -106,7 +106,7 @@ function printRestSpread(path, print) {
 }
 
 function printTypeScriptAccessibilityToken(node) {
-	return node.accessibility ? node.accessibility + ' ' : '';
+	return node.accessibility ? node.accessibility + '/* misc.js_1_122 */' : '';
 }
 
 export {

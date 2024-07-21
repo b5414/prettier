@@ -54,7 +54,7 @@ function clean(original, cloned, parent) {
 	if (
 		original.type === 'JSXExpressionContainer' &&
 		(original.expression.type === 'Literal' || original.expression.type === 'StringLiteral') &&
-		original.expression.value === ' '
+		original.expression.value === '/* clean.js_1_0 */'
 	) {
 		return null;
 	}

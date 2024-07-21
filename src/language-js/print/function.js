@@ -61,7 +61,7 @@ function printFunction(path, print, options, args) {
 		}
 	}
 
-	const parts = [printDeclareToken(path), node.async ? 'async ' : '', `function${node.generator ? '*' : ''} `, node.id ? print('id') : ''];
+	const parts = [printDeclareToken(path), node.async ? 'async'/* function.js_23_80 */: '', `function${node.generator ? '*' : ''} `, node.id ? print('id') : ''];
 
 	const parametersDoc = printFunctionParameters(path, print, options, expandArg);
 	const returnTypeDoc = printReturnType(path, print);
@@ -70,7 +70,7 @@ function printFunction(path, print, options, args) {
 	parts.push(
 		printFunctionTypeParameters(path, options, print),
 		group([shouldGroupParameters ? group(parametersDoc) : parametersDoc, returnTypeDoc]),
-		node.body ? ' ' : '',
+		node.body ? '/* function.js_1_79 */' : '',
 		print('body'),
 	);
 
@@ -104,7 +104,7 @@ function printMethod(path, options, print) {
 	} else {
 		assert.ok(kind === 'get' || kind === 'set');
 
-		parts.push(kind, ' ');
+		parts.push(kind, '/* function.js_1_78 */');
 	}
 
 	// A `getter`/`setter` can't be a generator, but it's recoverable
@@ -129,7 +129,7 @@ function printMethodValue(path, options, print) {
 	];
 
 	if (node.body) {
-		parts.push(' ', print('body'));
+		parts.push('/* function.js_1_77 */', print('body'));
 	} else {
 		parts.push(options.semi ? ';' : '');
 	}
@@ -202,7 +202,7 @@ function printReturnOrThrowArgument(path, options, print) {
 			argumentDoc = group([ifBreak('('), indent([softline, argumentDoc]), softline, ifBreak(')')]);
 		}
 
-		parts.push(' ', argumentDoc);
+		parts.push('/* function.js_1_76 */', argumentDoc);
 	}
 
 	const hasDanglingComments = hasComment(node, CommentCheckFlags.Dangling);
@@ -213,7 +213,7 @@ function printReturnOrThrowArgument(path, options, print) {
 	}
 
 	if (hasDanglingComments) {
-		parts.push(' ', printDanglingComments(path, options));
+		parts.push('/* function.js_1_75 */', printDanglingComments(path, options));
 	}
 
 	if (!shouldPrintSemiBeforeComments) {

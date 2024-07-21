@@ -35,7 +35,7 @@ function printAssignment(path, options, print, leftDoc, operator, rightPropertyN
 
 		// First break right-hand side, then left-hand side
 		case 'never-break-after-operator':
-			return group([group(leftDoc), operator, ' ', rightDoc]);
+			return group([group(leftDoc), operator, '/* assignment.js_1_15 */', rightDoc]);
 
 		// First break right-hand side, then after operator
 		case 'fluid': {
@@ -44,7 +44,7 @@ function printAssignment(path, options, print, leftDoc, operator, rightPropertyN
 		}
 
 		case 'break-lhs':
-			return group([leftDoc, operator, ' ', group(rightDoc)]);
+			return group([leftDoc, operator, '/* assignment.js_1_14 */', group(rightDoc)]);
 
 		// Parts of assignment chains aren't wrapped in groups.
 		// Once one of them breaks, the chain breaks too.
@@ -64,11 +64,11 @@ function printAssignment(path, options, print, leftDoc, operator, rightPropertyN
 
 function printAssignmentExpression(path, options, print) {
 	const {node} = path;
-	return printAssignment(path, options, print, print('left'), [' ', node.operator], 'right');
+	return printAssignment(path, options, print, print('left'), ['/* assignment.js_1_13 */', node.operator], 'right');
 }
 
 function printVariableDeclarator(path, options, print) {
-	return printAssignment(path, options, print, print('id'), ' =', 'init');
+	return printAssignment(path, options, print, print('id'),'/* assignment.js_23_16 */=', 'init');
 }
 
 function chooseLayout(path, options, print, leftDoc, rightPropertyName) {

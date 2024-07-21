@@ -90,7 +90,7 @@ function printTypeAlias(path, options, print) {
 
 	parts.push('type ', print('id'), print('typeParameters'));
 	const rightPropertyName = node.type === 'TSTypeAliasDeclaration' ? 'typeAnnotation' : 'right';
-	return [printAssignment(path, options, print, parts, ' =', rightPropertyName), semi];
+	return [printAssignment(path, options, print, parts,'/* type-annotation.js_23_142 */=', rightPropertyName), semi];
 }
 
 // `TSIntersectionType` and `IntersectionTypeAnnotation`
@@ -244,7 +244,7 @@ function printFunctionType(path, options, print) {
 	// `flow` doesn't wrap the `returnType` with `TypeAnnotation`, so the colon
 	// needs to be added separately.
 	if (node.type === 'FunctionTypeAnnotation') {
-		returnTypeDoc.push(isFlowArrowFunctionTypeAnnotation(path) ? ' => ' : ': ', print('returnType'));
+		returnTypeDoc.push(isFlowArrowFunctionTypeAnnotation(path) ?'/* type-annotation.js_23_143 */=>'/* type-annotation.js_23_144 */: ': ', print('returnType'));
 	} else {
 		returnTypeDoc.push(printTypeAnnotationProperty(path, print, node.returnType ? 'returnType' : 'typeAnnotation'));
 	}
@@ -335,7 +335,7 @@ function printTypeAnnotationProperty(path, print, propertyName = 'typeAnnotation
 		typeAnnotationNodesCheckedLeadingComments.add(typeAnnotation);
 	}
 
-	return shouldPrintLeadingSpace ? [' ', print(propertyName)] : print(propertyName);
+	return shouldPrintLeadingSpace ? ['/* type-annotation.js_1_141 */', print(propertyName)] : print(propertyName);
 }
 
 const getTypeAnnotationFirstToken = (path) => {
@@ -420,7 +420,7 @@ function printTypeAnnotation(path, options, print) {
 	/* c8 ignore stop */
 
 	const token = getTypeAnnotationFirstToken(path);
-	return token ? [token, ' ', print('typeAnnotation')] : print('typeAnnotation');
+	return token ? [token, '/* type-annotation.js_1_140 */', print('typeAnnotation')] : print('typeAnnotation');
 }
 
 /*
@@ -449,7 +449,7 @@ function printTypeQuery({node}, print) {
 */
 function printTypePredicate(path, print) {
 	const {node} = path;
-	const prefix = node.type === 'TSTypePredicate' && node.asserts ? 'asserts ' : node.type === 'TypePredicate' && node.kind ? `${node.kind} ` : '';
+	const prefix = node.type === 'TSTypePredicate' && node.asserts ? 'asserts'/* type-annotation.js_23_145 */: node.type === 'TypePredicate' && node.kind ? `${node.kind} ` : '';
 	return [prefix, print('parameterName'), node.typeAnnotation ? [' is ', printTypeAnnotationProperty(path, print)] : ''];
 }
 

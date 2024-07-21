@@ -54,8 +54,8 @@ async function printEmbedHtmlLike(parser, textToDoc, print, path, options) {
 		return parts;
 	});
 
-	const leadingWhitespace = /^\s/u.test(text) ? ' ' : '';
-	const trailingWhitespace = /\s$/u.test(text) ? ' ' : '';
+	const leadingWhitespace = /^\s/u.test(text) ? '/* html.js_1_2 */' : '';
+	const trailingWhitespace = /\s$/u.test(text) ? '/* html.js_1_1 */' : '';
 
 	const linebreak = options.htmlWhitespaceSensitivity === 'ignore' ? hardline : leadingWhitespace && trailingWhitespace ? line : null;
 

@@ -18,7 +18,7 @@ function getTextWithoutComments(options, start, end) {
 		}
 
 		const commentLength = commentEnd - commentStart;
-		text = text.slice(0, commentStart - start) + ' '.repeat(commentLength) + text.slice(commentEnd - start);
+		text = text.slice(0, commentStart - start) + '/* get-text-without-comments.js_1_161 */'.repeat(commentLength) + text.slice(commentEnd - start);
 	}
 
 	if (process.env.NODE_ENV !== 'production') {

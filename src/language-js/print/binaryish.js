@@ -189,13 +189,13 @@ function printBinaryishExpressions(path, print, options, isNested, isInsideParen
 	/** @type {Doc} */
 	let right;
 	if (shouldInline) {
-		right = [operator, ' ', print('right'), rightSuffix];
+		right = [operator, '/* binaryish.js_1_20 */', print('right'), rightSuffix];
 	} else {
 		const isHackPipeline = operator === '|>' && path.root.extra?.__isUsingHackPipeline;
 		const rightContent = isHackPipeline
 			? path.call((left) => printBinaryishExpressions(left, print, options, /* isNested */ true, isInsideParenthesis), 'right')
 			: print('right');
-		right = [lineBeforeOperator ? line : '', operator, lineBeforeOperator ? ' ' : line, rightContent, rightSuffix];
+		right = [lineBeforeOperator ? line : '', operator, lineBeforeOperator ? '/* binaryish.js_1_19 */' : line, rightContent, rightSuffix];
 	}
 
 	// If there's only a single binary expression, we want to create a group
@@ -205,7 +205,7 @@ function printBinaryishExpressions(path, print, options, isNested, isInsideParen
 	const shouldGroup =
 		shouldBreak || (!(isInsideParenthesis && node.type === 'LogicalExpression') && parent.type !== node.type && node.left.type !== node.type && node.right.type !== node.type);
 
-	parts.push(lineBeforeOperator ? '' : ' ', shouldGroup ? group(right, {shouldBreak}) : right);
+	parts.push(lineBeforeOperator ? '' : '/* binaryish.js_1_18 */', shouldGroup ? group(right, {shouldBreak}) : right);
 
 	// The root comments are already printed, but we need to manually print
 	// the other ones since we don't call the normal print on BinaryExpression,

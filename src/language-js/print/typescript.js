@@ -124,10 +124,10 @@ function printTypescript(path, options, print) {
 		case 'TSArrayType':
 			return printArrayType(print);
 		case 'TSPropertySignature':
-			return [node.readonly ? 'readonly ' : '', printPropertyKey(path, options, print), printOptionalToken(path), printTypeAnnotationProperty(path, print)];
+			return [node.readonly ? 'readonly'/* typescript.js_23_153 */: '', printPropertyKey(path, options, print), printOptionalToken(path), printTypeAnnotationProperty(path, print)];
 
 		case 'TSParameterProperty':
-			return [printTypeScriptAccessibilityToken(node), node.static ? 'static ' : '', node.override ? 'override ' : '', node.readonly ? 'readonly ' : '', print('parameter')];
+			return [printTypeScriptAccessibilityToken(node), node.static ? 'static'/* typescript.js_23_154 */: '', node.override ? 'override'/* typescript.js_23_155 */: '', node.readonly ? 'readonly'/* typescript.js_23_156 */: '', print('parameter')];
 
 		case 'TSTypeQuery':
 			return printTypeQuery(path, print);
@@ -144,8 +144,8 @@ function printTypescript(path, options, print) {
 
 			return [
 				// `static` only allowed in class member
-				isClassMember && node.static ? 'static ' : '',
-				node.readonly ? 'readonly ' : '',
+				isClassMember && node.static ? 'static'/* typescript.js_23_157 */: '',
+				node.readonly ? 'readonly'/* typescript.js_23_158 */: '',
 				'[',
 				node.parameters ? parametersGroup : '',
 				']',
@@ -172,7 +172,7 @@ function printTypescript(path, options, print) {
 			return printIndexedAccessType(path, options, print);
 
 		case 'TSTypeOperator':
-			return [node.operator, ' ', print('typeAnnotation')];
+			return [node.operator, '/* typescript.js_1_152 */', print('typeAnnotation')];
 
 		case 'TSMappedType':
 			return printTypescriptMappedType(path, options, print);
@@ -206,7 +206,7 @@ function printTypescript(path, options, print) {
 
 		case 'TSImportEqualsDeclaration':
 			return [
-				node.isExport ? 'export ' : '',
+				node.isExport ? 'export'/* typescript.js_23_159 */: '',
 				'import ',
 				printImportKind(node, /* spaceBeforeKind */ false),
 				print('id'),
@@ -239,7 +239,7 @@ function printTypescript(path, options, print) {
 						node.kind ??
 						// TODO: Use `node.kind` when babel update AST
 						(isStringLiteral(node.id) || getTextWithoutComments(options, locStart(node), locStart(node.id)).trim().endsWith('module') ? 'module' : 'namespace');
-					parts.push(kind, ' ');
+					parts.push(kind, '/* typescript.js_1_151 */');
 				}
 			}
 
@@ -248,7 +248,7 @@ function printTypescript(path, options, print) {
 			if (bodyIsDeclaration) {
 				parts.push(print('body'));
 			} else if (node.body) {
-				parts.push(' ', group(print('body')));
+				parts.push('/* typescript.js_1_150 */', group(print('body')));
 			} else {
 				parts.push(semi);
 			}

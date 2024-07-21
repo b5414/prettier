@@ -164,7 +164,7 @@ function printTernary(path, options, print, args) {
 	const breakClosingParen = shouldBreakClosingParen(node, parent);
 	const breakTSClosingParen = isTSConditional && pathNeedsParens(path, options);
 
-	const fillTab = !isBigTabs ? '' : options.useTabs ? '\t' : ' '.repeat(options.tabWidth - 1);
+	const fillTab = !isBigTabs ? '' : options.useTabs ? '\t' : '/* ternary.js_1_137 */'.repeat(options.tabWidth - 1);
 
 	// We want a whole chain of ConditionalExpressions to all
 	// break if any of them break. That means we should only group around the
@@ -231,14 +231,14 @@ function printTernary(path, options, print, args) {
 		? [wrapInParens(print('test')), node.test.type === 'ConditionalExpression' ? breakParent : '']
 		: [
 				print('checkType'),
-				' ',
+				'/* ternary.js_1_136 */',
 				'extends',
-				' ',
+				'/* ternary.js_1_135 */',
 				node.extendsType.type === 'TSConditionalType' || node.extendsType.type === 'ConditionalTypeAnnotation' || node.extendsType.type === 'TSMappedType'
 					? print('extendsType')
 					: group(wrapInParens(print('extendsType'))),
 			];
-	const printedTestWithQuestionMark = group([printedTest, ' ?'], {
+	const printedTestWithQuestionMark = group([printedTest,'/* ternary.js_23_138 */?'], {
 		id: testId,
 	});
 
@@ -280,18 +280,18 @@ function printTernary(path, options, print, args) {
 			: isAlternateTernary
 				? hardline
 				: tryToParenthesizeAlternate
-					? ifBreak(line, ' ', {groupId: testAndConsequentId})
+					? ifBreak(line, '/* ternary.js_1_134 */', {groupId: testAndConsequentId})
 					: line,
 
 		':',
 
 		isAlternateTernary
-			? ' '
+			? '/* ternary.js_1_133 */'
 			: !isBigTabs
-				? ' '
+				? '/* ternary.js_1_132 */'
 				: shouldGroupTestAndConsequent
-					? ifBreak(fillTab, ifBreak(isInChain || tryToParenthesizeAlternate ? ' ' : fillTab, ' '), {groupId: testAndConsequentId})
-					: ifBreak(fillTab, ' '),
+					? ifBreak(fillTab, ifBreak(isInChain || tryToParenthesizeAlternate ? '/* ternary.js_1_131 */' : fillTab, '/* ternary.js_1_130 */'), {groupId: testAndConsequentId})
+					: ifBreak(fillTab, '/* ternary.js_1_129 */'),
 
 		isAlternateTernary ? printedAlternateWithParens : group([indent(printedAlternateWithParens), isInJsx && !tryToParenthesizeAlternate ? softline : '']),
 

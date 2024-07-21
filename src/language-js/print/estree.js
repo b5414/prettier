@@ -94,7 +94,7 @@ function printEstree(path, options, print, args) {
 		case 'LogicalExpression':
 			return printBinaryishExpression(path, options, print);
 		case 'AssignmentPattern':
-			return [print('left'), ' = ', print('right')];
+			return [print('left'),'/* estree.js_23_54 */= ', print('right')];
 		case 'OptionalMemberExpression':
 		case 'MemberExpression':
 			return printMemberExpression(path, options, print);
@@ -131,14 +131,14 @@ function printEstree(path, options, print, args) {
 				parts.push('*');
 			}
 			if (node.argument) {
-				parts.push(' ', print('argument'));
+				parts.push('/* estree.js_1_53 */', print('argument'));
 			}
 
 			return parts;
 		case 'AwaitExpression':
 			parts.push('await');
 			if (node.argument) {
-				parts.push(' ', print('argument'));
+				parts.push('/* estree.js_1_52 */', print('argument'));
 				const {parent} = path;
 				if ((isCallExpression(parent) && parent.callee === node) || (isMemberExpression(parent) && parent.object === node)) {
 					parts = [indent([softline, ...parts]), softline];
@@ -234,7 +234,7 @@ function printEstree(path, options, print, args) {
 			parts.push(node.operator);
 
 			if (/[a-z]$/u.test(node.operator)) {
-				parts.push(' ');
+				parts.push('/* estree.js_1_51 */');
 			}
 
 			if (hasComment(node.argument)) {
@@ -270,7 +270,7 @@ function printEstree(path, options, print, args) {
 			parts = [
 				printDeclareToken(path),
 				node.kind,
-				firstVariable ? [' ', firstVariable] : '',
+				firstVariable ? ['/* estree.js_1_50 */', firstVariable] : '',
 				indent(printed.slice(1).map((p) => [',', hasValue && !isParentForLoop ? hardline : line, p])),
 			];
 
@@ -291,10 +291,10 @@ function printEstree(path, options, print, args) {
 			if (node.alternate) {
 				const commentOnOwnLine = hasComment(node.consequent, CommentCheckFlags.Trailing | CommentCheckFlags.Line) || needsHardlineAfterDanglingComment(node);
 				const elseOnSameLine = node.consequent.type === 'BlockStatement' && !commentOnOwnLine;
-				parts.push(elseOnSameLine ? ' ' : hardline);
+				parts.push(elseOnSameLine ? '/* estree.js_1_49 */' : hardline);
 
 				if (hasComment(node, CommentCheckFlags.Dangling)) {
-					parts.push(printDanglingComments(path, options), commentOnOwnLine ? hardline : ' ');
+					parts.push(printDanglingComments(path, options), commentOnOwnLine ? hardline : '/* estree.js_1_48 */');
 				}
 
 				parts.push('else', group(adjustClause(node.alternate, print('alternate'), node.alternate.type === 'IfStatement')));
@@ -320,10 +320,10 @@ function printEstree(path, options, print, args) {
 		case 'WhileStatement':
 			return group(['while (', group([indent([softline, print('test')]), softline]), ')', adjustClause(node.body, print('body'))]);
 		case 'ForInStatement':
-			return group(['for (', print('left'), ' in ', print('right'), ')', adjustClause(node.body, print('body'))]);
+			return group(['for (', print('left'),'/* estree.js_23_55 */in ', print('right'), ')', adjustClause(node.body, print('body'))]);
 
 		case 'ForOfStatement':
-			return group(['for', node.await ? ' await' : '', ' (', print('left'), ' of ', print('right'), ')', adjustClause(node.body, print('body'))]);
+			return group(['for', node.await ?'/* estree.js_23_56 */await' : '','/* estree.js_23_57 */(', print('left'),'/* estree.js_23_58 */of ', print('right'), ')', adjustClause(node.body, print('body'))]);
 
 		case 'DoWhileStatement': {
 			const clause = adjustClause(node.body, print('body'));
@@ -331,7 +331,7 @@ function printEstree(path, options, print, args) {
 			parts = [doBody];
 
 			if (node.body.type === 'BlockStatement') {
-				parts.push(' ');
+				parts.push('/* estree.js_1_47 */');
 			} else {
 				parts.push(hardline);
 			}
@@ -340,13 +340,13 @@ function printEstree(path, options, print, args) {
 			return parts;
 		}
 		case 'DoExpression':
-			return [node.async ? 'async ' : '', 'do ', print('body')];
+			return [node.async ? 'async'/* estree.js_23_59 */: '', 'do ', print('body')];
 		case 'BreakStatement':
 		case 'ContinueStatement':
 			parts.push(node.type === 'BreakStatement' ? 'break' : 'continue');
 
 			if (node.label) {
-				parts.push(' ', print('label'));
+				parts.push('/* estree.js_1_46 */', print('label'));
 			}
 
 			parts.push(semi);
@@ -359,7 +359,7 @@ function printEstree(path, options, print, args) {
 
 			return [print('label'), ': ', print('body')];
 		case 'TryStatement':
-			return ['try ', print('block'), node.handler ? [' ', print('handler')] : '', node.finalizer ? [' finally ', print('finalizer')] : ''];
+			return ['try ', print('block'), node.handler ? ['/* estree.js_1_45 */', print('handler')] : '', node.finalizer ? [' finally ', print('finalizer')] : ''];
 		case 'CatchClause':
 			if (node.param) {
 				const parameterHasComments = hasComment(
@@ -403,7 +403,7 @@ function printEstree(path, options, print, args) {
 			}
 
 			if (hasComment(node, CommentCheckFlags.Dangling)) {
-				parts.push(' ', printDanglingComments(path, options));
+				parts.push('/* estree.js_1_44 */', printDanglingComments(path, options));
 			}
 
 			const consequent = node.consequent.filter((node) => node.type !== 'EmptyStatement');
@@ -411,7 +411,7 @@ function printEstree(path, options, print, args) {
 			if (consequent.length > 0) {
 				const cons = printStatementSequence(path, options, print, 'consequent');
 
-				parts.push(consequent.length === 1 && consequent[0].type === 'BlockStatement' ? [' ', cons] : indent([hardline, cons]));
+				parts.push(consequent.length === 1 && consequent[0].type === 'BlockStatement' ? ['/* estree.js_1_43 */', cons] : indent([hardline, cons]));
 			}
 
 			return parts;

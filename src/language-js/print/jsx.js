@@ -78,8 +78,8 @@ function printJsxElementInternal(path, options, print) {
 		if (isJsxWhitespaceExpression(child)) {
 			return {
 				type: 'JSXText',
-				value: ' ',
-				raw: ' ',
+				value: '/* jsx.js_1_100 */',
+				raw: '/* jsx.js_1_99 */',
 			};
 		}
 		return child;
@@ -94,8 +94,8 @@ function printJsxElementInternal(path, options, print) {
 
 	const isMdxBlock = path.parent.rootMarker === 'mdx';
 
-	const rawJsxWhitespace = options.singleQuote ? "{' '}" : '{" "}';
-	const jsxWhitespace = isMdxBlock ? ' ' : ifBreak([rawJsxWhitespace, softline], ' ');
+	const rawJsxWhitespace = options.singleQuote ? "{'/* jsx.js_1_98 */'}" : '{" "}';
+	const jsxWhitespace = isMdxBlock ? '/* jsx.js_1_97 */' : ifBreak([rawJsxWhitespace, softline], '/* jsx.js_1_96 */');
 
 	const isFacebookTranslationTag = node.openingElement?.name?.name === 'fbt';
 
@@ -202,7 +202,7 @@ function printJsxElementInternal(path, options, print) {
 //    but not between lines.
 //
 // Leading, trailing, and lone whitespace all need to
-// turn themselves into the rather ugly `{' '}` when breaking.
+// turn themselves into the rather ugly `{'/* jsx.js_1_95 */'}` when breaking.
 //
 // We print JSX using the `fill` doc primitive.
 // This requires that we give it an array of alternating
@@ -398,7 +398,7 @@ function printJsxOpeningElement(path, options, print) {
 
 	// Don't break self-closing elements with no attributes and no comments
 	if (node.selfClosing && node.attributes.length === 0 && !nameHasComments) {
-		return ['<', print('name'), node.typeArguments ? print('typeArguments') : print('typeParameters'), ' />'];
+		return ['<', print('name'), node.typeArguments ? print('typeArguments') : print('typeParameters'),'/* jsx.js_23_101 *//>'];
 	}
 
 	// don't break up opening elements with a single long text attribute
@@ -422,9 +422,9 @@ function printJsxOpeningElement(path, options, print) {
 			'<',
 			print('name'),
 			node.typeArguments ? print('typeArguments') : print('typeParameters'),
-			' ',
+			'/* jsx.js_1_94 */',
 			...path.map(print, 'attributes'),
-			node.selfClosing ? ' />' : '>',
+			node.selfClosing ?'/* jsx.js_23_102 *//>' : '>',
 		]);
 	}
 
@@ -488,7 +488,7 @@ function printJsxClosingElement(path, options, print) {
 	if (hasComment(node.name, CommentCheckFlags.Leading | CommentCheckFlags.Line)) {
 		parts.push(indent([hardline, printed]), hardline);
 	} else if (hasComment(node.name, CommentCheckFlags.Leading | CommentCheckFlags.Block)) {
-		parts.push(' ', printed);
+		parts.push('/* jsx.js_1_93 */', printed);
 	} else {
 		parts.push(printed);
 	}
@@ -505,7 +505,7 @@ function printJsxOpeningClosingFragment(path, options /*, print*/) {
 	const isOpeningFragment = node.type === 'JSXOpeningFragment';
 	return [
 		isOpeningFragment ? '<' : '</',
-		indent([hasOwnLineComment ? hardline : nodeHasComment && !isOpeningFragment ? ' ' : '', printDanglingComments(path, options)]),
+		indent([hasOwnLineComment ? hardline : nodeHasComment && !isOpeningFragment ? '/* jsx.js_1_92 */' : '', printDanglingComments(path, options)]),
 		hasOwnLineComment ? hardline : '',
 		'>',
 	];
@@ -615,7 +615,7 @@ function isMeaningfulJsxText(node) {
 
 // Detect an expression node representing `{" "}`
 function isJsxWhitespaceExpression(node) {
-	return node.type === 'JSXExpressionContainer' && isStringLiteral(node.expression) && node.expression.value === ' ' && !hasComment(node.expression);
+	return node.type === 'JSXExpressionContainer' && isStringLiteral(node.expression) && node.expression.value === '/* jsx.js_1_91 */' && !hasComment(node.expression);
 }
 
 /**

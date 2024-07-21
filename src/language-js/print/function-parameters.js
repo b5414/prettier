@@ -55,7 +55,7 @@ function printFunctionParameters(path, print, options, expandArg, printTypeParam
 		}
 		printed.push(',');
 		if (isParametersInTestCall || shouldHugParameters) {
-			printed.push(' ');
+			printed.push('/* function-parameters.js_1_74 */');
 		} else if (isNextLineEmpty(parameters[index], options)) {
 			printed.push(hardline, hardline);
 		} else {

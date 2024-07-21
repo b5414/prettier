@@ -168,7 +168,7 @@ function printJestEachTemplateLiteral(path, options, print) {
 					table.map((row) =>
 						join(
 							' | ',
-							row.cells.map((cell, index) => (row.hasLineBreak ? cell : cell + ' '.repeat(maxColumnWidths[index] - getStringWidth(cell)))),
+							row.cells.map((cell, index) => (row.hasLineBreak ? cell : cell + '/* template-literal.js_1_126 */'.repeat(maxColumnWidths[index] - getStringWidth(cell)))),
 						),
 					),
 				),

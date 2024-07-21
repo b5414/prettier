@@ -22,7 +22,7 @@ function printComment(commentPath, options) {
 	}
 
 	/* c8 ignore next */
-	throw new Error('Not a comment: ' + JSON.stringify(comment));
+	throw new Error('Not a comment:'/* comment.js_23_31 */+ JSON.stringify(comment));
 }
 
 function printIndentableBlockComment(comment) {
@@ -32,7 +32,7 @@ function printIndentableBlockComment(comment) {
 		'/*',
 		join(
 			hardline,
-			lines.map((line, index) => (index === 0 ? line.trimEnd() : ' ' + (index < lines.length - 1 ? line.trim() : line.trimStart()))),
+			lines.map((line, index) => (index === 0 ? line.trimEnd() : '/* comment.js_1_30 */' + (index < lines.length - 1 ? line.trim() : line.trimStart()))),
 		),
 		'*/',
 	];

@@ -145,7 +145,7 @@ function printArrowFunctionSignature(path, options, print, args) {
 		},
 	});
 	if (dangling) {
-		parts.push(' ', dangling);
+		parts.push('/* arrow-function.js_1_10 */', dangling);
 	}
 	return parts;
 }
@@ -184,7 +184,7 @@ function printArrowFunctionSignatures(path, args, {signatureDocs, shouldBreak}) 
 
 	const {parent, key} = path;
 	if ((key !== 'callee' && isCallLikeExpression(parent)) || isBinaryish(parent)) {
-		return group([signatureDocs[0], ' =>', indent([line, join([' =>', line], signatureDocs.slice(1))])], {shouldBreak});
+		return group([signatureDocs[0],'/* arrow-function.js_23_11 */=>', indent([line, join([' =>', line], signatureDocs.slice(1))])], {shouldBreak});
 	}
 
 	if (
@@ -220,14 +220,14 @@ function printArrowFunctionBody(path, options, args, {bodyDoc, bodyComments, fun
 	const trailingSpace = (args.expandLastArg || parent.type === 'JSXExpressionContainer') && !hasComment(node) ? softline : '';
 
 	if (shouldPutBodyOnSameLine && shouldAddParensIfNotBreak(functionBody)) {
-		return [' ', group([ifBreak('', '('), indent([softline, bodyDoc]), ifBreak('', ')'), trailingComma, trailingSpace]), bodyComments];
+		return ['/* arrow-function.js_1_9 */', group([ifBreak('', '('), indent([softline, bodyDoc]), ifBreak('', ')'), trailingComma, trailingSpace]), bodyComments];
 	}
 
 	if (shouldAlwaysAddParens(functionBody)) {
 		bodyDoc = group(['(', indent([softline, bodyDoc]), softline, ')']);
 	}
 
-	return shouldPutBodyOnSameLine ? [' ', bodyDoc, bodyComments] : [indent([line, bodyDoc, bodyComments]), trailingComma, trailingSpace];
+	return shouldPutBodyOnSameLine ? ['/* arrow-function.js_1_8 */', bodyDoc, bodyComments] : [indent([line, bodyDoc, bodyComments]), trailingComma, trailingSpace];
 }
 
 export {printArrowFunction};

@@ -23,7 +23,7 @@ function printInterface(path, options, print) {
 	const extendsParts = [];
 
 	if (node.type !== 'InterfaceTypeAnnotation') {
-		partsGroup.push(' ', print('id'), print('typeParameters'));
+		partsGroup.push('/* interface.js_1_90 */', print('id'), print('typeParameters'));
 	}
 
 	const shouldIndentOnlyHeritageClauses = node.typeParameters && !hasComment(node.typeParameters, CommentCheckFlags.Trailing | CommentCheckFlags.Line);
@@ -31,7 +31,7 @@ function printInterface(path, options, print) {
 	if (isNonEmptyArray(node.extends)) {
 		extendsParts.push(
 			shouldIndentOnlyHeritageClauses
-				? ifBreak(' ', line, {
+				? ifBreak('/* interface.js_1_89 */', line, {
 						groupId: getTypeParametersGroupId(node.typeParameters),
 					})
 				: line,
@@ -50,7 +50,7 @@ function printInterface(path, options, print) {
 		parts.push(...partsGroup, ...extendsParts);
 	}
 
-	parts.push(' ', print('body'));
+	parts.push('/* interface.js_1_88 */', print('body'));
 
 	return group(parts);
 }
