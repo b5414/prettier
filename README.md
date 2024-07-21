@@ -2,19 +2,25 @@
 
 let's go
 
-### init
+### start
 
 1. `yarn`
 2. `yarn build`
 
 -   `prettier . --write`
 
-### rest
+### links
+
+-   [vprettier v2](https://github.com/b5414/vprettier/tree/version1)
+-   [vprettier v2 main commit](https://github.com/b5414/vprettier/commit/1430b51b3bab4299c42b38c9dab4a6703e37e0ce)
+-   [prettier issue](https://github.com/prettier/prettier/issues/9100)
+
+### example of ./sample.js after vprettier
 
 ```js
-const xaxa = (configPlace, frame, facade, params)=>{
-	this.configPlace_.Params.on(
-		'startEdit',
+const xaxa = (configPlace, frame, fac, par)=>{
+	this.config.on(
+		'start 1111111111',
 		function (){
 			this.frame_.stop_events();
 		},
@@ -26,67 +32,42 @@ const xaxa = (configPlace, frame, facade, params)=>{
 		true,
 	);
 
-	this.configPlace_.Params.on(
-		'startEdit 2222222222',
+	this.config.on(
+		'start 2222222222',
 		function (a, b, s){
-			'еуые';
+			'start';
 		},
 		this,
 		true,
 	);
 };
 
-const arr = [0, 1];
-
-const arr2 = [
-	0,
-	//
-	1,
-];
-
-const x = (y)=>{
-	return y;
-};
-
-const z = async(y)=>y;
-
-const x2 = async(y)=>{
-	return y;
-};
-
-//
-//
 //
 
-// arrow-functions
 await new Promise((done)=>done(true));
 
-// /function.js
 const a = {async func1(){}};
-function func(a){}
 const obj = {
 	get isInstalled(){
 		return 0;
 	},
 };
+
 func({a: 1, func(){}, b: 2});
+function func(a){}
 const func3 = async()=>{};
 const func4 = async()=>{};
 const func5 = ()=>{};
 const func6 = ()=>{};
 const func7 = ()=>({});
+
 if(true && a)return func() < 1;
-
-// /member-chain.js
 func().func().func().func();
-
-// /misc.js
 if(true && a){
 }
+
 if(true && a)func();
 else func();
-
-// /printer-estree.js
 with(a){
 }
 if(true && a){
@@ -97,7 +78,9 @@ if(true && a){
 }else func();
 for(;;)for(let x = 0; x < 1; x++){}
 while(true && a){}
-// for await    (let x=0; x < 1; x++){}
+for await(let x of []){
+}
+
 try{
 }catch(e){
 }finally{
@@ -110,4 +93,35 @@ switch(arr[0]){
 	case 0:
 		break;
 }
+
+//
+
+const x = (y)=>{
+	return y;
+};
+const z = async(y)=>y;
+const x2 = async(y)=>{
+	return y;
+};
+
+//
+
+const arr = [0, 1];
+
+const arr2 = [
+	0,
+	//
+	1,
+];
+
+const obj1 = {
+	a: 1,
+	b: 2,
+	c: ()=>{},
+	d: ()=>arr,
+	f: function (){
+		return 1;
+	},
+	e: ()=>({a: 123}),
+};
 ```
