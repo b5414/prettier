@@ -68,6 +68,21 @@ function printCallArguments(path, options, print) {
 
 		printedArguments.push(argDoc);
 	});
+	const printedArguments2 = [];
+	iterateCallArgumentsPath(path, ({node: arg}, index) => {
+		let argDoc = print();
+
+		if (index === lastArgIndex) {
+			// do nothing
+		} else if (isNextLineEmpty(arg, options)) {
+			anyArgEmptyLine = true;
+			argDoc = [argDoc, ', '];
+		} else {
+			argDoc = [argDoc, ', '];
+		}
+
+		printedArguments2.push(argDoc);
+	});
 
 	// Dynamic imports cannot have trailing commas
 	const isDynamicImport = node.type === 'ImportExpression' || node.callee.type === 'Import';
@@ -76,7 +91,13 @@ function printCallArguments(path, options, print) {
 		!options.parser.startsWith('__ng_') && !isDynamicImport && shouldPrintComma(options, 'all') ? ',' : '';
 
 	function allArgsBrokenOut() {
-		return group(['(', indent([line, ...printedArguments]), maybeTrailingComma, line, ')'], {shouldBreak: true});
+		// abOut_v2
+		return group(['(', ...printedArguments2, ')']);
+		
+		// abOut_v1
+		// return group(['(/*abOut_v1*/', group([line, ...printedArguments], {shouldBreak: false}), ')'], {shouldBreak: false});
+		// abOut_Orig
+		// return group(['(', indent([line, ...printedArguments]), maybeTrailingComma, line, ')'], {shouldBreak: true});
 	}
 
 	if (anyArgEmptyLine || (path.parent.type !== 'Decorator' && isFunctionCompositionArgs(args))) {
@@ -133,7 +154,8 @@ function printCallArguments(path, options, print) {
 		return conditionalGroup([['(', ...headArgs, lastArg, ')'], ['(', ...headArgs, group(lastArg, {shouldBreak: true}), ')'], allArgsBrokenOut()]);
 	}
 
-	const contents = ['(', indent([softline, ...printedArguments]), ifBreak(maybeTrailingComma), softline, ')'];
+	const contents = ['(', group([...printedArguments2]), ')'];
+	// const contents = ['(', indent([softline, ...printedArguments]), ifBreak(maybeTrailingComma), softline, ')'];
 	if (isLongCurriedCallExpression(path)) {
 		// By not wrapping the arguments in a group, the printer prioritizes
 		// breaking up these arguments rather than the args of the parent call.
