@@ -1,7 +1,7 @@
 const xaxa = (configPlace, frame, fac, par)=>{
 this.config.on(
 'start 1111111111',
-function (){
+function (a){
 this.frame_.stop_events();
 },
 function (a, b, c, s){
@@ -19,6 +19,14 @@ function (a, b, s){
 },
 this,
 true,
+);
+
+this.c.on(
+'s',
+function (a, b, s){
+},
+1,
+2,
 );
 };
 
@@ -99,3 +107,15 @@ const arr2 = [0
 ];
 
 const obj1 = {a:1, b: 2, c: ()=>{}, d:()=>arr, f:function(){return 1}, e:()=>({a:123})};
+
+//
+
+class Gay{
+constructor(a){
+this.b = a*2;
+}
+
+get(){
+return this.b;
+}
+}
