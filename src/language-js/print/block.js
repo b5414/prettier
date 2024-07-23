@@ -1,4 +1,4 @@
-import {hardline, indent} from '../../document/builders.js';
+import {nospline, indent} from '../../document/builders.js';
 import {printDanglingComments} from '../../main/comments/print.js';
 import isNonEmptyArray from '../../utils/is-non-empty-array.js';
 import {CommentCheckFlags, hasComment, isNextLineEmpty} from '../utils/index.js';
@@ -17,7 +17,7 @@ function printBlock(path, options, print) {
 	const {node, parent} = path;
 
 	if (node.type === 'Program' && parent?.type !== 'ModuleExpression') {
-		return bodyDoc ? [bodyDoc, hardline] : '';
+		return bodyDoc ? [bodyDoc, nospline] : '';
 	}
 
 	const parts = [];
@@ -28,7 +28,7 @@ function printBlock(path, options, print) {
 
 	parts.push('{');
 	if (bodyDoc) {
-		parts.push(indent([hardline, bodyDoc]), hardline);
+		parts.push(indent([nospline, bodyDoc]), nospline);
 	} else {
 		const parentParent = path.grandparent;
 		if (
@@ -51,7 +51,7 @@ function printBlock(path, options, print) {
 				node.type === 'StaticBlock'
 			)
 		) {
-			parts.push(hardline);
+			parts.push(nospline);
 		}
 	}
 
@@ -83,9 +83,9 @@ function printBlockBody(path, options, print) {
 		parts.push(printStatementSequence(path, options, print, 'directives'));
 
 		if (hasBody || hasDanglingComments) {
-			parts.push(hardline);
+			parts.push(nospline);
 			if (isNextLineEmpty(node.directives.at(-1), options)) {
-				parts.push(hardline);
+				parts.push(nospline);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 import {ArgExpansionBailout} from '../../common/errors.js';
-import {breakParent, conditionalGroup, group, hardline, ifBreak, indent, line, softline} from '../../document/builders.js';
+import {breakParent, conditionalGroup, group, hardline, ifBreak, indent, line, nospline, softline} from '../../document/builders.js';
 import {willBreak} from '../../document/utils.js';
 import {printDanglingComments} from '../../main/comments/print.js';
 import {
@@ -33,7 +33,7 @@ function printCallArguments(path, options, print) {
 
 	const args = getCallArguments(node);
 	if (args.length === 0) {
-		return ['(', printDanglingComments(path, options), ')'];
+		return ['(/*lenght*/', printDanglingComments(path, options), ')'];
 	}
 
 	const lastArgIndex = args.length - 1;
@@ -41,7 +41,7 @@ function printCallArguments(path, options, print) {
 	// useEffect(() => { ... }, [foo, bar, baz])
 	// useImperativeHandle(ref, () => { ... }, [foo, bar, baz])
 	if (isReactHookCallWithDepsArray(args)) {
-		const parts = ['('];
+		const parts = ['(/*parts*/'];
 		iterateCallArgumentsPath(path, (path, index) => {
 			parts.push(print());
 			if (index !== lastArgIndex) {
@@ -61,7 +61,7 @@ function printCallArguments(path, options, print) {
 			// do nothing
 		} else if (isNextLineEmpty(arg, options)) {
 			anyArgEmptyLine = true;
-			argDoc = [argDoc, ',', hardline, hardline];
+			argDoc = [argDoc, ',/*zapat*/', hardline, hardline];
 		} else {
 			argDoc = [argDoc, ',', line];
 		}
@@ -76,7 +76,29 @@ function printCallArguments(path, options, print) {
 		!options.parser.startsWith('__ng_') && !isDynamicImport && shouldPrintComma(options, 'all') ? ',' : '';
 
 	function allArgsBrokenOut() {
-		return group(['(', indent([line, ...printedArguments]), maybeTrailingComma, line, ')'], {shouldBreak: true});
+		const printedArguments2 = [];
+		iterateCallArgumentsPath(path, ({node: arg}, index) => {
+			let argDoc = print();
+	
+			if (index === lastArgIndex) {
+				// do nothing
+			} else if (isNextLineEmpty(arg, options)) {
+				anyArgEmptyLine = true;
+				argDoc = [argDoc, ',/*zapat*/', hardline, hardline];
+			} else {
+				argDoc = [argDoc, ', '];
+				// argDoc = [argDoc, ',/*da*/', nospline];
+			}
+	
+			printedArguments2.push(argDoc);
+		});
+		
+		
+		return group(['(/*abOut_v2*/', ...printedArguments2, ')']);
+		// return group(['(/*abOut_v2*/', group([line, ...printedArguments], {shouldBreak: false}), ')'], {shouldBreak: false});
+		
+		// return group(['(/*abOut_v1*/', group([line, ...printedArguments], {shouldBreak: false}), ')'], {shouldBreak: false});
+		// return group(['(/*abOut_Orig*/', group([line, ...printedArguments]), maybeTrailingComma, line, ')'], {shouldBreak: true});
 	}
 
 	if (anyArgEmptyLine || (path.parent.type !== 'Decorator' && isFunctionCompositionArgs(args))) {
@@ -102,10 +124,10 @@ function printCallArguments(path, options, print) {
 		}
 
 		if (willBreak(firstArg)) {
-			return [breakParent, conditionalGroup([['(', group(firstArg, {shouldBreak: true}), ', ', ...tailArgs, ')'], allArgsBrokenOut()])];
+			return [breakParent, conditionalGroup([['(/*willbrk*/', group(firstArg, {shouldBreak: true}), ', ', ...tailArgs, ')'], allArgsBrokenOut()])];
 		}
 
-		return conditionalGroup([['(', firstArg, ', ', ...tailArgs, ')'], ['(', group(firstArg, {shouldBreak: true}), ', ', ...tailArgs, ')'], allArgsBrokenOut()]);
+		return conditionalGroup([['(/*condyuct*/', firstArg, ', ', ...tailArgs, ')'], ['(', group(firstArg, {shouldBreak: true}), ', ', ...tailArgs, ')'], allArgsBrokenOut()]);
 	}
 
 	if (shouldExpandLastArg(args, printedArguments, options)) {
@@ -127,13 +149,13 @@ function printCallArguments(path, options, print) {
 		}
 
 		if (willBreak(lastArg)) {
-			return [breakParent, conditionalGroup([['(', ...headArgs, group(lastArg, {shouldBreak: true}), ')'], allArgsBrokenOut()])];
+			return [breakParent, conditionalGroup([['(/*wb2*/', ...headArgs, group(lastArg, {shouldBreak: true}), ')'], allArgsBrokenOut()])];
 		}
 
-		return conditionalGroup([['(', ...headArgs, lastArg, ')'], ['(', ...headArgs, group(lastArg, {shouldBreak: true}), ')'], allArgsBrokenOut()]);
+		return conditionalGroup([['(/*cond2*/', ...headArgs, lastArg, ')'], ['(', ...headArgs, group(lastArg, {shouldBreak: true}), ')'], allArgsBrokenOut()]);
 	}
 
-	const contents = ['(', indent([softline, ...printedArguments]), ifBreak(maybeTrailingComma), softline, ')'];
+	const contents = ['(/*conttt*/', group([softline, ...printedArguments]), ifBreak(maybeTrailingComma), softline, ')'];
 	if (isLongCurriedCallExpression(path)) {
 		// By not wrapping the arguments in a group, the printer prioritizes
 		// breaking up these arguments rather than the args of the parent call.
