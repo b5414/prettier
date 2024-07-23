@@ -61,7 +61,7 @@ function printFunction(path, print, options, args) {
 		}
 	}
 
-	const parts = [printDeclareToken(path), node.async ? 'async ' : '', `function${node.generator ? '*' : ''} `, node.id ? print('id') : ''];
+	const parts = [printDeclareToken(path), node.async ? 'async ' : '', `function${node.generator ? '*' : ''}`, node.id ? [' ', print('id')] : ''];
 
 	const parametersDoc = printFunctionParameters(path, print, options, expandArg);
 	const returnTypeDoc = printReturnType(path, print);
