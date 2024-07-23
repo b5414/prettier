@@ -1,15 +1,26 @@
 const xaxa = (configPlace, frame, fac, par)=>{
 this.config.on(
+	
 'start 1111111111',
+
 function (a){
+	
 this.frame_.stop_events();
+
 },
+
 function (a, b, c, s){
+	
 this.frame_.stop_events();
+
 },
+
 ()=>{},
+
 this,
+
 true,
+
 );
 
 this.config.on(
@@ -30,6 +41,14 @@ function (a, b, s){
 );
 };
 
+bot.on('message',
+
+password123,
+
+async(ctx)=>{
+	return ctx;
+});
+
 // 
 
 await new Promise((done)=>    done(true));
@@ -43,8 +62,10 @@ const obj = {get    isInstalled(){return 0}};
 
 func({a:1,func(){},b:2});
 function func(a)    {}
+async function name(param0) {}
+function* gen(i) { yield i + 10; }
 const func3 = async    ()=>{};
-const func4 = async()    =>{}; 
+const func4 = async()    =>{};
 const func5 = ()    =>{};
 const func6 = ()=>    {};
 const func7 = ()=>    ({});
