@@ -49,6 +49,11 @@ async(ctx)=>{
 	return ctx;
 });
 
+// todo
+const isInplaceCopiedNode = true && getCells().some(function(cell){
+return cell.name === mcontrol.name;
+});
+
 // 
 
 await new Promise((done)=>    done(true));
