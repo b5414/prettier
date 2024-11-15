@@ -32,7 +32,21 @@ const initEditorEvents = () => {
 // иииииииииии:
 
 const superFunc = ()=>{
-	
+	options.column.setEditor(
+		Ext.create('Ext.form.aaaasda', {
+			multiSelect: true,
+			forceSelection: true,
+			store: Ext.create('Ext.data.Store', {
+				fields: ['value', 'display'],
+				data: data.map(function (d){
+					return {value: d, display: values && values[d] ? values[d] : d};
+				}),
+			}),
+			queryMode: 'local',
+			displayField: 'display',
+			valueField: 'value',
+		}),
+	);
 	
 	return {
 		clearList: function(){
